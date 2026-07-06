@@ -1,22 +1,30 @@
-## Development
+# CLAUDE.md
 
-When starting the dev server, use background mode:
+## Build and Development Commands
+- Start dev server: `npm run dev` (or `pnpm dev` / `pnpm --filter portfolio-ninin dev`)
+- Build production: `npm run build`
+- Typecheck: `npm run astro check`
 
-```
-astro dev --background
-```
+## Project Context & Goal
+- **Objective:** Faithfully replicate Figma layouts (`DesignSystem.svg`, `Desktop.svg`, `Responsive.svg`) in Astro.
+- **Strict Rule:** Do NOT modify, improve, or invent design elements. Recreate them exactly as they are.
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+## Technology Restrictions
+- **Allowed:** Astro, HTML5, CSS3, JavaScript.
+- **FORBIDDEN:** React, Vue, Svelte, Tailwind CSS, Bootstrap, or any CSS frameworks/component libraries.
 
-## Documentation
+## Code & Architecture Guidelines
+- **HTML Semantics:** Use semantic tags (`header`, `main`, `nav`, `section`, `article`, `footer`, `button`, `picture`, `img`, `figure`). Avoid unnecessary `div` elements.
+- **CSS Organization:** No inline styles. Each component must have its own CSS file (e.g., `Hero.astro` imports `styles/hero.css`). Use CSS variables for everything; do not hardcode style values.
+- **Data-Driven:** Use JS arrays to render repetitive lists (experience, projects, skills).
+- **Responsive:** Build responsive views using CSS media queries. Do NOT duplicate HTML markup.
+- **Accessibility:** Images must have `alt` text. Interactive elements must be keyboard-navigable.
 
-Full documentation: https://docs.astro.build
+## Naming Conventions
+- Astro Components: `PascalCase` (e.g., `Hero.astro`, `Navbar.astro`)
+- Variables: `camelCase`
+- CSS Files: `kebab-case` (e.g., `hero.css`, `project-card.css`)
 
-Consult these guides before working on related tasks:
-
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+## AI Workflow Rules
+1. Develop only one component per prompt following this order: Navbar -> Hero -> About -> Experience -> Projects -> Contact -> Footer.
+2. Analyze the SVG design and structure before writing any code.
