@@ -1,3 +1,13 @@
 ---
----
+import '../../styles/components/progress-bar.css';
 
+interface Props {
+  progress?: number;
+  animated?: boolean;
+}
+
+const { progress = 0, animated = false } = Astro.props;
+---
+<div class:list={['progress-bar', { 'is-animated': animated }]} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100" role="progressbar">
+  <div class="progress-fill" style={`width: ${animated ? 0 : progress}%;`}></div>
+</div>

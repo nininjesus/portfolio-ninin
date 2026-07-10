@@ -1,3 +1,36 @@
 ---
----
+import '../../styles/components/input-line.css';
 
+interface Props {
+  label: string;
+  name: string;
+  type?: 'text' | 'email' | 'textarea';
+  placeholder?: string;
+  required?: boolean;
+}
+
+const { label, name, type = 'text', placeholder, required = false } = Astro.props;
+const id = `input-${name}`;
+---
+<div class="input-line-container">
+  <label for={id} class="input-label">{label}:</label>
+  {type === 'textarea' ? (
+    <textarea 
+      id={id} 
+      name={name} 
+      placeholder={placeholder} 
+      required={required} 
+      class="input-field textarea-field" 
+      rows="4"
+    ></textarea>
+  ) : (
+    <input 
+      type={type} 
+      id={id} 
+      name={name} 
+      placeholder={placeholder} 
+      required={required} 
+      class="input-field" 
+    />
+  )}
+</div>

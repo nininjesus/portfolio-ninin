@@ -1,1 +1,15 @@
-/* CSS component */
+/* src/styles/components/separator.css */
+.separator {
+  border: none;
+  height: var(--stroke-width);
+  margin: var(--space-4) 0;
+  width: 100%;
+}
+
+.separator-default {
+  background-color: var(--border-dim);
+}
+
+.separator-active {
+  background-color: var(--fg-primary);
+}

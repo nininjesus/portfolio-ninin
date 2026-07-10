@@ -1,1 +1,53 @@
-/* CSS component */
+/* src/styles/components/section-transition.css */
+.transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-terminal);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.transition-overlay.is-active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.transition-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--fg-primary);
+  font-family: var(--font-family);
+}
+
+.transition-progress-bar {
+  width: 200px;
+  height: 20px;
+  border: var(--stroke-width) solid var(--fg-primary);
+  padding: 2px;
+}
+
+.transition-progress-fill {
+  height: 100%;
+  background-color: var(--fg-primary);
+  width: 0%;
+  animation: none;
+}
+
+.transition-overlay.is-active .transition-progress-fill {
+  animation: load-progress 0.5s ease-out forwards;
+}
+
+@keyframes load-progress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}

@@ -1,1 +1,12 @@
-/* CSS component */
+/* src/styles/components/section-about.css */
+.about-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.about-data-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}

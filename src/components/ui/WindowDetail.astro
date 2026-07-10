@@ -1,3 +1,25 @@
 ---
+import '../../styles/components/window-detail.css';
+
+interface Props {
+  title?: string;
+}
+
+const { title = "PROYECTO_01.EXE" } = Astro.props;
 ---
 
+<dialog class="window-detail" id="window-detail">
+  <div class="window-frame">
+    <header class="window-header">
+      <h2 class="window-title">{title}</h2>
+      <div class="window-controls">
+        <button type="button" aria-label="Minimizar ventana" class="window-btn">_</button>
+        <button type="button" aria-label="Maximizar ventana" class="window-btn">□</button>
+        <button type="button" aria-label="Cerrar ventana" class="window-btn" id="window-close">&times;</button>
+      </div>
+    </header>
+    <div class="window-content">
+      <slot />
+    </div>
+  </div>
+</dialog>

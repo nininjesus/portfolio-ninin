@@ -1,3 +1,27 @@
 ---
+import '../../styles/components/btn.css';
+
+interface Props {
+  label: string;
+  href?: string;
+  variant?: 'default' | 'active';
+  type?: 'button' | 'submit' | 'reset';
+  ariaLabel?: string;
+  class?: string;
+}
+
+const { label, href, variant = 'default', type = 'button', ariaLabel, class: className } = Astro.props;
+
+const Element = href ? 'a' : 'button';
+const elementProps = href ? { href } : { type };
 ---
 
+<Element 
+  {...elementProps} 
+  class:list={['btn', `btn-${variant}`, className]} 
+  aria-label={ariaLabel}
+>
+  <span class="btn-bracket" aria-hidden="true">[</span>
+  <span class="btn-label">{label}</span>
+  <span class="btn-bracket" aria-hidden="true">]</span>
+</Element>

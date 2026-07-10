@@ -1,1 +1,17 @@
-/* CSS component */
+/* src/styles/components/section-bienvenida.css */
+.bienvenida-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ascii-logo {
+  color: var(--fg-text);
+  font-family: var(--font-family);
+  margin: var(--space-2) 0;
+  font-size: clamp(0.7rem, 2vw, var(--font-size-body));
+}
+
+.bienvenida-text {
+  margin: 0 0 var(--space-2) 0;
+}

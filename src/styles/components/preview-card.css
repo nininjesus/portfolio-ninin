@@ -1,1 +1,96 @@
-/* CSS component */
+/* src/styles/components/preview-card.css */
+.preview-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-component);
+  transition: background-color 0.2s ease;
+}
+
+.preview-card:hover {
+  background-color: var(--bg-hover);
+}
+
+.preview-thumbnail {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border: var(--stroke-width) solid var(--border-dim);
+  border-radius: var(--radius-component);
+  overflow: hidden;
+}
+
+.thumbnail-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--fg-primary);
+}
+
+.preview-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.preview-title {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-body-lg);
+  color: var(--fg-text);
+}
+
+.preview-description {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-caption);
+  color: var(--fg-text-muted);
+}
+
+.preview-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* Mobile Variante */
+.preview-card-mobile {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-component);
+  transition: background-color 0.2s ease;
+}
+
+.preview-card-mobile:hover {
+  background-color: var(--bg-hover);
+}
+
+.preview-thumbnail-mobile {
+  width: 100%;
+  height: 160px;
+  border: var(--stroke-width) solid var(--border-dim);
+  border-radius: var(--radius-component);
+  overflow: hidden;
+}
+
+.preview-content-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.preview-actions-mobile {
+  display: flex;
+  gap: var(--space-2);
+}
+
+@media (max-width: 767px) {
+  .preview-card {
+    display: none;
+  }
+  .preview-card-mobile {
+    display: flex;
+  }
+}

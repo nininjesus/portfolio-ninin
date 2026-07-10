@@ -1,1 +1,16 @@
-/* CSS component */
+/* src/styles/components/panel.css */
+.panel-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+  .panel-section {
+    padding: var(--space-3);
+  }
+}

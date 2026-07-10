@@ -1,1 +1,39 @@
-/* CSS component */
+/* src/styles/components/input-line.css */
+.input-line-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+  font-family: var(--font-family);
+  font-size: var(--font-size-prompt);
+}
+
+.input-label {
+  color: var(--fg-text);
+}
+
+.input-field {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px dashed var(--border-dim);
+  color: var(--fg-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-prompt);
+  padding: var(--space-1) 0;
+  outline: none;
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.input-field:focus {
+  border-bottom-color: var(--border-default);
+}
+
+.input-field::placeholder {
+  color: var(--fg-dim);
+}
+
+.textarea-field {
+  resize: vertical;
+  min-height: 80px;
+}

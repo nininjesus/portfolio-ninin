@@ -1,3 +1,19 @@
 ---
+import '../../styles/components/section-bienvenida.css';
+import Panel from '../ui/Panel.astro';
+import PanelMain from '../ui/PanelMain.astro';
+import Prompt from '../primitives/Prompt.astro';
+import Output from '../primitives/Output.astro';
 ---
-
+<Panel sectionId="bienvenida" ariaLabel="Bienvenida">
+  <PanelMain>
+    <div class="bienvenida-container">
+      <Prompt command="./portfolio.exe" />
+      <Output>
+        <img src="/images/ninin-logo.svg" alt="NININTRON_OS Logo" class="ascii-logo" />
+        <p class="bienvenida-text">Sistema inicializado. Bienvenido al portfolio OS.</p>
+      </Output>
+      <Output showCursor={true} />
+    </div>
+  </PanelMain>
+</Panel>

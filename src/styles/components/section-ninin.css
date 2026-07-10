@@ -1,1 +1,75 @@
-/* CSS component */
+/* src/styles/components/section-ninin.css */
+.ninin-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.ninin-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex: 1;
+}
+
+.ninin-quote {
+  margin: var(--space-4) 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-body-lg);
+  color: var(--fg-text);
+  line-height: var(--line-height-body-lg);
+}
+
+.ninin-quote p {
+  margin: 0 0 var(--space-2) 0;
+}
+
+.ninin-quote footer {
+  color: var(--fg-tertiary);
+  font-weight: var(--font-weight-body);
+}
+
+.ninin-social {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.social-icon {
+  /* Recolor SVG to match var(--fg-primary) #8b2323 if possible, 
+     or just display it if it's already colored. 
+     Using CSS filter if the SVG is black/white: */
+  filter: sepia(100%) hue-rotate(330deg) saturate(300%) brightness(60%);
+  transition: opacity 0.2s ease;
+}
+
+.social-icon:hover {
+  opacity: 0.8;
+}
+
+.ninin-photo-container {
+  margin: 0;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.ascii-photo {
+  font-family: var(--font-family);
+  font-size: clamp(0.2rem, 0.5vw, 10px); /* Ajustar según tamaño del ASCII */
+  line-height: 1;
+  color: var(--fg-text);
+  white-space: pre;
+}
+
+@media (max-width: 767px) {
+  .ninin-container {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}

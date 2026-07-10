@@ -1,3 +1,13 @@
 ---
----
+import '../../styles/components/prompt.css';
 
+interface Props {
+  command: string;
+}
+
+const { command } = Astro.props;
+---
+<p class="cmd-prompt">
+  <span class="cmd-prompt-symbol" aria-hidden="true">$</span>
+  <span class="cmd-prompt-text">{command}</span>
+</p>

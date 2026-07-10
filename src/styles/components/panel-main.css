@@ -1,1 +1,10 @@
-/* CSS component */
+/* src/styles/components/panel-main.css */
+.panel-main {
+  width: 100%;
+  max-width: 1200px;
+  background-color: var(--bg-panel);
+  border: var(--stroke-width) solid var(--border-dim);
+  border-radius: var(--radius-component);
+  padding: var(--space-4);
+  box-sizing: border-box;
+}

@@ -29,7 +29,7 @@
 }
 
 .nav-option-index {
-  color: var(--fg-dim);
+  color: var(--fg-primary);
 }
 
 .nav-option.active .nav-option-index {

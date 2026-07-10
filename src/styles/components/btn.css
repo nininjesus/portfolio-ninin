@@ -1,1 +1,33 @@
-/* CSS component */
+/* src/styles/components/btn.css */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25em;
+  padding: 0.25em 0.5em;
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  text-decoration: none;
+  background-color: transparent;
+  color: var(--fg-text);
+  border: var(--stroke-width) dashed var(--border-dim);
+  border-radius: var(--radius-component);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background-color: var(--bg-hover);
+}
+
+.btn-active {
+  background-color: var(--fg-primary);
+  color: var(--bg-terminal);
+  border-style: solid;
+  border-color: var(--border-default);
+}
+
+.btn-bracket {
+  color: inherit;
+}
