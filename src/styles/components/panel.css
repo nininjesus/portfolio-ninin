@@ -9,6 +9,12 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 1439px) {
+  .panel-section {
+    padding: var(--space-4);
+  }
+}
+
 @media (max-width: 767px) {
   .panel-section {
     padding: var(--space-3);

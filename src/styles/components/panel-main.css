@@ -8,3 +8,15 @@
   padding: var(--space-4);
   box-sizing: border-box;
 }
+
+@media (max-width: 1439px) {
+  .panel-main {
+    padding: var(--space-3);
+  }
+}
+
+@media (max-width: 767px) {
+  .panel-main {
+    padding: var(--space-2);
+  }
+}

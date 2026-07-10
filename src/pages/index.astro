@@ -1,7 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PanelNav from '../components/ui/PanelNav.astro';
+import SectionBienvenida from '../components/sections/SectionBienvenida.astro';
+import SectionNinin from '../components/sections/SectionNinin.astro';
+import SectionProyectos from '../components/sections/SectionProyectos.astro';
+import SectionAbout from '../components/sections/SectionAbout.astro';
+import SectionContacto from '../components/sections/SectionContacto.astro';
+import SectionHelp from '../components/sections/SectionHelp.astro';
+import SectionTransition from '../components/sections/SectionTransition.astro';
 ---
 
 <BaseLayout>
-    <!-- Contenido de la página de inicio (SPA) -->
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <PanelNav />
+    </aside>
+    
+    <main class="app-content">
+      <SectionBienvenida />
+      <SectionNinin />
+      <SectionProyectos />
+      <SectionAbout />
+      <SectionContacto />
+      <SectionHelp />
+    </main>
+  </div>
+  
+  <SectionTransition />
 </BaseLayout>
