@@ -87,7 +87,7 @@ Los archivos `Desktop.svg`, `Tablet.svg` y `Phone.svg` **no representan una sola
 | Archivo SVG | Viewport de cada vista | N.º de vistas | Sidebar | NAV.EXE |
 |---|---|---|---|---|
 | `Desktop.svg` | `1440 × 1024px` | 6 | ✅ Sí | Panel lateral fijo (`ui/panel-nav`) |
-| `Tablet.svg` | `768 × 1024px` | 6 | ❌ No | Sin sidebar — mismo layout que Phone |
+| `Tablet.svg` | `768 × 1024px` | 6 | ❌ No | Sin sidebar — mismo layout y comportamiento que Phone (hamburger `≡`) |
 | `Phone.svg` | `402 × 874px` | 6 | ❌ No | Hamburger menu (`≡`) |
 
 **Las 6 vistas en cada SVG corresponden a las 6 secciones del portfolio:**
@@ -105,10 +105,9 @@ Los archivos `Desktop.svg`, `Tablet.svg` y `Phone.svg` **no representan una sola
 - El contenido principal ocupa el resto del ancho
 
 **Tablet (768px) y Phone (402px):**
-- **Sin sidebar** — comparten la misma estructura de layout
+- **Sin sidebar** — comparten la misma estructura de layout y el mismo comportamiento de navegación
 - La única diferencia entre ambos es el ancho del viewport
-- El `ui/panel-nav` se accede mediante el **hamburger menu (`≡`)** en Phone
-- En Tablet el NAV.EXE puede estar visible de otra forma (a confirmar en el SVG)
+- El `ui/panel-nav` se accede mediante el **hamburger menu (`≡`)** en ambos breakpoints — confirmado por el autor
 
 ---
 
@@ -362,17 +361,18 @@ Componentes compuestos identificados desde `Componentes_Compuestos.svg`. Todos t
 
 ### `ui/panel-nav`
 - **Descripción**: Panel de navegación principal (NAV.EXE), conceptualizado como ejecutable de SO antiguo
+- **Corrección confirmada por el autor** ✅: `ui/panel-nav` **NO tiene controles de ventana** (`- □ ×`). Solo muestra el título `NAV.EXE` en su cabecera. Los controles `- □ ×` son exclusivos de `ui/window/detail`.
 - **Variantes**:
 
 **Desktop / Tablet:**
-- Frame de ventana OS con título `NAV.EXE` y controles (`- □ ×`) decorativos
+- Cabecera con título `NAV.EXE` (sin controles de ventana)
 - Lista de 5 `ui/nav-option`
 - Numeración: `[1]` a `[5]`
 - Fondo: `bg/panel` (`#111`)
 - Borde: `border/dim` (`#3d3d3d`)
 
 **Mobile (Phone):**
-- Mismo frame y título `NAV.EXE`
+- Mismo título `NAV.EXE`
 - Mismo contenido de lista
 - El trigger en el Phone SVG es el **hamburger menu (`≡`)** que al abrirse despliega este panel
 
@@ -398,7 +398,10 @@ Componentes compuestos identificados desde `Componentes_Compuestos.svg`. Todos t
 - **Descripción**: Ventana de detalle de proyecto, conceptualizada como ejecutable de SO
 - **Patrón visual**: Frame de ventana con título `PROYECTO_01.EXE`, controles (`- □ ×`), y área de contenido
 - **Estructura**:
-  - Barra de título: nombre del proyecto (ej. `PROYECTO_01.EXE`) + controles decorativos en `fg/primary`
+  - Barra de título: nombre del proyecto (ej. `PROYECTO_01.EXE`) + **controles funcionales** (`_` `□` `×`) en `fg/primary`
+  - `_` — minimiza la ventana
+  - `□` — maximiza la ventana
+  - `×` — cierra la ventana
   - Área de contenido: fondo `bg/panel` (`#111`), espacio para imagen/media del proyecto
 - **Variantes**: Desktop (más grande) / Mobile (más estrecho, mismo concepto)
 - **Borde**: `border/dim` (`#3d3d3d`)
@@ -439,7 +442,7 @@ Componentes compuestos identificados desde `Componentes_Compuestos.svg`. Todos t
 |---|---|---|
 | **Title Bar / Window Controls** | Desktop, Tablet, Phone, Compuestos, Simples | Mismo patrón SVG en todos los archivos |
 | **Navbar** | Desktop, Tablet, Phone, Compuestos | 3 breakpoints con adaptación de ancho |
-| **Panel lateral / Sidebar** | Desktop, Tablet | Ancho diferente (680px vs 342px) por breakpoint |
+| **Panel lateral / Sidebar** | Desktop | Sidebar fijo — solo en Desktop (680px). Tablet y Phone usan hamburger overlay. |
 | **Divider horizontal** | Desktop, Tablet, Phone | Línea fill `#3d3d3d`, 1px de altura |
 | **Dot Indicators** | Desktop, Simples, Compuestos | Patrón circular repetitivo idéntico |
 | **Texto de acento** | Compuestos, layouts | Texto en `#8b2323` para elementos destacados |
@@ -461,7 +464,7 @@ Componentes compuestos identificados desde `Componentes_Compuestos.svg`. Todos t
 
 El diseño usa un **patrón de lectura en Z**: de izquierda a derecha (navbar) → diagonal hacia el héroe → contenido de sección.
 
-- El sidebar actúa como ancla vertical permanente (Desktop/Tablet).
+- El sidebar actúa como ancla vertical permanente (solo Desktop).
 - La navegación horizontal dirige al usuario de sección en sección.
 
 ### Distribución de contenido — Desktop (secciones por coordenada X)
@@ -489,7 +492,7 @@ El diseño usa un **patrón de lectura en Z**: de izquierda a derecha (navbar) �
 ### Patrones de navegación
 
 - **Horizontal slide navigation**: Las secciones se organizan horizontalmente. La navegación es lateral, no vertical.
-- **Fixed sidebar**: Panel lateral fijo (Desktop/Tablet) que actúa como ancla durante toda la experiencia.
+- **Fixed sidebar**: Panel lateral fijo (solo Desktop) que actúa como ancla durante toda la experiencia. Tablet y Phone usan hamburger menu `≡` con el mismo comportamiento.
 - **Window-style UI metaphor**: La interfaz simula una ventana de escritorio/IDE con controles de ventana en la esquina superior izquierda.
 
 ### Patrones de layout
@@ -580,7 +583,7 @@ En algunos contextos el texto usa `#6b6b6b` (text-muted) en lugar del color de t
 | **D2** | ✅ Resuelto | Escala tipográfica completa (tamaños, line-heights, font-weights) | Confirmada |
 | **D3** | ✅ Resuelto | Breakpoints: 1440×1024 / 768×1024 / 402×874 | Confirmados |
 | **D4** | ✅ Resuelto | Navegación por selección en NAV.EXE con transición animada | Confirmado |
-| **D5** | ✅ Resuelto | Los "3 dots" son parte decorativa del frame de ventana OS | Confirmado |
+| **D5** | ✅ Corregido | Los controles `_` `□` `×` de `ui/window/detail` son **funcionales**: minimizar, maximizar y cerrar la ventana. `ui/panel-nav` **no tiene** controles de ventana. | Confirmado por el autor |
 | **D6** | ✅ Resuelto | Hover: `#1a1a1a`. Active: `#8b2323` | Confirmados |
 | **D7** | ✅ Resuelto | `#5a6b7a` = terciario (negativo del acento). `#6b7a5a` = secundario (resalte extra) | Confirmados |
 | **D8** | ✅ Resuelto | 6 secciones: **Bienvenida, Ninin, Proyectos, About, Contacto, Help** | Confirmadas |

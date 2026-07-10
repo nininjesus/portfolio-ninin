@@ -13,11 +13,16 @@ portfolio-ninin/
 ├── public/
 │   ├── favicon.ico
 │   ├── favicon.svg
-│   └── fonts/
-│       └── IBMPlexMono/                  # Fuente local (woff2)
-│           ├── IBMPlexMono-Regular.woff2
-│           ├── IBMPlexMono-SemiBold.woff2
-│           └── IBMPlexMono-Bold.woff2
+│   ├── fonts/
+│   │   └── IBMPlexMono/                  # Fuente local (woff2)
+│   │       ├── IBMPlexMono-Regular.woff2
+│   │       ├── IBMPlexMono-SemiBold.woff2
+│   │       └── IBMPlexMono-Bold.woff2
+│   ├── icons/                            # SVGs de marcas y logos
+│   │   ├── github.svg
+│   │   └── linkedin.svg
+│   └── images/
+│       └── ninin-photo.svg               # Foto del autor (SVG vectorizada)
 │
 ├── src/
 │   ├── components/
@@ -40,12 +45,13 @@ portfolio-ninin/
 │   │   │   └── Panel.astro
 │   │   │
 │   │   └── sections/                     # Secciones — agrupan ui/ para construir vistas
-│   │       ├── SectionBienvenida.astro
-│   │       ├── SectionNinin.astro
-│   │       ├── SectionProyectos.astro
-│   │       ├── SectionAbout.astro
-│   │       ├── SectionContacto.astro
-│   │       └── SectionHelp.astro
+│       ├── SectionBienvenida.astro
+│       ├── SectionNinin.astro
+│       ├── SectionProyectos.astro
+│       ├── SectionAbout.astro
+│       ├── SectionContacto.astro
+│       ├── SectionHelp.astro
+│       └── SectionTransition.astro       # Progress bar de transición entre secciones
 │   │
 │   ├── layouts/
 │   │   └── BaseLayout.astro              # Layout raíz — única plantilla de página
@@ -60,25 +66,26 @@ portfolio-ninin/
 │   │   ├── layout.css                    # Grid de la app (sidebar + main)
 │   │   ├── animations.css                # Transiciones y animaciones del sistema
 │   │   └── components/                   # Un archivo por componente
-│   │       ├── btn.css
-│   │       ├── progress-bar.css
-│   │       ├── prompt.css
-│   │       ├── output.css
-│   │       ├── separator.css
-│   │       ├── input-line.css
-│   │       ├── cursor.css
-│   │       ├── nav-option.css
-│   │       ├── panel-nav.css
-│   │       ├── preview-card.css
-│   │       ├── window-detail.css
-│   │       ├── panel-main.css
-│   │       ├── panel.css
-│   │       ├── section-bienvenida.css
-│   │       ├── section-ninin.css
-│   │       ├── section-proyectos.css
-│   │       ├── section-about.css
-│   │       ├── section-contacto.css
-│   │       └── section-help.css
+│       ├── btn.css
+│       ├── progress-bar.css
+│       ├── prompt.css
+│       ├── output.css
+│       ├── separator.css
+│       ├── input-line.css
+│       ├── cursor.css
+│       ├── nav-option.css
+│       ├── panel-nav.css
+│       ├── preview-card.css
+│       ├── window-detail.css
+│       ├── panel-main.css
+│       ├── panel.css
+│       ├── section-bienvenida.css
+│       ├── section-ninin.css
+│       ├── section-proyectos.css
+│       ├── section-about.css
+│       ├── section-contacto.css
+│       ├── section-help.css
+│       └── section-transition.css
 │   │
 │   └── data/
 │       ├── navigation.js                 # Links del NAV.EXE y su orden
@@ -113,6 +120,8 @@ Archivos servidos de forma estática, sin procesamiento por Astro.
 |---|---|
 | `favicon.ico` / `favicon.svg` | Íconos del sitio (ya existentes) |
 | `fonts/IBMPlexMono/` | Fuentes locales en formato `woff2` para el `@font-face`. Evitar dependencia de CDN externo y garantizar carga offline / velocidad óptima. Solo los 3 pesos usados: Regular (400), SemiBold (600), Bold (700). |
+| `icons/` | SVGs de logos de marcas externas (GitHub, LinkedIn). Son assets de imagen, no íconos de sistema. Se referencian con `<img src="/icons/github.svg">` desde `SectionNinin.astro`. |
+| `images/ninin-photo.svg` | Foto del autor en formato SVG vectorizado. Un único archivo estático referenciado desde `SectionNinin.astro`. |
 
 ---
 
@@ -146,16 +155,17 @@ Compuestos. Combinan primitivos para formar los bloques funcionales del diseño 
 | `Panel.astro` | `ui/panel` | Wrapper de alto nivel para una vista completa |
 
 #### `src/components/sections/`
-Secciones completas del portfolio. Cada archivo monta toda la vista de una sección usando componentes `ui/`. Son los "bloques de página" que `index.astro` ensambla. Corresponden a las 6 secciones confirmadas del diseño.
+Secciones completas del portfolio. Cada archivo monta toda la vista de una sección usando componentes `ui/`. Son los "bloques de página" que `index.astro` ensambla.
 
-| Archivo | Sección del diseño |
-|---|---|
-| `SectionBienvenida.astro` | Vista inicial — no está en el NAV.EXE |
-| `SectionNinin.astro` | `[1] ninin` |
-| `SectionProyectos.astro` | `[2] la proyectos` |
-| `SectionAbout.astro` | `[3] sobre_mi` |
-| `SectionContacto.astro` | `[4] mail contacto` |
-| `SectionHelp.astro` | `[5] man ayuda` |
+| Archivo | Sección del diseño | Contenido confirmado |
+|---|---|---|
+| `SectionBienvenida.astro` | Vista inicial — no está en el NAV.EXE | — |
+| `SectionNinin.astro` | `[1] ninin` | `Prompt` (`$ ninin`) · `Output` (`> _`) · cita entre comillas · nombre del autor · links sociales (GitHub, LinkedIn) · foto SVG del autor |
+| `SectionProyectos.astro` | `[2] la proyectos` | `PreviewCard` × n · `WindowDetail` |
+| `SectionAbout.astro` | `[3] sobre_mi` | — |
+| `SectionContacto.astro` | `[4] mail contacto` | `InputLine` · `Btn` |
+| `SectionHelp.astro` | `[5] man ayuda` | — |
+| `SectionTransition.astro` | Overlay de transición (no es sección de nav) | `ProgressBar` animado que aparece al navegar entre secciones |
 
 ---
 
@@ -246,22 +256,28 @@ primitives/  →  ui/  →  sections/  →  index.astro
   (átomos)    (moléculas)  (organismos)   (página)
 ```
 
-La regla es estricta: **las capas solo consumen la capa inmediatamente inferior**. Una sección no importa directamente un primitivo — lo hace a través de un compuesto `ui/`. Una excepción permitida: `Prompt.astro` y `Output.astro` pueden usarse directamente en secciones cuando se usan sueltos (sin contexto de `PanelMain`).
+La regla es estricta: **las capas solo consumen la capa inmediatamente inferior**. Una sección no importa directamente un primitivo — lo hace a través de un compuesto `ui/`. Una excepción permitida: `Prompt.astro` y `Output.astro` pueden usarse directamente en secciones cuando su uso es elemental (sin necesidad de un `PanelMain` envolvente).
 
 ### Flujo de composición
 
 ```
 BaseLayout.astro
+├── SectionTransition.astro              ← overlay global, siempre presente en el DOM
+│   └── ProgressBar.astro               ← controlado por JS al cambiar de sección
 └── index.astro
     ├── SectionBienvenida.astro
     │   └── Panel.astro
     │       └── PanelMain.astro
     │           ├── Prompt.astro
     │           └── Output.astro
-    ├── SectionNinin.astro
+    ├── SectionNinin.astro               ← contenido confirmado por el autor
     │   └── Panel.astro
     │       └── PanelMain.astro
-    │           └── ProgressBar.astro (× n skills)
+    │           ├── Prompt.astro          ("$ ninin")
+    │           ├── Output.astro          ("> _" con Cursor.astro)
+    │           ├── <blockquote>          (cita + atribución)
+    │           ├── <nav> social links    (<img> github.svg / linkedin.svg)
+    │           └── <figure> foto         (<img> ninin-photo.svg)
     ├── SectionProyectos.astro
     │   └── Panel.astro
     │       └── PanelMain.astro
@@ -316,13 +332,24 @@ El cambio entre `PreviewCard` y `PreviewCardMobile` se maneja con **CSS (`displa
 - El `@font-face` se declara en `global.css` apuntando a `public/fonts/`.
 - `font-display: swap` para evitar FOUT bloqueante.
 
+### SVGs de íconos sociales (`public/icons/`)
+- `github.svg` y `linkedin.svg` son los logos oficiales de las marcas, almacenados como archivos SVG propios del proyecto.
+- Se referencian con `<img src="/icons/github.svg" alt="GitHub">` desde `SectionNinin.astro`.
+- **No son íconos del sistema de diseño** (que usa ASCII); son assets de imagen de marcas externas.
+- Su color/relleno puede ser controlado con CSS via `filter` o usando SVGs `inline` si se necesita tematizar.
+
+### Foto del autor (`public/images/ninin-photo.svg`)
+- La foto está vectorizada como SVG. Se trata como un asset de imagen estático.
+- Se referencia con `<img src="/images/ninin-photo.svg" alt="Jesús Ninin">` dentro de un `<figure>` en `SectionNinin.astro`.
+- No se procesa ni transforma — se sirve directamente desde `public/`.
+
 ### Imágenes de proyectos
 - El diseño usa bloques de color `fg/primary` como placeholder para thumbnails.
 - Si el portfolio incluye imágenes reales, se almacenarán en `public/images/projects/` con nombre descriptivo en kebab-case: `proyecto-01-thumbnail.webp`.
 - Formato preferido: `webp` con fallback `jpg`.
 
-### No hay íconos de librería
-El design system confirma que **no se usa ninguna librería de íconos**. Todo el simbolismo visual (`$`, `>`, `[`, `]`, `≡`, `- □ ×`) se implementa con caracteres UTF-8 / ASCII directamente en el HTML.
+### Sin librería de íconos de sistema
+El design system no usa ninguna librería de íconos. Todo el simbolismo visual del sistema (`$`, `>`, `[`, `]`, `≡`, `- □ ×`) se implementa con caracteres UTF-8 / ASCII directamente en el HTML. Los únicos archivos SVG del proyecto son los logos de marcas externas en `public/icons/`.
 
 ### Favicon
 Los archivos `favicon.ico` y `favicon.svg` ya existen en `public/`. No se modifican a menos que el diseño lo requiera.
@@ -373,10 +400,18 @@ El portfolio es un **single-page application de scroll horizontal**. No existe e
 - La lógica de navegación reside en un `<script>` en `index.astro`.
 - Al hacer click en un `NavOption`, el script:
   1. Marca el `NavOption` como `active` (aplica estilos de estado activo).
-  2. Anima/desplaza el área de contenido hacia la sección correspondiente.
-  3. Actualiza el hash de la URL (`#ninin`, `#la-proyectos`, etc.) para navegación con historial.
-- La animación de transición es **instantánea** (sin scroll animado lento), conforme a lo confirmado en el diseño.
+  2. **Muestra `SectionTransition`**: el `ProgressBar` se anima de 0% a 100% simulando una "carga" de OS retro.
+  3. Al completarse el progress bar, oculta `SectionTransition` y muestra la sección destino.
+  4. Actualiza el hash de la URL (`#ninin`, `#la-proyectos`, etc.) para navegación con historial.
+- La transición entre secciones es **directa** (sin scroll animado); el efecto de continuidad lo provee el `ProgressBar`.
 - En Mobile (Phone), el `≡` hamburger abre el `PanelNav` como overlay.
+
+### `SectionTransition.astro` — Progress bar de entrada
+- Vive en `BaseLayout.astro`, **fuera** del flujo de secciones de contenido.
+- Siempre está presente en el DOM pero oculto (`display: none` o `visibility: hidden`) por defecto.
+- El script de navegación lo hace visible, ejecuta la animación del `ProgressBar`, y lo oculta nuevamente.
+- La duración de la animación es corta (sugerencia: 400–800ms) para no bloquear la experiencia.
+- El comportamiento exacto (duración, estilo del progress bar al completarse) se define durante la implementación en coordinación con el autor.
 
 ### IDs de sección (anclas)
 Cada `Section*.astro` expone un `id` en su elemento raíz:
