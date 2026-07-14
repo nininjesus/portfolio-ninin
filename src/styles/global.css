@@ -3,29 +3,70 @@
 @import './layout.css';
 @import './animations.css';
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap');
+/* Primitive components */
+@import './components/btn.css';
+@import './components/progress-bar.css';
+@import './components/prompt.css';
+@import './components/output.css';
+@import './components/separator.css';
+@import './components/input-line.css';
+@import './components/statusbar.css';
+@import './components/cursor.css';
 
-/* Reset básico */
+/* UI components */
+@import './components/nav-option.css';
+@import './components/panel-nav.css';
+@import './components/preview-card.css';
+@import './components/window-detail.css';
+@import './components/panel-main.css';
+@import './components/topbar.css';
+@import './components/panel.css';
+
+/* Section components */
+@import './components/section-bienvenida.css';
+@import './components/section-ninin.css';
+@import './components/section-proyectos.css';
+@import './components/section-about.css';
+@import './components/section-contacto.css';
+@import './components/section-help.css';
+@import './components/section-transition.css';
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono/IBMPlexMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono/IBMPlexMono-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono/IBMPlexMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
+}
+
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+  margin: 0;
+}
+
+ul, ol {
   margin: 0;
   padding: 0;
-}
-
-body {
-  background-color: var(--bg-terminal);
-  color: var(--fg-text);
-  font-family: var(--font-family);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-button {
-  background: none;
-  border: none;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
+  list-style: none;
 }
 
 a {
@@ -33,6 +74,16 @@ a {
   color: inherit;
 }
 
-ul, ol {
-  list-style: none;
+button, input, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+body {
+  background-color: var(--bg-terminal);
+  color: var(--fg-text);
+  font-family: var(--font-family);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
