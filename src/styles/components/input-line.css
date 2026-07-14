@@ -1,0 +1,77 @@
+.cmd-input-line {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--space-3);
+  font-family: var(--font-family);
+  font-size: var(--font-size-prompt);
+  line-height: var(--line-height-prompt);
+}
+
+.cmd-input-label {
+  color: var(--fg-text);
+  margin-right: var(--space-2);
+  white-space: nowrap;
+  /* Alineación óptica para que el texto de una línea y el textarea se sientan alineados arriba */
+  padding-top: 2px;
+}
+
+.cmd-input-wrapper {
+  display: flex;
+  flex: 1;
+  color: var(--fg-text-muted); /* Color para los corchetes por defecto */
+}
+
+.cmd-input-bracket {
+  padding-top: 2px;
+  transition: color 0.2s ease;
+}
+
+.cmd-input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: var(--stroke-width) dashed var(--border-dim);
+  color: var(--fg-text);
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  padding: 2px var(--space-1) 0 var(--space-1);
+  outline: none;
+  min-width: 0; /* Permite a flexbox achicar el input en resoluciones muy bajas */
+  transition: border-color 0.2s ease;
+}
+
+/* Evitar que el textarea rompa el ancho estricto arrastrándose */
+.cmd-input-field.type-textarea {
+  resize: vertical; /* Solo permitir cambiar la altura */
+  min-height: calc(3 * var(--font-size-prompt) * var(--line-height-prompt));
+}
+
+.cmd-input-field::placeholder {
+  color: var(--fg-dim);
+}
+
+/* Estados interactivos de foco */
+.cmd-input-wrapper:focus-within > .cmd-input-bracket {
+  color: var(--fg-primary); /* Los corchetes brillan en rojo al enfocar */
+}
+
+.cmd-input-field:focus {
+  border-bottom: var(--stroke-width) solid var(--border-default);
+}
+
+/* Indicación explícita para navegación por teclado */
+.cmd-input-field:focus-visible {
+  background-color: rgba(139, 35, 35, 0.05); /* Tinte sutil para indicar caja activa */
+}
+
+/* Adaptación móvil */
+@media (max-width: 402px) {
+  .cmd-input-line {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .cmd-input-label {
+    margin-bottom: var(--space-1);
+  }
+}

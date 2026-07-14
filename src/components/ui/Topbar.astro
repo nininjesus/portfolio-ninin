@@ -1,0 +1,24 @@
+---
+import '../../styles/components/topbar.css';
+---
+
+<header class="topbar" role="banner">
+  <div class="topbar-left">
+    <span class="os-title">NININTRON_OS</span>
+  </div>
+  
+  <div class="topbar-right">
+    <span class="user-label">[usr:ninin]</span>
+    <!-- Renderizamos un botón nativo para inyectar directamente atributos aria vitales -->
+    <button 
+      type="button" 
+      id="menu-btn"
+      class="menu-toggle"
+      aria-expanded="false" 
+      aria-controls="panel-nav" 
+      aria-label="Abrir menú de navegación"
+    >
+      <span aria-hidden="true">[= MENU]</span>
+    </button>
+  </div>
+</header>

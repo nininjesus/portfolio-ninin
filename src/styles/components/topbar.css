@@ -1,0 +1,83 @@
+.topbar {
+  background-color: var(--bg-desktop);
+  border-bottom: var(--stroke-width) solid var(--border-dim);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4);
+  position: relative;
+  z-index: 110; 
+}
+
+.topbar-left, .topbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.os-title, .user-label {
+  color: var(--fg-text);
+  font-family: var(--font-family);
+  text-transform: uppercase;
+}
+
+.menu-toggle {
+  background: transparent;
+  border: none;
+  color: var(--fg-text);
+  font-family: var(--font-family);
+  font-size: 1rem;
+  cursor: pointer;
+  display: none; /* Oculto en Desktop */
+}
+
+.menu-toggle:hover {
+  color: var(--fg-primary);
+}
+
+.topbar-menu-btn {
+  background: transparent;
+  border: var(--stroke-width) dashed var(--border-dim);
+  color: var(--fg-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  cursor: pointer;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-component);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: pre; /* Mantiene los espacios de los corchetes idéntico a Btn.astro */
+}
+
+.topbar-menu-btn:hover {
+  background-color: var(--bg-hover);
+}
+
+.topbar-menu-btn:focus-visible {
+  outline: 2px dashed var(--fg-primary);
+  outline-offset: 2px;
+}
+
+/* Responsividad Tablet y Phone */
+@media (max-width: 768px) {
+  .topbar {
+    /* Fija la barra en la parte superior para permitir hacer scroll y siempre tener el botón disponible */
+    position: sticky;
+    top: 0;
+  }
+  
+  .topbar-actions {
+    display: flex;
+  }
+  
+  .topbar-name {
+    /* Ajuste de tipografía en móvil para ahorrar espacio */
+    font-size: var(--font-size-body-lg);
+  }
+}
+
+@media (max-width: 402px) {
+  .topbar {
+    padding: 0 var(--space-3);
+  }
+}

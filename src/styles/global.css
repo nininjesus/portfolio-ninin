@@ -1,7 +1,12 @@
 @import './tokens.css';
-@import './typography.css';
 @import './layout.css';
 @import './animations.css';
+
+/* Typography base rules */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin: 0;
+}
 
 /* Primitive components */
 @import './components/btn.css';
@@ -30,30 +35,6 @@
 @import './components/section-contacto.css';
 @import './components/section-help.css';
 @import './components/section-transition.css';
-
-@font-face {
-  font-family: 'IBM Plex Mono';
-  src: url('/fonts/IBMPlexMono/IBMPlexMono-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'IBM Plex Mono';
-  src: url('/fonts/IBMPlexMono/IBMPlexMono-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'IBM Plex Mono';
-  src: url('/fonts/IBMPlexMono/IBMPlexMono-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
 
 *, *::before, *::after {
   box-sizing: border-box;

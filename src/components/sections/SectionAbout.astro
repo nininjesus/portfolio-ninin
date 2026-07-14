@@ -1,0 +1,42 @@
+---
+import '../../styles/components/section-about.css';
+import Panel from '../ui/Panel.astro';
+import PanelMain from '../ui/PanelMain.astro';
+---
+
+<Panel sectionId="sobre-mi" ariaLabel="Sección sobre mí" title="SOBRE_MI.TXT">
+  <PanelMain>
+    
+    <div class="terminal-command-container">
+      <span class="prompt-symbol">$</span>
+      <span class="command-text">cat /sobre_mi.txt</span>
+    </div>
+    
+    <div class="about-content">
+      <hr class="about-separator" />
+
+      <div class="about-line">
+        <span class="prompt-arrow">&gt;</span> NOMBRE: JESUS NININ
+      </div>
+      <div class="about-line">
+        <span class="prompt-arrow">&gt;</span> ROL: DESARROLLADOR FULL STACK
+      </div>
+      <div class="about-line">
+        <span class="prompt-arrow">&gt;</span> UBICACION: GUACARA
+      </div>
+
+      <hr class="about-separator" />
+
+      <div class="about-line">
+        <span class="prompt-arrow">&gt;</span> SKILLS: FRONTEND (REACT, NEXT.JS, ANGULAR, BLAZOR)
+      </div>
+      <div class="about-line">
+        <span class="prompt-arrow">&gt;</span> SKILLS: BACKEND (.NET, C#, NODE.JS, EXPRESS.JS)
+      </div>
+      <div class="about-line">
+        <span class="prompt-arrow">&gt;</span> SKILLS: DATABASES (MYSQL, POSTGRESQL, MONGODB)
+      </div>
+    </div>
+    
+  </PanelMain>
+</Panel>

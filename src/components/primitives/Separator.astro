@@ -1,0 +1,11 @@
+---
+import '../../styles/components/separator.css';
+
+interface Props {
+  variant?: 'default' | 'active';
+}
+
+const { variant = 'default' } = Astro.props;
+---
+
+<hr class={`cmd-separator variant-${variant}`} aria-hidden="true" />

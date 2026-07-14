@@ -1,0 +1,19 @@
+---
+import '../../styles/components/output.css';
+import Cursor from './Cursor.astro';
+
+interface Props {
+  text?: string;
+  showCursor?: boolean;
+}
+
+const { text, showCursor = false } = Astro.props;
+---
+
+<div class="cmd-output">
+  <span class="cmd-output-symbol" aria-hidden="true">&gt;</span>
+  <span class="cmd-output-content">
+    {text ? text : <slot />}
+    {showCursor && <Cursor />}
+  </span>
+</div>

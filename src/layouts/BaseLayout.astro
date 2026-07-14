@@ -1,4 +1,7 @@
 ---
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/600.css';
+import '@fontsource/ibm-plex-mono/700.css';
 import '../styles/global.css';
 import Topbar from '../components/ui/Topbar.astro';
 import PanelNav from '../components/ui/PanelNav.astro';
@@ -20,16 +23,121 @@ const { title } = Astro.props;
   <title>{title}</title>
 </head>
 <body>
-  <Topbar />
-  <SectionTransition />
-  
-  <div class="app-layout">
-    <PanelNav />
-    <main>
-      <slot />
-    </main>
+  <div class="os-window">
+    <Topbar />
+    <SectionTransition />
+    
+    <div class="app-layout">
+      <!-- Left Column: Sidebar -->
+      <aside class="layout-sidebar">
+        <header class="panel-header">
+          <span class="panel-indicator" aria-hidden="true">▌</span>
+          <h2 class="panel-title">NAV.EXE</h2>
+        </header>
+        <div class="sidebar-content">
+          <PanelNav />
+        </div>
+      </aside>
+
+      <!-- Right Column: Main Content -->
+      <main class="layout-main">
+        <header class="panel-header">
+          <span class="panel-indicator" aria-hidden="true">▌</span>
+          <h2 class="panel-title" id="active-section-title">MAIN.EXE</h2>
+        </header>
+        <div class="main-content-scroll" id="sections-container">
+          <slot />
+        </div>
+      </main>
+    </div>
+
+    <Statusbar />
   </div>
 
-  <Statusbar />
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section.panel');
+      const titleElement = document.getElementById('active-section-title');
+      const navLinks = document.querySelectorAll('.nav-option');
+      const scrollContainer = document.getElementById('sections-container');
+
+      if (!scrollContainer) return;
+
+      const observerOptions = {
+        root: scrollContainer,
+        rootMargin: '0px',
+        threshold: 0.5
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Actualizar Título
+            const newTitle = entry.target.getAttribute('data-title');
+            if (newTitle && titleElement) {
+              titleElement.textContent = newTitle;
+            }
+
+            // Actualizar Nav Activo
+            const activeId = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              link.classList.remove('is-active');
+              link.setAttribute('aria-current', 'false');
+              if (link.getAttribute('href') === `#${activeId}`) {
+                link.classList.add('is-active');
+                link.setAttribute('aria-current', 'page');
+              }
+            });
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+      
+      // Mobile Menu Toggle
+      const menuBtn = document.getElementById('menu-btn');
+      const sidebar = document.querySelector('.layout-sidebar');
+      
+      if (menuBtn && sidebar) {
+        menuBtn.addEventListener('click', () => {
+          const isOpen = sidebar.classList.contains('is-open');
+          if (isOpen) {
+            sidebar.classList.remove('is-open');
+            menuBtn.setAttribute('aria-expanded', 'false');
+          } else {
+            sidebar.classList.add('is-open');
+            menuBtn.setAttribute('aria-expanded', 'true');
+          }
+        });
+
+        // Close sidebar when clicking a nav link (mobile)
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+              sidebar.classList.remove('is-open');
+              menuBtn.setAttribute('aria-expanded', 'false');
+            }
+          });
+        });
+      }
+
+      // Smooth Scroll con JS porque deshabilitamos el nativo
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+          if (targetSection && scrollContainer) {
+            scrollContainer.scrollTo({
+              left: targetSection.offsetLeft,
+              behavior: 'instant'
+            });
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>

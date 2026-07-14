@@ -1,0 +1,32 @@
+---
+import '../../styles/components/btn.css';
+
+interface Props {
+  label: string;
+  href?: string;
+  variant?: 'default' | 'active';
+  type?: 'button' | 'submit' | 'reset';
+  ariaLabel?: string;
+}
+
+const { 
+  label, 
+  href, 
+  variant = 'default', 
+  type = 'button',
+  ariaLabel
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag 
+  class={`cmd-btn variant-${variant}`} 
+  href={href} 
+  type={href ? undefined : type}
+  aria-label={ariaLabel}
+>
+  <span aria-hidden="true">[ </span>
+  <span class="cmd-btn-label">{label}</span>
+  <span aria-hidden="true"> ]</span>
+</Tag>

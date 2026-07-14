@@ -1,0 +1,50 @@
+.nav-option {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  text-decoration: none;
+  border-radius: 0;
+  color: var(--fg-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+  outline: none;
+}
+
+/* El número y los corchetes van con el color de acento por defecto */
+.nav-option-index {
+  color: var(--fg-primary);
+  margin-right: var(--space-2);
+}
+
+.nav-option-label {
+  color: inherit;
+}
+
+/* Estado Hover y Foco por teclado */
+.nav-option:hover,
+.nav-option:focus-visible {
+  background-color: var(--bg-hover);
+  outline: none;
+}
+
+/* Estado Active (Clic) */
+.nav-option:active {
+  background-color: var(--fg-primary);
+  color: var(--bg-terminal);
+}
+
+.nav-option:active .nav-option-index {
+  color: var(--bg-terminal);
+}
+
+/* Estado Is-Active (Sección actual) */
+.nav-option.is-active {
+  background-color: var(--fg-primary);
+  color: var(--bg-terminal);
+}
+
+.nav-option.is-active .nav-option-index {
+  color: var(--bg-terminal); 
+}

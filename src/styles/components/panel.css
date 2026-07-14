@@ -1,0 +1,32 @@
+.panel {
+  background-color: var(--bg-terminal);
+  
+  /* Layout constraints para ocupar una "pantalla" en el flujo horizontal */
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  
+  /* Espaciado general y posicionamiento para el PanelMain interno */
+  padding: var(--layout-gap); /* 40px típicamente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 
+  En Mobile (Phone y Tablet) las secciones pueden fluir verticalmente 
+  si se remueve el flex horizontal del <main>, pero la base es ocupar 
+  todo el ancho disponible y al menos todo el alto de la ventana.
+*/
+@media (max-width: 768px) {
+  .panel {
+    /* Ajustes menores si el layout gap cambia en mobile */
+    padding: var(--space-4); /* 32px en mobile, por ejemplo */
+  }
+}
+
+@media (max-width: 402px) {
+  .panel {
+    padding: var(--space-3); /* 24px en phone */
+  }
+}

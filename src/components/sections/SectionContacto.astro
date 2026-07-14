@@ -1,0 +1,62 @@
+---
+import '../../styles/components/section-contacto.css';
+import Panel from '../ui/Panel.astro';
+import PanelMain from '../ui/PanelMain.astro';
+import Btn from '../primitives/Btn.astro';
+---
+
+<Panel sectionId="contacto" ariaLabel="Sección de contacto" title="CONTACTO.SH">
+  <PanelMain>
+    
+    <div class="terminal-command-container">
+      <span class="prompt-symbol">$</span>
+      <span class="command-text">mail -s "CONTACTO" nj13072004@gmail.com</span>
+    </div>
+
+    <div class="contacto-content">
+      <div class="contacto-line">
+        <span class="prompt-arrow">&gt;</span> [Escriba su mensaje]
+      </div>
+
+      <form class="contacto-form" action="mailto:nj13072004@gmail.com" method="post" enctype="text/plain">
+        
+        <div class="form-group">
+          <label class="form-label" for="nombre">NOMBRE:</label>
+          <span class="bracket">[</span>
+          <input class="form-input" type="text" id="nombre" name="nombre" aria-label="Nombre" autocomplete="off" />
+          <span class="bracket">]</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">EMAIL:</label>
+          <span class="bracket">[</span>
+          <input class="form-input" type="email" id="email" name="email" aria-label="Correo Electrónico" autocomplete="off" />
+          <span class="bracket">]</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="asunto">ASUNTO:</label>
+          <span class="bracket">[</span>
+          <input class="form-input" type="text" id="asunto" name="asunto" aria-label="Asunto" autocomplete="off" />
+          <span class="bracket">]</span>
+        </div>
+
+        <div class="contacto-line margin-top">
+          <span class="prompt-arrow">&gt;</span> Mensaje:
+        </div>
+
+        <div class="form-group textarea-group">
+          <span class="bracket">[</span>
+          <textarea class="form-textarea" id="mensaje" name="mensaje" rows="4" aria-label="Mensaje" autocomplete="off"></textarea>
+          <span class="bracket">]</span>
+        </div>
+
+        <div class="form-actions">
+          <Btn label="Contactar" type="submit" />
+        </div>
+
+      </form>
+    </div>
+    
+  </PanelMain>
+</Panel>

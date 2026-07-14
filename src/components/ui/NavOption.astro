@@ -1,0 +1,21 @@
+---
+import '../../styles/components/nav-option.css';
+
+interface Props {
+  index: number;
+  label: string;
+  sectionId: string;
+  isActive?: boolean;
+}
+
+const { index, label, sectionId, isActive = false } = Astro.props;
+---
+
+<a 
+  href={`#${sectionId}`} 
+  class={`nav-option ${isActive ? 'is-active' : ''}`}
+  aria-current={isActive ? 'page' : undefined}
+>
+  <span class="nav-option-index" aria-hidden="true">[{index}]</span>
+  <span class="nav-option-label">{label}</span>
+</a>

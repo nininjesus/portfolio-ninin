@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  padding: 0;
+  /* Centered OS window on dark background */
+  background-color: #050505; /* Un fondo aún más oscuro que el terminal para contrastar la ventana */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: var(--font-family);
+  overflow: hidden;
+}
+
+/* El contenedor principal de la aplicación que simula la ventana del OS */
+.os-window {
+  width: 100vw;
+  max-width: var(--breakpoint-desktop);
+  height: 100vh;
+  /* Si la pantalla es más alta que 1024px, lo limitamos para que parezca una ventana */
+  max-height: 1024px; 
+  background-color: var(--bg-terminal);
+  border: var(--stroke-width) solid var(--border-dim);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* El layout interno que divide sidebar y contenido */
+.app-layout {
+  display: flex;
+  flex-direction: row;
+  flex: 1; /* Ocupa todo el espacio entre topbar y statusbar */
+  overflow: hidden; /* Evita que el contenedor crezca */
+}
+
+/* Columna Izquierda: Sidebar */
+.layout-sidebar {
+  width: var(--layout-sidebar-desktop);
+  flex-shrink: 0;
+  border-right: var(--stroke-width) solid var(--border-dim);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-panel);
+}
+
+/* Columna Derecha: Contenido Principal */
+.layout-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Previene overflow en flexbox */
+  background-color: var(--bg-terminal);
+}
+
+/* Cabeceras comunes de los paneles (NAV.EXE y MAIN.EXE) */
+.panel-header {
+  padding: var(--space-3) var(--space-5);
+  border-bottom: var(--stroke-width) solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrar titulos */
+  height: 64px; /* Altura fija para alineación */
+  flex-shrink: 0;
+}
+
+.panel-indicator {
+  color: var(--fg-primary);
+  margin-right: var(--space-2);
+}
+
+.panel-title {
+  color: var(--fg-text);
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: var(--font-size-body);
+  text-transform: uppercase;
+}
+
+/* Contenido del Sidebar */
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Contenedor escrolleable horizontal para las secciones */
+.main-content-scroll {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  overflow-x: hidden; /* Ocultamos el scroll horizontal nativo, se navega por JS */
+  overflow-y: hidden;
+  position: relative;
+}
+
+/* Responsividad Tablet/Móvil */
+@media (max-width: 768px) {
+  .layout-sidebar {
+    /* En móvil, el sidebar es un overlay, no ocupa espacio en el grid */
+    position: absolute;
+    top: 64px; /* Debajo de topbar */
+    left: 0;
+    width: var(--layout-sidebar-tablet);
+    height: calc(100% - 64px - 32px); /* Menos topbar y statusbar */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 100;
+  }
+  
+  .layout-sidebar.is-open {
+    transform: translateX(0);
+  }
+  
+  .main-content-scroll {
+    /* En móvil, las secciones pueden caer verticalmente o seguir horizontales */
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: hidden; /* Se activará scroll si la sección es larga */
+  }
+}

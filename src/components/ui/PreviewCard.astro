@@ -1,0 +1,33 @@
+---
+import '../../styles/components/preview-card.css';
+import Btn from '../primitives/Btn.astro';
+
+interface Props {
+  title: string;
+  category: string;
+  year: string;
+  link?: string;
+  repo?: string;
+}
+
+const { title, category, year, link = "#", repo = "#" } = Astro.props;
+---
+
+<article class="preview-card">
+  <div class="card-thumb"></div>
+  
+  <div class="card-info">
+    <h3 class="card-title">{title}</h3>
+    <p class="card-meta">{category} | {year}</p>
+    
+    <div class="card-actions mobile-only-actions">
+      <Btn label="Ver" href={link} />
+      <Btn label="Preview" href={repo} />
+    </div>
+  </div>
+
+  <div class="card-actions desktop-only-actions">
+    <Btn label="Ver" href={link} />
+    <Btn label="Preview" href={repo} />
+  </div>
+</article>

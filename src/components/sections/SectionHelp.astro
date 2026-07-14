@@ -1,0 +1,52 @@
+---
+import '../../styles/components/section-help.css';
+import Panel from '../ui/Panel.astro';
+import PanelMain from '../ui/PanelMain.astro';
+---
+
+<Panel sectionId="ayuda" ariaLabel="Sección de ayuda" title="AYUDA.TXT">
+  <PanelMain>
+    
+    <div class="terminal-command-container">
+      <span class="prompt-symbol">$</span>
+      <span class="command-text">man ayuda</span>
+    </div>
+
+    <div class="help-content">
+      <hr class="help-separator" />
+
+      <div class="help-line">
+        <span class="prompt-arrow">&gt;</span> MANUAL DE USUARIO (NININTRON_OS v1.0)
+      </div>
+      <div class="help-line margin-bottom">
+        <span class="prompt-arrow">&gt;</span> COMANDOS DISPONIBLES:
+      </div>
+
+      <div class="help-line">
+        <span class="prompt-arrow">&gt;</span> [1] ninin - Presentacion personal y enlaces
+      </div>
+      <div class="help-line">
+        <span class="prompt-arrow">&gt;</span> [2] proyectos - Directorio de proyectos web destacados
+      </div>
+      <div class="help-line">
+        <span class="prompt-arrow">&gt;</span> [3] sobre_mi - Ficha técnica, rol y habilidades
+      </div>
+      <div class="help-line">
+        <span class="prompt-arrow">&gt;</span> [4] contacto - Formulario para enviar un correo
+      </div>
+      <div class="help-line margin-bottom">
+        <span class="prompt-arrow">&gt;</span> [5] ayuda - Manual de usuario e instrucciones
+      </div>
+
+      <hr class="help-separator" />
+
+      <div class="help-line">
+        <span class="prompt-arrow">&gt;</span> NOTA: Puedes ejecutar cualquiera de estos comandos haciendo
+      </div>
+      <div class="help-line">
+        <span class="prompt-arrow">&gt;</span> clic directamente en el panel de navegación izquierdo (NAV.EXE)
+      </div>
+    </div>
+    
+  </PanelMain>
+</Panel>

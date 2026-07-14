@@ -1,0 +1,15 @@
+.cmd-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em; /* Altura tipográfica relativa */
+  background-color: var(--fg-primary);
+  vertical-align: middle;
+  margin-left: 2px; /* Pequeño espaciado si se pega directo a una letra */
+  animation: blink-cursor 1s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmd-cursor {
+    animation: none; /* Desactiva el parpadeo si el usuario prefiere movimiento reducido */
+  }
+}

@@ -1,0 +1,22 @@
+.cmd-prompt {
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  
+  /* Tipografía confirmada en tokens */
+  font-family: var(--font-family);
+  font-size: var(--font-size-prompt);
+  line-height: var(--line-height-prompt);
+  font-weight: var(--font-weight-prompt);
+}
+
+.cmd-prompt-symbol {
+  color: var(--fg-primary);
+  user-select: none; /* Evita que el usuario copie el símbolo $ accidentalmente */
+  margin-right: 1ch; /* Equivalente al espacio exacto de un caracter en tipografía monoespaciada */
+}
+
+.cmd-prompt-text {
+  color: var(--fg-text);
+  word-break: break-word; /* Para que comandos muy largos no rompan el layout en móvil */
+}

@@ -1,0 +1,28 @@
+---
+import '../../styles/components/window-detail.css';
+import Btn from '../primitives/Btn.astro';
+
+interface Props {
+  id: string;
+  title: string;
+}
+
+const { id, title } = Astro.props;
+const titleId = `window-title-${id}`;
+---
+
+<article 
+  id={id} 
+  class="window-detail" 
+  role="region" 
+  aria-labelledby={titleId}
+>
+  <header class="window-detail-header">
+    <span class="window-pattern" aria-hidden="true">▒▒▒</span>
+    <h2 id={titleId} class="window-detail-title">{title}</h2>
+  </header>
+  
+  <div class="window-detail-content">
+    <slot />
+  </div>
+</article>
