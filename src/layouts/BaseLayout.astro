@@ -1,18 +1,35 @@
 ---
 import '../styles/global.css';
+import Topbar from '../components/ui/Topbar.astro';
+import PanelNav from '../components/ui/PanelNav.astro';
+import Statusbar from '../components/primitives/Statusbar.astro';
+import SectionTransition from '../components/sections/SectionTransition.astro';
 
-const { title = "Portfolio Ninin" } = Astro.props;
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Portfolio de Jesús Ninin" />
-    <title>{title}</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
 </head>
 <body>
-    <slot />
+  <Topbar />
+  <SectionTransition />
+  
+  <div class="app-layout">
+    <PanelNav />
+    <main>
+      <slot />
+    </main>
+  </div>
+
+  <Statusbar />
 </body>
 </html>
