@@ -13,6 +13,7 @@ El árbol representa la jerarquía de instanciación en tiempo de build de Astro
 ```
 BaseLayout.astro
 ├── <head>                             (SEO, meta, @font-face, tokens.css, global.css)
+├── Topbar.astro                       [NUEVO] (barra superior del OS — siempre presente)
 ├── SectionTransition.astro            (overlay global — siempre en DOM)
 │   └── ProgressBar.astro
 │
@@ -20,66 +21,85 @@ BaseLayout.astro
     ├── PanelNav.astro                 (sidebar persistente — fuera del flujo de secciones)
     │   └── NavOption.astro × 5        (generados con .map() sobre navigation.js)
     │
-    └── <main>  ← slot de index.astro
-        ├── SectionBienvenida.astro
-        │   └── Panel.astro
-        │       └── PanelMain.astro
-        │           ├── Prompt.astro   ("$ whoisninin")
-        │           └── Output.astro   ("> _" + Cursor.astro)
-        │               └── Cursor.astro
-        │
-        ├── SectionNinin.astro
-        │   └── Panel.astro
-        │       └── PanelMain.astro
-        │           ├── Prompt.astro   ("$ ninin")
-        │           ├── Output.astro   ("> _" + Cursor.astro)
-        │           │   └── Cursor.astro
-        │           ├── <blockquote>   (cita del autor)
-        │           ├── <nav>          (links sociales: GitHub, LinkedIn)
-        │           └── <figure>       (foto SVG del autor)
-        │
-        ├── SectionProyectos.astro
-        │   └── Panel.astro
-        │       └── PanelMain.astro
-        │           ├── Separator.astro (tope de lista)
-        │           ├── PreviewCard.astro × n     (desktop — generados con .map())
-        │           │   └── Btn.astro × 2         ("[ Ver ]" / "[ Preview ]")
-        │           ├── PreviewCardMobile.astro × n (mobile — generados con .map())
-        │           │   └── Btn.astro × 2
-        │           ├── Separator.astro (cierre de lista)
-        │           └── WindowDetail.astro
-        │
-        ├── SectionAbout.astro
-        │   └── Panel.astro
-        │       └── PanelMain.astro
-        │           ├── Prompt.astro
-        │           └── Output.astro × n
-        │
-        ├── SectionContacto.astro
-        │   └── Panel.astro
-        │       └── PanelMain.astro
-        │           ├── Prompt.astro
-        │           ├── Output.astro
-        │           ├── InputLine.astro
-        │           └── Btn.astro      ("[ Enviar ]")
-        │
-        └── SectionHelp.astro
-            └── Panel.astro
-                └── PanelMain.astro
-                    ├── Prompt.astro
-                    └── Output.astro × n
+    ├── <main>  ← slot de index.astro
+    │   ├── SectionBienvenida.astro
+    │   │   └── Panel.astro
+    │   │       └── PanelMain.astro
+    │   │           ├── <pre aria-label> (logo ASCII de NININTRON_OS — centrado)
+    │   │           └── <p> NININTRON_OS + <span> V1.0
+    │   │           └── [Sin Prompt ni Output en esta sección]
+    │   │
+    │   ├── SectionNinin.astro
+    │   │   └── Panel.astro
+    │   │       └── PanelMain.astro  (layout: 2 col Desktop / columna única Tablet+Phone)
+    │   │           ├── [columna izquierda / bloque superior]
+    │   │           │   ├── Prompt.astro   ("$ ninin")
+    │   │           │   ├── Output.astro   ("> _" + Cursor.astro)
+    │   │           │   │   └── Cursor.astro
+    │   │           │   ├── <blockquote>   (cita del autor)
+    │   │           │   └── <nav> social links    (<img> github.svg / linkedin.svg)
+    │   │           └── [columna derecha (Desktop) / bloque superior (Tablet+Phone)]
+    │   │               └── <figure> foto         (<img> ninin-photo.svg)
+    │   │
+    │   ├── SectionProyectos.astro  (sectionId: "ls-proyectos")
+    │   │   └── Panel.astro
+    │   │       └── PanelMain.astro
+    │   │           ├── Prompt.astro   ("$ ls proyectos")
+    │   │           ├── Separator.astro (tope de lista)
+    │   │           ├── PreviewCard.astro × n     (desktop — generados con .map())
+    │   │           │   └── Btn.astro × 2         ("[ Ver ]" / "[ Preview ]")
+    │   │           ├── PreviewCardMobile.astro × n (mobile — generados con .map())
+    │   │           │   └── Btn.astro × 2
+    │   │           ├── Separator.astro (cierre de lista)
+    │   │           └── WindowDetail.astro
+    │   │
+    │   ├── SectionAbout.astro
+    │   │   └── Panel.astro
+    │   │       └── PanelMain.astro
+    │   │           ├── Prompt.astro   ("$ cat /sobre_mi.txt")
+    │   │           ├── Separator.astro (variant: default)
+    │   │           ├── Output.astro × 3  (NOMBRE, ROL, UBICACION)
+    │   │           ├── Separator.astro (variant: default)
+    │   │           └── Output.astro × 3  (SKILLS Frontend, Backend, Databases)
+    │   │
+    │   ├── SectionContacto.astro  (sectionId: "contacto")
+    │   │   └── Panel.astro
+    │   │       └── PanelMain.astro
+    │   │           ├── Prompt.astro   ("$ mail -s \"CONTACTO\" nj13072004@gmail.com")
+    │   │           ├── Output.astro   ("> [Escriba su mensaje]")
+    │   │           ├── <form>
+    │   │           │   ├── InputLine.astro  (label: "NOMBRE:", name: "nombre")
+    │   │           │   ├── InputLine.astro  (label: "EMAIL:", name: "email")
+    │   │           │   ├── InputLine.astro  (label: "ASUNTO:", name: "asunto")
+    │   │           │   ├── Output.astro     ("> Mensaje:")
+    │   │           │   ├── <textarea>       (3 líneas, estilo terminal `[_ _ _ _ _]`)
+    │   │           │   └── Btn.astro        (label: "ENVIAR", type: "submit")
+    │   │
+    │   └── SectionHelp.astro  (sectionId: "ayuda")
+    │       └── Panel.astro
+    │           └── PanelMain.astro
+    │               ├── Prompt.astro   ("$ man ayuda")
+    │               ├── Separator.astro (variant: default)
+    │               ├── Output.astro   ("> MANUAL DE USUARIO (NININTRON_OS v1.0)")
+    │               ├── Output.astro   ("> COMANDOS DISPONIBLES:")
+    │               ├── Output.astro × 5  (lista [1]–[5] generada con .map())
+    │               ├── Separator.astro (variant: default)
+    │               ├── Output.astro   ("> NOTA: Puedes ejecutar...")
+    │               └── Output.astro   ("> clic directamente en el panel...")
+    │
+    └── Statusbar.astro                [NUEVO] (barra de estado inferior — siempre presente)
 ```
 
 ---
 
 ## 2. Inventario Completo de Componentes
 
-El sistema está compuesto por **20 componentes** organizados en 3 capas de abstracción:
+El sistema está compuesto por **22 componentes** organizados en 3 capas de abstracción:
 
 | Capa | Cantidad | Componentes |
 |---|---|---|
-| `primitives/` — Átomos | 7 | `Btn`, `ProgressBar`, `Prompt`, `Output`, `Separator`, `InputLine`, `Cursor` |
-| `ui/` — Compuestos | 7 | `NavOption`, `PanelNav`, `PreviewCard`, `PreviewCardMobile`, `WindowDetail`, `PanelMain`, `Panel` |
+| `primitives/` — Átomos | 8 | `Btn`, `ProgressBar`, `Prompt`, `Output`, `Separator`, `InputLine`, `Cursor`, `Statusbar` |
+| `ui/` — Compuestos | 8 | `NavOption`, `PanelNav`, `PreviewCard`, `PreviewCardMobile`, `WindowDetail`, `PanelMain`, `Topbar`, `Panel` |
 | `sections/` — Secciones | 7 | `SectionBienvenida`, `SectionNinin`, `SectionProyectos`, `SectionAbout`, `SectionContacto`, `SectionHelp`, `SectionTransition` |
 
 > **Nota**: `BaseLayout.astro` no figura como componente sino como **layout raíz**. `index.astro` es la **página** que ensambla las secciones.
@@ -488,7 +508,7 @@ Tokens: `--fg-primary`, `--fg-text`, `--bg-hover`, `--bg-terminal`.
 Panel de navegación principal conceptualizado como ejecutable de OS antiguo: `NAV.EXE`. Muestra únicamente el título `NAV.EXE` en su cabecera — **sin controles de ventana** — seguido de la lista de `NavOption`.
 
 **Responsabilidad**  
-Renderizar el sidebar de navegación completo. En Desktop es un panel lateral fijo siempre visible. En Tablet y Phone se comporta igual: es un panel overlay que emerge al activar el hamburger menu `≡`.
+Renderizar el sidebar de navegación completo. En Desktop es un panel lateral fijo siempre visible. En Tablet y Phone se comporta igual: es un panel overlay que emerge al activar el hamburger menu `[≡ MENU]` en el `Topbar`.
 
 **Props recomendadas**
 
@@ -499,7 +519,7 @@ Renderizar el sidebar de navegación completo. En Desktop es un panel lateral fi
 
 **Variantes**
 - **Desktop**: sidebar fijo, siempre visible.
-- **Tablet y Phone**: mismo comportamiento — panel overlay que se muestra/oculta con JS al activar el hamburger `≡`.
+- **Tablet y Phone**: mismo comportamiento — panel overlay que se muestra/oculta con JS al activar el hamburger `[≡ MENU]` del `Topbar`.
 
 **Componentes hijos**  
 - `NavOption.astro × 5` (generados con `.map()`)
@@ -528,7 +548,7 @@ navItems.map(item => <NavOption
 **Accesibilidad**
 - El panel es un `<nav>` semántico con `aria-label="Navegación principal"`.
 - En Tablet y Phone, el panel overlay debe tener `aria-hidden="true"` cuando está oculto.
-- El botón hamburger `≡` debe ser un `<button aria-controls="panel-nav" aria-expanded="false/true">`.
+- El botón hamburger `[≡ MENU]` en el `Topbar` debe ser un `<button aria-controls="panel-nav" aria-expanded="false/true">`.
 - Cuando el panel se abre en Tablet o Phone, el foco debe moverse al interior del panel.
 - Al cerrar, el foco debe regresar al botón hamburger.
 
@@ -767,6 +787,107 @@ No aplica.
 
 ---
 
+### 4.8 `Topbar` — **NUEVO**
+
+| Propiedad | Valor |
+|---|---|
+| **Archivo** | `src/components/ui/Topbar.astro` |
+| **CSS** | `src/styles/components/topbar.css` |
+| **Nombre Figma** | `ui/topbar` |
+| **Nivel de reutilización** | Único — instanciado una sola vez en `BaseLayout` |
+
+**Descripción**  
+Barra superior del OS que encapsula el título del sistema operativo, el identificador de usuario (Desktop) o el botón hamburger (Tablet/Phone), el separador horizontal y el título dinámico del panel activo.
+
+**Responsabilidad**  
+Renderizar la barra superior en todos los breakpoints. El título del panel activo (`▌ SECTION.EXE`) se actualiza va JS externo al navegar entre secciones.
+
+**Props recomendadas**
+
+| Prop | Tipo | Requerida | Default | Descripción |
+|---|---|---|---|---|
+| `initialSectionTitle` | `string` | ❌ | `'MAIN.EXE'` | Título inicial del panel activo (actualizado via JS al navegar) |
+
+**Variantes por breakpoint**
+
+| Breakpoint | Contenido derecho | Título de sección |
+|---|---|---|
+| Desktop | `[usr:ninin]` | `▌ SECTION.EXE` (en fila del panel) |
+| Tablet | `[≡ MENU]` (botón) | `▌ SECTION.EXE` (centrado/debajo) |
+| Phone | `[≡ MENU]` (botón) | `▌ SECTION.EXE` (centrado/debajo) |
+
+**Componentes hijos**  
+Ninguno (elementos HTML directos).
+
+**Dependencias**  
+Tokens: `--fg-primary` (cuadradito `▌`), `--fg-text`, `--fg-text-muted`, `--border-dim`, `--bg-panel` o `--bg-terminal`.
+
+**Datos para `map()`**  
+No aplica.
+
+**Títulos de panel por sección** (para el JS de navegación):
+
+| `sectionId` | Título del panel |
+|---|---|
+| `bienvenida` | `MAIN.EXE` |
+| `ninin` | `NININ.EXE` |
+| `ls-proyectos` | `PROYECTOS.EXE` |
+| `sobre-mi` | `SOBRE_MI.TXT` |
+| `contacto` | `CONTACTO.SH` |
+| `ayuda` | `AYUDA.TXT` |
+
+**Estados visuales**  
+El título del panel cambia dinámicamente. El botón hamburger tiene estado `expanded/collapsed`.
+
+**Accesibilidad**
+- `<header role="banner">` como elemento raíz.
+- El botón hamburger `[≡ MENU]` debe ser `<button aria-controls="panel-nav" aria-expanded="false/true" aria-label="Abrir menú de navegación">`.
+- El título `NININTRON_OS` puede ser `<span>` o `<strong>` (no heading — no es el título del documento).
+- El título del panel activo debe tener un `id` para que el JS lo actualice: `id="panel-title"`.
+
+---
+
+### 4.9 `Statusbar` — **NUEVO**
+
+| Propiedad | Valor |
+|---|---|
+| **Archivo** | `src/components/primitives/Statusbar.astro` |
+| **CSS** | `src/styles/components/statusbar.css` |
+| **Nombre Figma** | `ui/statusbar` |
+| **Nivel de reutilización** | Único — instanciado una sola vez en `BaseLayout` |
+
+**Descripción**  
+Barra de estado inferior del OS. Muestra el estado del sistema y el reloj en tiempo real. Aparece en **todos** los breakpoints. El patrón visual es: `> NININTRON READY | MEM:64% | TIME: HH:MM:SS`.
+
+**Responsabilidad**  
+Renderizar la barra de estado inferior con texto estático y un reloj que se actualiza en tiempo real via `setInterval` de JS vanilla.
+
+**Props recomendadas**  
+Ninguna. El contenido está fijo salvo el reloj (generado por JS).
+
+**Variantes**  
+Ninguna de diseño. El mismo componente aplica en todos los breakpoints.
+
+**Componentes hijos**  
+Ninguno (texto directo + `<time id="statusbar-clock">` actualizado por JS).
+
+**Dependencias**  
+Tokens: `--fg-text-muted` o `--fg-tertiary` (texto), `--bg-panel` o `--bg-terminal` (fondo), `--border-dim` (borde superior).  
+JS: `setInterval` que actualiza `#statusbar-clock` cada segundo con `new Date().toLocaleTimeString()`.
+
+**Datos para `map()`**  
+No aplica.
+
+**Estados visuales**  
+Único estado (estático). El reloj se actualiza visualmente cada segundo.
+
+**Accesibilidad**
+- Elemento raíz: `<footer role="status" aria-live="off">` (no usar `aria-live` porque el contenido cambia cada segundo y sería muy verboso para lectores de pantalla).
+- El reloj dentro de `<time datetime="HH:MM:SS">` para semántica correcta.
+- `aria-hidden="true"` en el reloj si el cambio continuo resulta disruptivo para tecnologías de asistencia.
+
+---
+
 ## 5. Sections — Definición Detallada
 
 ---
@@ -781,22 +902,27 @@ No aplica.
 | **Nivel de reutilización** | Único — una sola instancia |
 
 **Descripción**  
-Pantalla de bienvenida inicial del portfolio. Es el estado por defecto al cargar. No está listada en el NAV.EXE. Contiene la presentación inicial con logo ASCII del portfolio y el efecto de prompt/output de entrada.
+Pantalla de bienvenida inicial del portfolio. Es el estado por defecto al cargar. No está listada en el NAV.EXE. Contiene el logo ASCII del sistema `NININTRON_OS` centrado en el panel y el texto de versión.
+
+> **Cambio confirmado por imágenes** ✅: Esta sección **no tiene Prompt ni Output**. El contenido es exclusivamente el logo ASCII centrado + el texto `NININTRON_OS` con `V1.0` debajo.
 
 **Responsabilidad**  
-Montar la vista inicial del portfolio. Gestionar su propio estado de visibilidad (visible por defecto, se oculta al navegar a otra sección).
+Montar la vista inicial del portfolio. El logo ASCII ocupa el centro del panel. A su derecha (Desktop) o debajo (Phone) aparece el texto `NININTRON_OS` y `V1.0` en `fg/tertiary` o `fg/text-muted`.
 
 **Props recomendadas**  
 Ninguna. El contenido es estático.
 
-**Variantes**  
-Ninguna.
+**Variantes por breakpoint**:
+- **Desktop / Tablet**: Logo ASCII centrado horizontalmente. Texto `NININTRON_OS` + `V1.0` a la derecha del logo.
+- **Phone**: Layout vertical. Logo ASCII arriba, texto `NININTRON_OS` + `V1.0` debajo y centrados.
 
 **Componentes hijos**
 - `Panel.astro` (sectionId: `"bienvenida"`)
   - `PanelMain.astro`
-    - `Prompt.astro`
-    - `Output.astro` → `Cursor.astro`
+    - `<pre role="img" aria-label="Logo NININTRON_OS">` (logo ASCII)
+    - `<p>` con `NININTRON_OS` en `--fg-text`
+    - `<span>` con `V1.0` en `--fg-tertiary` o `--fg-text-muted`
+    - **[Sin Prompt ni Output]**
 
 **Dependencias**  
 Ningún dato externo. Contenido hardcodeado (es contenido único de presentación).
@@ -825,23 +951,27 @@ No aplica.
 **Descripción**  
 Sección de presentación personal del autor `[1] ninin`. Contiene el par prompt/output de "quién es ninin", la cita del autor, los links sociales y la foto SVG.
 
+> **Layout bifurcado por breakpoint** ✅: En Desktop la foto está a la DERECHA del texto. En Tablet/Phone la foto está ARRIBA del texto.
+
 **Responsabilidad**  
-Montar la vista de presentación personal con todos sus elementos estáticos confirmados.
+Montar la vista de presentación personal con todos sus elementos estáticos confirmados, adaptando el layout según breakpoint con `flex-direction` y `order` CSS.
 
 **Props recomendadas**  
 Ninguna. El contenido es estático y específico del autor.
 
-**Variantes**  
-Ninguna.
+**Variantes de layout**:
+- **Desktop**: `display: flex; flex-direction: row` — columna izquierda (Prompt + Output + blockquote + nav social) + columna derecha (figura con foto)
+- **Tablet**: `display: flex; flex-direction: column` o reordenación por `order` — foto arriba-izquierda + texto debajo
+- **Phone**: `display: flex; flex-direction: column` — Prompt + Output, luego foto, luego blockquote + nav social
 
 **Componentes hijos**
 - `Panel.astro` (sectionId: `"ninin"`)
   - `PanelMain.astro`
     - `Prompt.astro` (command: `"ninin"`)
     - `Output.astro` (showCursor: `true`) → `Cursor.astro`
-    - `<blockquote>` (cita + atribución)
+    - `<blockquote>` (cita + atribución en `--fg-secondary`)
     - `<nav>` con `<a>` para GitHub y LinkedIn (usando `<img>` de los SVGs en `/icons/`)
-    - `<figure>` con `<img src="/images/ninin-photo.svg">`
+    - `<figure>` con `<img src="/images/ninin-photo.svg">` (reordenada por CSS según breakpoint)
 
 **Dependencias**  
 Assets: `/icons/github.svg`, `/icons/linkedin.svg`, `/images/ninin-photo.svg`.  
@@ -867,11 +997,11 @@ Los links sociales pueden generarse con `.map()` sobre un array local si se anti
 |---|---|
 | **Archivo** | `src/components/sections/SectionProyectos.astro` |
 | **CSS** | `src/styles/components/section-proyectos.css` |
-| **ID de sección** | `la-proyectos` |
+| **ID de sección** | `ls-proyectos` (**actualizado** — antes `la-proyectos`) |
 | **Nivel de reutilización** | Único — una sola instancia |
 
 **Descripción**  
-Sección de proyectos `[2] la proyectos`. Lista todos los proyectos del portfolio mediante `PreviewCard` y permite ver el detalle en el `WindowDetail`.
+Sección de proyectos `[2] ls proyectos`. Lista todos los proyectos del portfolio mediante `PreviewCard` y permite ver el detalle en el `WindowDetail`.
 
 **Responsabilidad**  
 Importar datos de `projects.js`, generar el listado de tarjetas y gestionar la apertura del `WindowDetail` al seleccionar un proyecto.
@@ -879,12 +1009,14 @@ Importar datos de `projects.js`, generar el listado de tarjetas y gestionar la a
 **Props recomendadas**  
 Ninguna. Consume datos de `src/data/projects.js`.
 
-**Variantes**  
-Ninguna en el componente. Las variantes Desktop/Mobile se delegan a `PreviewCard` / `PreviewCardMobile`.
+**Variantes de layout por breakpoint**:
+- **Desktop**: Tarjetas horizontales — thumbnail izquierda, nombre+descripción centro, botones derecha.
+- **Tablet/Phone**: Tarjetas verticales — thumbnail arriba, cuerpo debajo, botones `[ Ver ]` y `[ Preview ]` en la parte inferior.
 
 **Componentes hijos**
-- `Panel.astro` (sectionId: `"la-proyectos"`)
+- `Panel.astro` (sectionId: `"ls-proyectos"`)
   - `PanelMain.astro`
+    - `Prompt.astro` (command: `"ls proyectos"`)
     - `Separator.astro` (variant: `"default"`) — al inicio
     - `PreviewCard.astro × n` (generados con `.map()`)
     - `PreviewCardMobile.astro × n` (generados con `.map()`)
@@ -905,7 +1037,7 @@ projects.map(project => <PreviewCardMobile {...project} />)
 `visible` / `oculta`. Internamente: `windowDetail oculto` / `windowDetail visible`.
 
 **Accesibilidad**
-- `<section id="la-proyectos" aria-labelledby="proyectos-heading">`.
+- `<section id="ls-proyectos" aria-labelledby="proyectos-heading">`.
 - La lista de proyectos debe estar en `<ul>` con cada tarjeta en `<li>`.
 - Gestionar el foco correctamente al abrir/cerrar `WindowDetail`.
 
@@ -921,10 +1053,12 @@ projects.map(project => <PreviewCardMobile {...project} />)
 | **Nivel de reutilización** | Único — una sola instancia |
 
 **Descripción**  
-Ficha técnica del autor `[3] sobre_mi`. Presenta datos personales y habilidades técnicas íntegramente como líneas `Output` — **sin `Prompt` inicial**. El contenido confirmado es: nombre, rol, ubicación y skills agrupados por categoría (Frontend, Backend, Databases).
+Ficha técnica del autor `[3] sobre_mi`. Presenta datos personales y habilidades técnicas como líneas `Output` precedidas por un `Prompt` y dos `Separator` que dividen la información en grupos.
+
+> **Estructura confirmada por imágenes** ✅: El comando del `Prompt` es `cat /sobre_mi.txt`. Hay **dos** `Separator` que dividen el contenido en dos bloques: datos personales y skills.
 
 **Responsabilidad**  
-Montar la vista de ficha técnica del autor con sus datos personales y stack tecnológico.
+Montar la vista de ficha técnica del autor con su estructura de dos grupos separados.
 
 **Props recomendadas**  
 Ninguna. Contenido estático.
@@ -935,10 +1069,12 @@ Ninguna.
 **Componentes hijos**
 - `Panel.astro` (sectionId: `"sobre-mi"`)
   - `PanelMain.astro`
-    - `Separator.astro` (variant: `"default"`) — al inicio
-    - `Output.astro` (text: `"NOMBRE: JESÚS NININ"`)
+    - `Prompt.astro` (command: `"cat /sobre_mi.txt"`)
+    - `Separator.astro` (variant: `"default"`) — **Separator 1** (entre Prompt y datos personales)
+    - `Output.astro` (text: `"NOMBRE: JESUS NININ"`)
     - `Output.astro` (text: `"ROL: DESARROLLADOR FULL STACK"`)
     - `Output.astro` (text: `"UBICACION: GUACARA"`)
+    - `Separator.astro` (variant: `"default"`) — **Separator 2** (entre datos personales y skills)
     - `Output.astro` (text: `"SKILLS: FRONTEND (REACT, NEXT.JS, ANGULAR, BLAZOR)"`)
     - `Output.astro` (text: `"SKILLS: BACKEND (.NET, C#, NODE.JS, EXPRESS.JS)"`)
     - `Output.astro` (text: `"SKILLS: DATABASES (MYSQL, POSTGRESQL, MONGODB)"`)
@@ -968,11 +1104,13 @@ skills.map(skill => <Output text={`SKILLS: ${skill.category} (${skill.tools})`} 
 |---|---|
 | **Archivo** | `src/components/sections/SectionContacto.astro` |
 | **CSS** | `src/styles/components/section-contacto.css` |
-| **ID de sección** | `mail-contacto` |
+| **ID de sección** | `contacto` (**actualizado** — antes `mail-contacto`) |
 | **Nivel de reutilización** | Único — una sola instancia |
 
 **Descripción**  
-Sección de contacto `[4] mail contacto`. Contiene el formulario de contacto con campos `InputLine` y un `Btn` de envío.
+Sección de contacto `[4] contacto`. Contiene el formulario de contacto con `Prompt` de email, `Output` inicial, campos `InputLine` y un `Btn` de envío.
+
+> **Estructura completamente actualizada por imágenes** ✅: El Prompt cambió, los labels de los `InputLine` están **fuera** del corchete, hay un campo `ASUNTO` (no `MENSAJE`), el textarea es un bloque de 3 líneas separado por `> Mensaje:`, y el botón dice `[ ENVIAR ]` (todo mayúsculas).
 
 **Responsabilidad**  
 Montar el formulario de contacto. Gestionar la semántica del `<form>` y el estado del botón de envío.
@@ -984,15 +1122,19 @@ Ninguna. Contenido estático.
 Ninguna.
 
 **Componentes hijos**
-- `Panel.astro` (sectionId: `"mail-contacto"`)
+- `Panel.astro` (sectionId: `"contacto"`)
   - `PanelMain.astro`
-    - `Prompt.astro` (command: `"mail contacto"`)
-    - `Output.astro`
+    - `Prompt.astro` (command: `"mail -s \"CONTACTO\" nj13072004@gmail.com"`)
+    - `Output.astro` (text: `"[Escriba su mensaje]"`)
     - `<form>`
-      - `InputLine.astro` (label: `"Nombre"`, name: `"nombre"`, type: `"text"`)
-      - `InputLine.astro` (label: `"Email"`, name: `"email"`, type: `"email"`)
-      - `InputLine.astro` (label: `"Mensaje"`, name: `"mensaje"`, type: `"textarea"`)
-      - `Btn.astro` (label: `"Enviar"`, type: `"submit"`)
+      - `InputLine.astro` (label: `"NOMBRE:"`, name: `"nombre"`, type: `"text"`)
+      - `InputLine.astro` (label: `"EMAIL:"`, name: `"email"`, type: `"email"`)
+      - `InputLine.astro` (label: `"ASUNTO:"`, name: `"asunto"`, type: `"text"`)
+      - `Output.astro` (text: `"Mensaje:"`)
+      - `<textarea>` (3 líneas visibles, estilo terminal `[_ _ _ _ _]`)
+      - `Btn.astro` (label: `"ENVIAR"`, type: `"submit"`)
+
+> **Nota sobre `InputLine`**: El label está **fuera** del corchete. El patrón es: `LABEL: [_ _ _ _ _]`. Esto puede requerir ajuste en el API del componente `InputLine` para que el `label` prop se renderice antes del campo, no dentro.
 
 **Dependencias**  
 No consume datos externos. La lógica de envío del formulario se gestiona con JS vanilla.
@@ -1004,7 +1146,7 @@ Posible `.map()` sobre array de definición de campos para generar los `InputLin
 `visible` / `oculta`. Internamente: estados del formulario (`idle` / `enviando` / `enviado` / `error`).
 
 **Accesibilidad**
-- `<section id="mail-contacto" aria-labelledby="contacto-heading">`.
+- `<section id="contacto" aria-labelledby="contacto-heading">`.
 - El `<form>` debe tener `aria-label="Formulario de contacto"`.
 - Gestionar estados del formulario con `aria-live` para anunciar éxito/error.
 - El botón de envío debe comunicar su estado (`aria-busy="true"` mientras se envía).
@@ -1017,11 +1159,13 @@ Posible `.map()` sobre array de definición de campos para generar los `InputLin
 |---|---|
 | **Archivo** | `src/components/sections/SectionHelp.astro` |
 | **CSS** | `src/styles/components/section-help.css` |
-| **ID de sección** | `man-ayuda` |
+| **ID de sección** | `ayuda` (**actualizado** — antes `man-ayuda`) |
 | **Nivel de reutilización** | Único — una sola instancia |
 
 **Descripción**  
-Manual de usuario del sistema `[5] man ayuda` en formato terminal. Muestra el título `MANUAL DE USUARIO (NININ_OS v1.0)`, la lista de comandos disponibles `[1]–[5]` con sus descripciones, y una nota de uso. La lista de comandos mapea directamente sobre los datos de `navigation.js`.
+Manual de usuario del sistema `[5] ayuda` en formato terminal. El `Prompt` es `$ man ayuda`. Hay dos `Separator`: uno entre el `Prompt` y la lista de comandos, y otro entre la lista y la NOTA final.
+
+> **Estructura actualizada por imágenes** ✅: Los descriptores de comandos en la lista son nombres cortos (`ninin`, `proyectos`, `sobre_mi`, `contacto`, `ayuda`), no los prefijos de los prompts (`ls`, `cat`, etc.).
 
 **Responsabilidad**  
 Montar la vista de manual de usuario del portfolio en formato terminal. Reutiliza los datos de navegación para generar la lista de comandos disponibles.
@@ -1033,12 +1177,14 @@ Ninguna. Consume datos de `src/data/navigation.js`.
 Ninguna.
 
 **Componentes hijos**
-- `Panel.astro` (sectionId: `"man-ayuda"`)
+- `Panel.astro` (sectionId: `"ayuda"`)
   - `PanelMain.astro`
     - `Prompt.astro` (command: `"man ayuda"`)
-    - `Output.astro` (text: `"MANUAL DE USUARIO (NININ_OS v1.0)"`)
+    - `Separator.astro` (variant: `"default"`) — **Separator 1** (entre Prompt y lista)
+    - `Output.astro` (text: `"MANUAL DE USUARIO (NININTRON_OS v1.0)"`)
     - `Output.astro` (text: `"COMANDOS DISPONIBLES:"`)
     - `Output.astro × 5` — lista de comandos generada con `.map()` sobre `navigation.js`
+    - `Separator.astro` (variant: `"default"`) — **Separator 2** (entre lista y NOTA)
     - `Output.astro` (text: `"NOTA: Puedes ejecutar cualquiera de estos comandos haciendo"`)
     - `Output.astro` (text: `"clic directamente en el panel de navegación izquierdo (NAV.EXE)"`)
 
@@ -1052,11 +1198,18 @@ navItems.map(item => <Output text={`[${item.index}] ${item.sectionId} - ${item.d
 ```
 > Requiere añadir un campo `description` al objeto de `navigation.js` con la descripción de cada sección.
 
+> **Descripciones confirmadas por imágenes**:
+> - `[1] ninin - Presentacion personal y enlaces`
+> - `[2] proyectos - Directorio de proyectos web destacados`
+> - `[3] sobre_mi - Ficha técnica, rol y habilidades`
+> - `[4] contacto - Formulario para enviar un correo`
+> - `[5] ayuda - Manual de usuario e instrucciones`
+
 **Estados visuales**  
 `visible` / `oculta`.
 
 **Accesibilidad**
-- `<section id="man-ayuda" aria-labelledby="help-heading">`.
+- `<section id="ayuda" aria-labelledby="help-heading">`.
 - La lista de comandos `[1]–[5]` debe estar en `<ul>` con `<li>` por cada ítem.
 - Los números entre corchetes son decorativos: `<span aria-hidden="true">[n]</span>`.
 
@@ -1141,10 +1294,13 @@ JS de navegación (index.astro) ──→ SectionTransition (visibilidad)
 |---|---|
 | `PanelNav` | `navigation.js` |
 | `NavOption` | Props desde `PanelNav` |
+| `SectionHelp` | `navigation.js` (lista de comandos) |
 | `PreviewCard` | `projects.js` (via `SectionProyectos`) |
 | `PreviewCardMobile` | `projects.js` (via `SectionProyectos`) |
 | `WindowDetail` | Props dinámicas via JS |
 | `ProgressBar` | `SectionTransition` — JS lo anima de 0 a 100% durante la carga |
+| `Topbar` | JS de navegación (actualiza el título del panel activo) |
+| `Statusbar` | JS interno (reloj en tiempo real via `setInterval`) |
 | `InputLine` (Contacto) | Array de campos (a definir localmente en `SectionContacto`) |
 | Resto | Contenido estático en el template |
 
@@ -1170,6 +1326,8 @@ JS de navegación (index.astro) ──→ SectionTransition (visibilidad)
 
 | Componente | Contexto único |
 |---|---|
+| `Topbar` | `BaseLayout` (barra superior persistente) |
+| `Statusbar` | `BaseLayout` (barra inferior persistente) |
 | `PanelNav` | `BaseLayout` (sidebar persistente) |
 | `WindowDetail` | `SectionProyectos` |
 | `SectionTransition` | `BaseLayout` (overlay global) |
@@ -1247,11 +1405,13 @@ Siguiendo la regla del `AGENTS.md` (un componente por turno):
 
 | Decisión | Pregunta pendiente | Fuente de verdad |
 |---|---|---|
-| Layout de `SectionAbout` | ✅ Confirmado: `Separator` + `Output × n` (nombre, rol, ubicación, skills por categoría). Sin `Prompt`. | — |
-| Layout de `SectionHelp` | ✅ Confirmado: `Prompt` + `Output × n`. Lista `[1]–[5]` mapeada desde `navigation.js`. Incluye nota de uso. | — |
-| Comportamiento NAV en Tablet | ✅ Confirmado: igual que Phone — panel overlay con hamburger `≡` | — |
+| Layout de `SectionAbout` | ✅ Confirmado: `Prompt` (`$ cat /sobre_mi.txt`) + `Separator` + `Output × 3` (datos personales) + `Separator` + `Output × 3` (skills). | Imágenes de maquetación |
+| Layout de `SectionHelp` | ✅ Confirmado: `Prompt` + 2 `Separator` + `Output × 7` (encabezado + lista) + `Output × 2` (NOTA). Lista `[1]–[5]` mapeada desde `navigation.js` con nombres cortos. | Imágenes de maquetación |
+| Layout de `SectionBienvenida` | ✅ Confirmado: solo logo ASCII + texto `NININTRON_OS` + `V1.0`. **Sin Prompt ni Output.** | Imágenes de maquetación |
+| Layout de `SectionNinin` | ✅ Confirmado: Desktop = 2 col (texto izq, foto der). Tablet/Phone = foto arriba + texto abajo. Usar CSS `flex-direction` / `order`. | Imágenes de maquetación |
+| Campos del formulario de Contacto | ✅ Confirmado: `NOMBRE`, `EMAIL`, `ASUNTO` (InputLine) + `> Mensaje:` (Output) + textarea 3 líneas + `[ ENVIAR ]` (Btn). | Imágenes de maquetación |
+| Comportamiento NAV en Tablet | ✅ Confirmado: igual que Phone — panel overlay con hamburger `[≡ MENU]` en `Topbar` | Imágenes de maquetación |
 | WindowDetail en Mobile | ✅ Confirmado: overlay en **todos** los breakpoints (Desktop, Tablet y Phone) | — |
-| Número de campos en el formulario | ¿Cuántos y cuáles `InputLine` hay en Contacto? | `Desktop.svg` vista 4 |
 | Gap entre sidebar y main (40px R4) | ✅ Confirmado: intencional — implementar como `--layout-gap: 40px` | — |
 
 ### Restricciones Recordatorio
@@ -1272,4 +1432,5 @@ Siguiendo la regla del `AGENTS.md` (un componente por turno):
 ---
 
 *Fin del documento — Fase 3: Definición de Componentes*  
+*Última actualización: Componentes `Topbar` y `Statusbar` añadidos. Layouts de secciones actualizados por imágenes de alta fidelidad.*  
 *Próximo paso: Iniciar desarrollo comenzando por `BaseLayout.astro` y `tokens.css` (Fase 4)*

@@ -33,6 +33,7 @@ portfolio-ninin/
 │   │   │   ├── Output.astro
 │   │   │   ├── Separator.astro
 │   │   │   ├── InputLine.astro
+│   │   │   ├── Statusbar.astro               # [NUEVO] Barra de estado inferior del OS
 │   │   │   └── Cursor.astro
 │   │   │
 │   │   ├── ui/                           # Compuestos — combinan primitivos
@@ -42,6 +43,7 @@ portfolio-ninin/
 │   │   │   ├── PreviewCardMobile.astro
 │   │   │   ├── WindowDetail.astro
 │   │   │   ├── PanelMain.astro
+│   │   │   ├── Topbar.astro                  # [NUEVO] Barra superior del OS
 │   │   │   └── Panel.astro
 │   │   │
 │   │   └── sections/                     # Secciones — agrupan ui/ para construir vistas
@@ -73,11 +75,13 @@ portfolio-ninin/
 │       ├── separator.css
 │       ├── input-line.css
 │       ├── cursor.css
+│       ├── statusbar.css                 # [NUEVO]
 │       ├── nav-option.css
 │       ├── panel-nav.css
 │       ├── preview-card.css
 │       ├── window-detail.css
 │       ├── panel-main.css
+│       ├── topbar.css                    # [NUEVO]
 │       ├── panel.css
 │       ├── section-bienvenida.css
 │       ├── section-ninin.css
@@ -139,6 +143,7 @@ Todos los componentes de la interfaz. Se dividen en **tres capas** de abstracci�
 | `Output.astro` | `cmd/output` | Línea `> respuesta` |
 | `Separator.astro` | `ui/separator` | Divisor horizontal (variante default / active) |
 | `InputLine.astro` | `ui/input-line` | Campo de entrada estilo terminal |
+| `Statusbar.astro` | `ui/statusbar` | **[NUEVO]** Barra de estado inferior del OS con reloj en tiempo real |
 | `Cursor.astro` | `fx/cursor` | Bloque rojo parpadeante |
 
 #### `src/components/ui/`
@@ -152,6 +157,7 @@ Compuestos. Combinan primitivos para formar los bloques funcionales del diseño 
 | `PreviewCardMobile.astro` | `ui/preview-card-mobile` | Tarjeta de proyecto — layout mobile vertical |
 | `WindowDetail.astro` | `ui/window/detail` | Ventana `PROYECTO.EXE` con frame de OS |
 | `PanelMain.astro` | `ui/panel-main` | Contenedor principal de contenido por sección |
+| `Topbar.astro` | `ui/topbar` | **[NUEVO]** Barra superior del OS (`NININTRON_OS` + usuario/hamburger + título de sección) |
 | `Panel.astro` | `ui/panel` | Wrapper de alto nivel para una vista completa |
 
 #### `src/components/sections/`
@@ -159,12 +165,12 @@ Secciones completas del portfolio. Cada archivo monta toda la vista de una secci
 
 | Archivo | Sección del diseño | Contenido confirmado |
 |---|---|---|
-| `SectionBienvenida.astro` | Vista inicial — no está en el NAV.EXE | — |
-| `SectionNinin.astro` | `[1] ninin` | `Prompt` (`$ ninin`) · `Output` (`> _`) · cita entre comillas · nombre del autor · links sociales (GitHub, LinkedIn) · foto SVG del autor |
-| `SectionProyectos.astro` | `[2] la proyectos` | `PreviewCard` × n · `WindowDetail` |
-| `SectionAbout.astro` | `[3] sobre_mi` | — |
-| `SectionContacto.astro` | `[4] mail contacto` | `InputLine` · `Btn` |
-| `SectionHelp.astro` | `[5] man ayuda` | — |
+| `SectionBienvenida.astro` | Vista inicial — no está en el NAV.EXE | Logo ASCII centrado + texto `NININTRON_OS` + `V1.0`. **Sin Prompt ni Output.** |
+| `SectionNinin.astro` | `[1] ninin` | `Prompt` (`$ ninin`) · `Output` (`> _`) · cita entre comillas · nombre del autor · links sociales (GitHub, LinkedIn) · foto SVG del autor. **Desktop**: 2 columnas (texto izq, foto der). **Tablet/Phone**: foto arriba, texto abajo. |
+| `SectionProyectos.astro` | `[2] ls proyectos` (**actualizado**) | `Prompt` (`$ ls proyectos`) · `PreviewCard` × n · `WindowDetail` |
+| `SectionAbout.astro` | `[3] sobre_mi` | `Prompt` (`$ cat /sobre_mi.txt`) · `Separator` · `Output` × 3 (datos personales) · `Separator` · `Output` × 3 (skills) |
+| `SectionContacto.astro` | `[4] contacto` (**actualizado**) | `Prompt` (`$ mail -s "CONTACTO" nj13072004@gmail.com`) · `Output` inicial · `InputLine` × 3 (NOMBRE, EMAIL, ASUNTO) · `Output` (Mensaje:) · textarea 3 líneas · `Btn` `[ ENVIAR ]` |
+| `SectionHelp.astro` | `[5] ayuda` (**actualizado**) | `Prompt` (`$ man ayuda`) · `Separator` · `Output` × 7 · `Separator` · `Output` × 2 (NOTA) |
 | `SectionTransition.astro` | Overlay de transición (no es sección de nav) | `ProgressBar` animado que aparece al navegar entre secciones |
 
 ---
@@ -172,12 +178,12 @@ Secciones completas del portfolio. Cada archivo monta toda la vista de una secci
 ### `src/layouts/`
 
 #### `BaseLayout.astro`
-Única plantilla de la aplicación. Sus responsabilidades son:
+Unica plantilla de la aplicación. Sus responsabilidades son:
 - Renderizar el `<html>`, `<head>` y `<body>`
 - Inyectar los meta tags SEO
 - Cargar `global.css` y `tokens.css`
 - Cargar la fuente `IBM Plex Mono` vía `@font-face`
-- Establecer la estructura raíz: `PanelNav` (sidebar) + área de contenido principal
+- Establecer la estructura raíz: `Topbar` (barra superior) + `PanelNav` (sidebar) + área de contenido principal + `Statusbar` (barra inferior)
 - Exponer un `<slot />` donde `index.astro` inyecta las secciones
 
 No existe un segundo layout. La diferencia entre Desktop y Mobile se gestiona íntegramente con media queries dentro del CSS.
@@ -400,11 +406,12 @@ El portfolio es un **single-page application de scroll horizontal**. No existe e
 - La lógica de navegación reside en un `<script>` en `index.astro`.
 - Al hacer click en un `NavOption`, el script:
   1. Marca el `NavOption` como `active` (aplica estilos de estado activo).
-  2. **Muestra `SectionTransition`**: el `ProgressBar` se anima de 0% a 100% simulando una "carga" de OS retro.
-  3. Al completarse el progress bar, oculta `SectionTransition` y muestra la sección destino.
-  4. Actualiza el hash de la URL (`#ninin`, `#la-proyectos`, etc.) para navegación con historial.
+  2. **Actualiza el título del panel principal** en el `Topbar` (`▌ MAIN.EXE` → `▌ NININ.EXE`, etc.) según la sección activa.
+  3. **Muestra `SectionTransition`**: el `ProgressBar` se anima de 0% a 100% simulando una "carga" de OS retro.
+  4. Al completarse el progress bar, oculta `SectionTransition` y muestra la sección destino.
+  5. Actualiza el hash de la URL (`#ninin`, `#ls-proyectos`, etc.) para navegación con historial.
 - La transición entre secciones es **directa** (sin scroll animado); el efecto de continuidad lo provee el `ProgressBar`.
-- En Mobile (Phone), el `≡` hamburger abre el `PanelNav` como overlay.
+- En Mobile (Phone), el `[≡ MENU]` hamburger abre el `PanelNav` como overlay.
 
 ### `SectionTransition.astro` — Progress bar de entrada
 - Vive en `BaseLayout.astro`, **fuera** del flujo de secciones de contenido.
@@ -416,14 +423,16 @@ El portfolio es un **single-page application de scroll horizontal**. No existe e
 ### IDs de sección (anclas)
 Cada `Section*.astro` expone un `id` en su elemento raíz:
 
-| Componente | `id` |
-|---|---|
-| `SectionBienvenida` | `bienvenida` |
-| `SectionNinin` | `ninin` |
-| `SectionProyectos` | `la-proyectos` |
-| `SectionAbout` | `sobre-mi` |
-| `SectionContacto` | `mail-contacto` |
-| `SectionHelp` | `man-ayuda` |
+> **Cambio confirmado por imágenes** ✅: Los IDs se actualizan para reflejar los nuevos labels del NAV.EXE.
+
+| Componente | `id` | Cambio |
+|---|---|---|
+| `SectionBienvenida` | `bienvenida` | — |
+| `SectionNinin` | `ninin` | — |
+| `SectionProyectos` | `ls-proyectos` | **Actualizado** (antes `la-proyectos`) |
+| `SectionAbout` | `sobre-mi` | — |
+| `SectionContacto` | `contacto` | **Actualizado** (antes `mail-contacto`) |
+| `SectionHelp` | `ayuda` | **Actualizado** (antes `man-ayuda`) |
 
 ---
 
@@ -461,6 +470,7 @@ Cada componente tiene nombre y responsabilidad específicos del diseño. No exis
 | **R6** | `index.astro` hoy tiene el `<html>` hardcodeado — debe migrar a `BaseLayout.astro` | Alto | Primera tarea de la Fase 3: crear `BaseLayout.astro` y refactorizar `index.astro` |
 | **R7** | `global.css` actual mezcla tokens, reset y estilos de body en un solo archivo | Medio | Separar en `tokens.css`, `global.css` y `typography.css` antes del primer componente |
 | **R8** | Navegación horizontal pura puede afectar SEO y accesibilidad de teclado | Medio | Actualizar hash de URL en cada sección, asegurar `aria-current="page"` en `NavOption` activo |
+| **R9** | El reloj en tiempo real del `Statusbar` requiere `setInterval` con JS vanilla activo permanentemente | Medio | Implementar con `setInterval` y asegurar limpieza del intervalo si el componente se destruye. Considerar pausa con `prefers-reduced-motion`. |
 
 ---
 

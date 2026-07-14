@@ -1,6 +1,6 @@
 # Análisis de Diseño — Portfolio Ninin
 > Generado a partir del análisis de los archivos SVG en `/Maquetacion/`  
-> **Última actualización**: Información tipográfica, breakpoints, navegación y estados de hover confirmados por el autor.
+> **Última actualización**: Estructura de topbar, statusbar, cambio `ls proyectos`, nuevos componentes `ui/topbar` y `ui/statusbar` — confirmados por imágenes de alta fidelidad en `Maquetacion/Desktop/`, `Maquetacion/Tablet/` y `Maquetacion/Phone/`.
 
 ---
 
@@ -97,6 +97,49 @@ Los archivos `Desktop.svg`, `Tablet.svg` y `Phone.svg` **no representan una sola
 4. About
 5. Contacto
 6. Help
+
+#### Estructura global confirmada por imágenes de alta fidelidad
+
+Todas las vistas (Desktop, Tablet, Phone) comparten la siguiente estructura marco:
+
+```
+[TOPBAR]
+  NININTRON_OS                                    [usr:ninin]  ← Desktop
+  NININTRON_OS                                     [≡ MENU]   ← Tablet / Phone
+────────────────────────────────────────────────────────────
+[PANEL ÁREA]
+  NAV.EXE  │  ▌ SECTION.EXE                                   ← Desktop
+            │  ▌ SECTION.EXE                                   ← Tablet (sin sidebar)
+[STATUSBAR]
+  > NININTRON READY | MEM:64% | TIME: HH:MM:SS
+```
+
+**Topbar — estructura confirmada:**
+- Esquina superior izquierda: título del OS `NININTRON_OS` en todos los breakpoints
+- Esquina superior derecha Desktop: `[usr:ninin]`
+- Esquina superior derecha Tablet/Phone: `[≡ MENU]` (botón hamburger)
+- Separador horizontal debajo del topbar: `border/dim` (`#3d3d3d`)
+
+**Título del panel principal — varía por sección:**
+
+| Sección | Título del panel |
+|---|---|
+| Bienvenida | `MAIN.EXE` |
+| Ninin | `NININ.EXE` |
+| Proyectos | `PROYECTOS.EXE` |
+| About | `SOBRE_MI.TXT` |
+| Contacto | `CONTACTO.SH` |
+| Help | `AYUDA.TXT` |
+
+- El título lleva el cuadradito rojo `▌` como decoración antes del texto
+- El color del `▌` es `fg/primary` (`#8b2323`)
+- El título cambia dinámicamente con JS al navegar entre secciones
+
+**Statusbar inferior — confirmada en todos los breakpoints:**
+- Texto: `> NININTRON READY | MEM:64% | TIME: HH:MM:SS`
+- El reloj (`TIME`) se actualiza en tiempo real con JS vanilla
+- Fondo: `bg/panel` (`#111`) o `bg/terminal` (`#0a0a0a`)
+- Texto en `fg/text-muted` (`#6b6b6b`) o `fg/tertiary` (`#5a6b7a`)
 
 #### Arquitectura de layouts
 
@@ -229,6 +272,20 @@ Componentes atómicos identificados desde `Componentes_Simples.svg`. **Nombres o
 | `ui/separator` | Separador / divisor visual |
 | `ui/input-line` | Campo de entrada de texto |
 | `fx/cursor` | Cursor del mouse (bloque rojo) |
+| `ui/statusbar` | Barra de estado inferior del OS con reloj en tiempo real |
+
+---
+
+### `ui/statusbar`
+- **Descripción**: Barra de estado inferior del OS — aparece en **todos** los breakpoints en la parte inferior de la pantalla
+- **Patrón visual**: `> NININTRON READY | MEM:64% | TIME: HH:MM:SS`
+- **Estructura**:
+  - Símbolo `>` opcional en `fg/tertiary` (`#5a6b7a`) o texto directo
+  - Texto en `fg/text-muted` (`#6b6b6b`) o `fg/tertiary`
+  - El segmento `TIME` se actualiza en tiempo real via JS vanilla (`setInterval`)
+- **Fondo**: `bg/panel` (`#111`) o `bg/terminal` (`#0a0a0a`)
+- **Borde superior**: `border/dim` (`#3d3d3d`)
+- **Tipografía**: `terminal/caption` o `terminal/code`
 
 ---
 
@@ -338,6 +395,35 @@ Componentes compuestos identificados desde `Componentes_Compuestos.svg`. Todos t
 | `ui/panel-main` | Panel principal de contenido |
 | `ui/window/detail` | Ventana de detalle de proyecto |
 | `ui/panel-nav` | Panel de navegación NAV.EXE |
+| `ui/topbar` | Barra superior del OS con título y usuario/hamburger |
+
+---
+
+### `ui/topbar`
+- **Descripción**: Barra superior del OS que contiene el título `NININTRON_OS` y el identificador de usuario o botón de menú
+- **Variantes por breakpoint**:
+
+**Desktop:**
+```
+NININTRON_OS                                         [usr:ninin]
+────────────────────────────────────────────────────────────────
+│  NAV.EXE  │   ▌ SECTION.EXE
+```
+
+**Tablet / Phone:**
+```
+NININTRON_OS                                          [≡ MENU]
+────────────────────────────────────────────────────────────────
+               ▌ SECTION.EXE
+```
+
+- **Fondo**: `bg/panel` (`#111`) o `bg/terminal` (`#0a0a0a`)
+- **Texto `NININTRON_OS`**: `fg/text` (`#c4c4c4`) o `fg/text-muted`
+- **`[usr:ninin]`**: `fg/text-muted` (`#6b6b6b`)
+- **`[≡ MENU]`**: `fg/text` — es el `<button>` de hamburger en Tablet/Phone
+- **Separador inferior**: `border/dim` (`#3d3d3d`)
+- **Cuadradito `▌`**: `fg/primary` (`#8b2323`)
+- **Título de sección (`SECTION.EXE`)**: `fg/text` — cambia dinámicamente con JS al navegar
 
 ---
 
@@ -354,8 +440,10 @@ Componentes compuestos identificados desde `Componentes_Compuestos.svg`. Todos t
 | Default | Transparente | `fg/text` |
 | Active / Seleccionado | `fg/primary` (`#8b2323`) | `fg/text` o `bg/terminal` |
 
-- **Links confirmados**: `ninin` / `la proyectos` / `sobre_mi` / `mail contacto` / `man ayuda`
+- **Links confirmados** (actualizados por imágenes): `ninin` / `ls proyectos` / `sobre_mi` / `contacto` / `ayuda`
 - **Tipografía**: `terminal/body`
+
+> **Cambio confirmado por imagen** ✅: El label del ítem `[2]` es `ls proyectos` (no `la proyectos`). El comando del prompt en la sección es `$ ls proyectos`. El `sectionId` en HTML es `ls-proyectos`.
 
 ---
 
@@ -398,8 +486,8 @@ Componentes compuestos identificados desde `Componentes_Compuestos.svg`. Todos t
 - **Descripción**: Ventana de detalle de proyecto, conceptualizada como ejecutable de SO
 - **Patrón visual**: Frame de ventana con título `PROYECTO_01.EXE`, controles (`- □ ×`), y área de contenido
 - **Estructura**:
-  - Barra de título: nombre del proyecto (ej. `PROYECTO_01.EXE`) + **controles funcionales** (`_` `□` `×`) en `fg/primary`
-  - `_` — minimiza la ventana
+  - Barra de título: nombre del proyecto (ej. `PROYECTO_01.EXE`) con cuadradito `▌` (`fg/primary`) + **controles funcionales** entre corchetes `[_]  [□]  [X]` en esquina superior derecha
+  - `[_]` — minimiza la ventana
   - `□` — maximiza la ventana
   - `×` — cierra la ventana
   - Área de contenido: fondo `bg/panel` (`#111`), espacio para imagen/media del proyecto
@@ -425,12 +513,12 @@ Componentes compuestos identificados desde `Componentes_Compuestos.svg`. Todos t
 
 ---
 
-> **Nota de nomenclatura de secciones** (confirmados desde los `ui/nav-option`):
+> **Nota de nomenclatura de secciones** (actualizadas por imágenes de alta fidelidad):
 > - `[1] ninin` → sección Ninin
-> - `[2] la proyectos` → sección Proyectos
+> - `[2] ls proyectos` → sección Proyectos (**cambio**: antes era `la proyectos`)
 > - `[3] sobre_mi` → sección About
-> - `[4] mail contacto` → sección Contacto
-> - `[5] man ayuda` → sección Help
+> - `[4] contacto` → sección Contacto (**cambio**: antes era `mail contacto`)
+> - `[5] ayuda` → sección Help (**cambio**: antes era `man ayuda`)
 >
 > La sección **Bienvenida** es la pantalla inicial (no listada en el nav, es el estado por defecto al cargar).
 
@@ -492,8 +580,9 @@ El diseño usa un **patrón de lectura en Z**: de izquierda a derecha (navbar) �
 ### Patrones de navegación
 
 - **Horizontal slide navigation**: Las secciones se organizan horizontalmente. La navegación es lateral, no vertical.
-- **Fixed sidebar**: Panel lateral fijo (solo Desktop) que actúa como ancla durante toda la experiencia. Tablet y Phone usan hamburger menu `≡` con el mismo comportamiento.
-- **Window-style UI metaphor**: La interfaz simula una ventana de escritorio/IDE con controles de ventana en la esquina superior izquierda.
+- **Fixed sidebar**: Panel lateral fijo (solo Desktop) que actúa como ancla durante toda la experiencia. Tablet y Phone usan hamburger menu `[≡ MENU]` con el mismo comportamiento.
+- **Window-style UI metaphor**: La interfaz simula un sistema operativo retro completo: topbar con título `NININTRON_OS`, usuario `[usr:ninin]`, sidebar `NAV.EXE`, panel principal con título de ejecutable dinámico, y statusbar inferior con reloj en tiempo real.
+- **Títulos dinámicos del panel principal**: Al navegar entre secciones, el título del panel derecho (`▌ SECTION.EXE`) cambia via JS para reflejar el ejecutable de la sección activa (`MAIN.EXE`, `NININ.EXE`, `PROYECTOS.EXE`, `SOBRE_MI.TXT`, `CONTACTO.SH`, `AYUDA.TXT`).
 
 ### Patrones de layout
 
@@ -583,7 +672,7 @@ En algunos contextos el texto usa `#6b6b6b` (text-muted) en lugar del color de t
 | **D2** | ✅ Resuelto | Escala tipográfica completa (tamaños, line-heights, font-weights) | Confirmada |
 | **D3** | ✅ Resuelto | Breakpoints: 1440×1024 / 768×1024 / 402×874 | Confirmados |
 | **D4** | ✅ Resuelto | Navegación por selección en NAV.EXE con transición animada | Confirmado |
-| **D5** | ✅ Corregido | Los controles `_` `□` `×` de `ui/window/detail` son **funcionales**: minimizar, maximizar y cerrar la ventana. `ui/panel-nav` **no tiene** controles de ventana. | Confirmado por el autor |
+| **D5** | ✅ Corregido | Los controles de `ui/window/detail` son `[_]  [□]  [X]` con corchetes, en esquina superior derecha. `ui/panel-nav` **no tiene** controles de ventana. | Confirmado por imágenes |
 | **D6** | ✅ Resuelto | Hover: `#1a1a1a`. Active: `#8b2323` | Confirmados |
 | **D7** | ✅ Resuelto | `#5a6b7a` = terciario (negativo del acento). `#6b7a5a` = secundario (resalte extra) | Confirmados |
 | **D8** | ✅ Resuelto | 6 secciones: **Bienvenida, Ninin, Proyectos, About, Contacto, Help** | Confirmadas |
@@ -591,10 +680,11 @@ En algunos contextos el texto usa `#6b6b6b` (text-muted) en lugar del color de t
 | **D10** | ✅ Resuelto | `stroke-width: 0.64` emula bordes de OS antiguos (decorativo intencional) | Confirmado |
 | **D11** | ✅ Resuelto | Font-weights: Bold (h1, h2) / Semibold (h3) / Regular (body-lg y menores) | Confirmados |
 | **D12** | ✅ Resuelto | `prompt` = línea con `$` (acento) + texto. `output` = línea con `>` (terciario) + texto | Confirmado |
-> Todas las dudas han sido **resueltas**. El design system está completamente documentado.
-
-| ID | Estado | Pregunta | Razón |
-|---|---|---|---|
-| **D1–D12** | ✅ Resueltos | Tipografía, escala, pesos, breakpoints, navegación, estados, colores, secciones, íconos, stroke, patrón prompt/output | Todos confirmados por el autor |
-| **D13** | ✅ Resuelto | `#fff` **no es un token de paleta**. No hay swatch blanco en la guía. El texto más claro es `fg/text` (`#c4c4c4`) | Confirmado por inspección directa del SVG y por la imagen de variables de Figma |
-| **D14** | ✅ Resuelto | `fg/text-muted` (`#6b6b6b`) es un token oficial con nombre confirmado en Figma | Confirmado por las capturas de variables del autor |
+| **D13** | ✅ Resuelto | `#fff` **no es un token de paleta**. El texto más claro es `fg/text` (`#c4c4c4`) | Confirmado |
+| **D14** | ✅ Resuelto | `fg/text-muted` (`#6b6b6b`) es un token oficial con nombre confirmado en Figma | Confirmado |
+| **D15** | ✅ Resuelto | Label nav `[2]` es `ls proyectos` (no `la proyectos`). Prompt: `$ ls proyectos`. sectionId: `ls-proyectos` | Confirmado por imágenes |
+| **D16** | ✅ Resuelto | Label nav `[4]` es `contacto` (no `mail contacto`). Label nav `[5]` es `ayuda` (no `man ayuda`) | Confirmado por imágenes |
+| **D17** | ✅ Resuelto | Campos de contacto: `NOMBRE`, `EMAIL`, `ASUNTO` (InputLine) + textarea 3 líneas. Label **fuera** del corchete. Btn: `[ ENVIAR ]` | Confirmado por imágenes |
+| **D18** | ✅ Resuelto | Topbar: `NININTRON_OS` izq. + `[usr:ninin]` der. (Desktop) / `[≡ MENU]` der. (Tablet/Phone). Statusbar inferior en todos los breakpoints con reloj en tiempo real | Confirmado por imágenes |
+| **D19** | ✅ Resuelto | `SectionBienvenida`: solo logo ASCII + texto `NININTRON_OS` + `V1.0`. Sin Prompt ni Output. | Confirmado por imágenes |
+| **D20** | ✅ Resuelto | `SectionNinin` Desktop: 2 columnas (texto izq. + foto der.). Phone: foto arriba + texto abajo. Tablet: foto arriba-izq. + texto | Confirmado por imágenes |
