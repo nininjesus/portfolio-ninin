@@ -47,6 +47,25 @@
   border: var(--stroke-width) solid transparent;
 }
 
+/* Variante Secondary */
+.cmd-btn.variant-secondary {
+  background-color: transparent;
+  color: var(--fg-text-muted);
+  border: var(--stroke-width) solid transparent;
+}
+
+.cmd-btn.variant-secondary:hover,
+.cmd-btn.variant-secondary:focus-visible {
+  background-color: var(--bg-hover);
+  color: var(--fg-text);
+  outline: none;
+}
+
+.cmd-btn.variant-secondary:active {
+  background-color: var(--fg-text-muted);
+  color: var(--bg-terminal);
+}
+
 /* Quitar el outline por defecto en todos los botones para mantener la estética */
 .cmd-btn:focus-visible {
   outline: none;

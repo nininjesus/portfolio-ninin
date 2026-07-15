@@ -5,14 +5,14 @@ import PanelMain from '../ui/PanelMain.astro';
 import WindowDetail from '../ui/WindowDetail.astro';
 import PreviewCard from '../ui/PreviewCard.astro';
 import { projects } from '../../data/projects.js';
+import Prompt from '../primitives/Prompt.astro';
 ---
 
-<Panel sectionId="ls-proyectos" ariaLabel="Sección de proyectos" title="PROYECTOS.EXE">
+<Panel sectionId="proyectos" ariaLabel="Sección de proyectos" title="PROYECTOS.EXE">
   <PanelMain>
     
     <div class="terminal-command-container">
-      <span class="prompt-symbol">$</span>
-      <span class="command-text">ls proyectos</span>
+      <Prompt command="ls proyectos" />
     </div>
     
     <div class="terminal-cursor-container">

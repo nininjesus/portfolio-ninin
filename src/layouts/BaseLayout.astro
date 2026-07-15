@@ -72,6 +72,10 @@ const { title } = Astro.props;
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
+            // Manejar foco de teclado con inert
+            sections.forEach(sec => sec.setAttribute('inert', ''));
+            entry.target.removeAttribute('inert');
+
             // Actualizar Título
             const newTitle = entry.target.getAttribute('data-title');
             if (newTitle && titleElement) {

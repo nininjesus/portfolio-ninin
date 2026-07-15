@@ -1,12 +1,20 @@
+.nav-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .nav-option {
   display: flex;
   align-items: center;
-  padding: var(--space-2) var(--space-3);
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
   text-decoration: none;
   border-radius: 0;
   color: var(--fg-text);
   font-family: var(--font-family);
   font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   transition: background-color 0.2s ease, color 0.2s ease;
   cursor: pointer;
   outline: none;
@@ -15,7 +23,6 @@
 /* El número y los corchetes van con el color de acento por defecto */
 .nav-option-index {
   color: var(--fg-primary);
-  margin-right: var(--space-2);
 }
 
 .nav-option-label {

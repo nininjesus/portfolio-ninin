@@ -31,7 +31,7 @@
   background: transparent;
   border: none;
   border-bottom: var(--stroke-width) dashed var(--border-dim);
-  color: var(--fg-text);
+  color: var(--fg-secondary);
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;

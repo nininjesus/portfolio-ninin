@@ -7,8 +7,8 @@ export const navItems = [
   },
   { 
     index: 2, 
-    label: 'ls proyectos', 
-    sectionId: 'ls-proyectos', 
+    label: 'proyectos', 
+    sectionId: 'proyectos', 
     description: 'Directorio de proyectos web destacados' 
   },
   { 

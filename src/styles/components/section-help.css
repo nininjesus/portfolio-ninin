@@ -1,26 +1,23 @@
 .terminal-command-container {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--space-1);
   margin-top: var(--space-3);
   margin-bottom: var(--space-4);
-  padding: 0 var(--space-4);
 }
 
-.prompt-symbol {
-  color: var(--fg-primary);
-  font-family: var(--font-family);
-  font-weight: bold;
+.help-terminal-cmd {
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
-.command-text {
-  color: var(--fg-text);
-  font-family: var(--font-family);
+.help-terminal-output {
+  margin-bottom: var(--space-4);
 }
 
 .help-content {
   display: flex;
   flex-direction: column;
-  padding: 0 var(--space-4) var(--space-4) var(--space-4);
+  gap: var(--space-4);
 }
 
 .help-separator {
@@ -30,22 +27,8 @@
   width: 50%;
   align-self: flex-start;
 }
-
-.help-line {
-  color: var(--fg-secondary);
-  font-family: var(--font-family);
-  font-size: var(--font-size-body);
-  margin-bottom: var(--space-2);
-  display: flex;
-  gap: var(--space-2);
-}
-
-.help-line.margin-bottom {
+.margin-bottom {
   margin-bottom: var(--space-4);
-}
-
-.prompt-arrow {
-  color: var(--fg-secondary);
 }
 
 /* Responsividad Tablet/Móvil */

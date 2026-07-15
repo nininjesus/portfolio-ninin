@@ -22,12 +22,12 @@ const { title, category, year, link = "#", repo = "#" } = Astro.props;
     
     <div class="card-actions mobile-only-actions">
       <Btn label="Ver" href={link} />
-      <Btn label="Preview" href={repo} />
+      <Btn label="Preview" href={repo} variant="secondary" />
     </div>
   </div>
 
   <div class="card-actions desktop-only-actions">
     <Btn label="Ver" href={link} />
-    <Btn label="Preview" href={repo} />
+    <Btn label="Preview" href={repo} variant="secondary" />
   </div>
 </article>

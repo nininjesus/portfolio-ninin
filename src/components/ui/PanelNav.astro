@@ -14,14 +14,12 @@ const { activeSectionId = 'bienvenida' } = Astro.props;
 <nav id="panel-nav" aria-label="Navegación principal" aria-hidden="false">
   <ul class="panel-nav-list">
     {navItems.map((item) => (
-      <li>
-        <NavOption 
-          index={item.index} 
-          label={item.label} 
-          sectionId={item.sectionId} 
-          isActive={activeSectionId === item.sectionId} 
-        />
-      </li>
+      <NavOption 
+        index={item.index} 
+        label={item.label} 
+        sectionId={item.sectionId} 
+        isActive={activeSectionId === item.sectionId} 
+      />
     ))}
   </ul>
 </nav>

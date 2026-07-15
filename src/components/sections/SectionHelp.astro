@@ -2,50 +2,40 @@
 import '../../styles/components/section-help.css';
 import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
+import Prompt from '../primitives/Prompt.astro';
+import Output from '../primitives/Output.astro';
 ---
 
 <Panel sectionId="ayuda" ariaLabel="Sección de ayuda" title="AYUDA.TXT">
   <PanelMain>
     
     <div class="terminal-command-container">
-      <span class="prompt-symbol">$</span>
-      <span class="command-text">man ayuda</span>
+      <Prompt command="man ayuda" />
     </div>
 
     <div class="help-content">
       <hr class="help-separator" />
 
-      <div class="help-line">
-        <span class="prompt-arrow">&gt;</span> MANUAL DE USUARIO (NININTRON_OS v1.0)
-      </div>
-      <div class="help-line margin-bottom">
-        <span class="prompt-arrow">&gt;</span> COMANDOS DISPONIBLES:
+      <Output text="MANUAL DE USUARIO (NININTRON_OS v1.0)" />
+      
+      <!-- Usamos un div wrapper para añadir margen inferior según el diseño original, o aplicamos clase -->
+      <div class="margin-bottom">
+        <Output text="COMANDOS DISPONIBLES:" />
       </div>
 
-      <div class="help-line">
-        <span class="prompt-arrow">&gt;</span> [1] ninin - Presentacion personal y enlaces
-      </div>
-      <div class="help-line">
-        <span class="prompt-arrow">&gt;</span> [2] proyectos - Directorio de proyectos web destacados
-      </div>
-      <div class="help-line">
-        <span class="prompt-arrow">&gt;</span> [3] sobre_mi - Ficha técnica, rol y habilidades
-      </div>
-      <div class="help-line">
-        <span class="prompt-arrow">&gt;</span> [4] contacto - Formulario para enviar un correo
-      </div>
-      <div class="help-line margin-bottom">
-        <span class="prompt-arrow">&gt;</span> [5] ayuda - Manual de usuario e instrucciones
+      <Output text="[1] ninin - Presentacion personal y enlaces" />
+      <Output text="[2] proyectos - Directorio de proyectos web destacados" />
+      <Output text="[3] sobre_mi - Ficha técnica, rol y habilidades" />
+      <Output text="[4] contacto - Formulario para enviar un correo" />
+      
+      <div class="margin-bottom">
+        <Output text="[5] ayuda - Manual de usuario e instrucciones" />
       </div>
 
       <hr class="help-separator" />
 
-      <div class="help-line">
-        <span class="prompt-arrow">&gt;</span> NOTA: Puedes ejecutar cualquiera de estos comandos haciendo
-      </div>
-      <div class="help-line">
-        <span class="prompt-arrow">&gt;</span> clic directamente en el panel de navegación izquierdo (NAV.EXE)
-      </div>
+      <Output text="NOTA: Puedes ejecutar cualquiera de estos comandos haciendo" />
+      <Output text="clic directamente en el panel de navegación izquierdo (NAV.EXE)" />
     </div>
     
   </PanelMain>

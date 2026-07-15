@@ -54,12 +54,11 @@ body {
 
 /* Cabeceras comunes de los paneles (NAV.EXE y MAIN.EXE) */
 .panel-header {
-  padding: var(--space-3) var(--space-5);
+  padding: var(--space-1) var(--space-5);
   border-bottom: var(--stroke-width) solid var(--border-dim);
   display: flex;
   align-items: center;
   justify-content: center; /* Centrar titulos */
-  height: 64px; /* Altura fija para alineación */
   flex-shrink: 0;
 }
 
@@ -97,10 +96,10 @@ body {
   .layout-sidebar {
     /* En móvil, el sidebar es un overlay, no ocupa espacio en el grid */
     position: absolute;
-    top: 64px; /* Debajo de topbar */
+    top: 48px; /* Debajo de topbar */
     left: 0;
     width: var(--layout-sidebar-tablet);
-    height: calc(100% - 64px - 32px); /* Menos topbar y statusbar */
+    height: calc(100% - 48px - 32px); /* Menos topbar y statusbar */
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 100;

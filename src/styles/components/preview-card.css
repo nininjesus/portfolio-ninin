@@ -25,14 +25,14 @@
   color: var(--fg-primary);
   font-family: var(--font-family);
   font-size: var(--font-size-body);
-  font-weight: bold;
+  font-weight: normal;
   margin: 0 0 var(--space-2) 0;
 }
 
 .card-meta {
-  color: var(--fg-secondary);
+  color: var(--fg-text-muted);
   font-family: var(--font-family);
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-caption);
   margin: 0;
 }
 

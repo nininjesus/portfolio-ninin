@@ -5,7 +5,6 @@
   justify-content: center;
   height: 100%;
   gap: var(--space-6);
-  padding: var(--space-4);
 }
 
 .ascii-art-logo {
@@ -32,7 +31,7 @@
 }
 
 .os-version {
-  color: var(--fg-secondary);
+  color: var(--fg-tertiary);
   font-family: var(--font-family);
   font-size: 1.5rem;
   font-weight: 400;

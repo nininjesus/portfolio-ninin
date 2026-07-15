@@ -2,7 +2,7 @@
 import '../../styles/components/section-ninin.css';
 import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
-import Output from '../primitives/Output.astro';
+import Prompt from '../primitives/Prompt.astro';
 
 // Usamos el icono de GitHub y LinkedIn de la librería lucidide si estuviera, 
 // o un simple texto/SVG para igualar el arte rojo. En el diseño son iconos rojos enormes.
@@ -12,8 +12,7 @@ import Output from '../primitives/Output.astro';
   <PanelMain>
     
     <div class="terminal-command-container">
-      <span class="prompt-symbol">$</span>
-      <span class="command-text">ninin</span>
+      <Prompt command="ninin" />
     </div>
     
     <div class="terminal-cursor-container">

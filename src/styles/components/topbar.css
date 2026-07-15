@@ -1,11 +1,11 @@
 .topbar {
-  background-color: var(--bg-desktop);
+  background-color: var(--bg-terminal);
   border-bottom: var(--stroke-width) solid var(--border-dim);
-  height: 64px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-4);
+  padding: 0 var(--space-3);
   position: relative;
   z-index: 110; 
 }
@@ -16,10 +16,17 @@
   gap: var(--space-3);
 }
 
-.os-title, .user-label {
+.os-title {
   color: var(--fg-text);
   font-family: var(--font-family);
   text-transform: uppercase;
+  font-size: var(--font-size-body);
+}
+
+.user-label {
+  color: var(--fg-text-muted);
+  font-family: var(--font-family);
+  font-size: var(--font-size-caption);
 }
 
 .menu-toggle {
