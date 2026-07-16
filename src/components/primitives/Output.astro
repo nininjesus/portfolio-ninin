@@ -5,14 +5,15 @@ import Cursor from './Cursor.astro';
 interface Props {
   text?: string;
   showCursor?: boolean;
+  contentId?: string;
 }
 
-const { text, showCursor = false } = Astro.props;
+const { text, showCursor = false, contentId } = Astro.props;
 ---
 
 <div class="cmd-output">
   <span class="cmd-output-symbol" aria-hidden="true">&gt;</span>
-  <span class="cmd-output-content">
+  <span class="cmd-output-content" id={contentId}>
     {text ? text : <slot />}
     {showCursor && <Cursor />}
   </span>

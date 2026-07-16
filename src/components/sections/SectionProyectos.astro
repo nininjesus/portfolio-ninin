@@ -27,8 +27,8 @@ import Prompt from '../primitives/Prompt.astro';
             title={project.title}
             category={project.category}
             year={project.year}
-            link={project.link}
-            repo={project.repo}
+            link={project.urlView}
+            repo={project.urlPreview}
           />
           {index < projects.length - 1 && (
             <hr class="project-separator" />

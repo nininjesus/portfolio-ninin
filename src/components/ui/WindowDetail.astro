@@ -1,6 +1,5 @@
 ---
 import '../../styles/components/window-detail.css';
-import Btn from '../primitives/Btn.astro';
 
 interface Props {
   id: string;
@@ -18,8 +17,31 @@ const titleId = `window-title-${id}`;
   aria-labelledby={titleId}
 >
   <header class="window-detail-header">
-    <span class="window-pattern" aria-hidden="true">▒▒▒</span>
     <h2 id={titleId} class="window-detail-title">{title}</h2>
+
+    <div class="window-controls" aria-label="Controles de ventana" role="group">
+      <button
+        class="window-ctrl window-ctrl--minimize"
+        type="button"
+        aria-label="Minimizar ventana"
+        tabindex="-1"
+        aria-hidden="true"
+      >[_]</button>
+      <button
+        class="window-ctrl window-ctrl--maximize"
+        type="button"
+        aria-label="Maximizar ventana"
+        tabindex="-1"
+        aria-hidden="true"
+      >[□]</button>
+      <button
+        class="window-ctrl window-ctrl--close"
+        type="button"
+        aria-label="Cerrar ventana"
+        tabindex="-1"
+        aria-hidden="true"
+      >[X]</button>
+    </div>
   </header>
   
   <div class="window-detail-content">

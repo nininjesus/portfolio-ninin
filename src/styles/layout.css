@@ -64,13 +64,13 @@ body {
 
 .panel-indicator {
   color: var(--fg-primary);
-  margin-right: var(--space-2);
+  margin-right: var(--space-1);
 }
 
 .panel-title {
   color: var(--fg-text);
   font-family: var(--font-family);
-  font-weight: 700;
+  font-weight: var(--font-weight-body);
   font-size: var(--font-size-body);
   text-transform: uppercase;
 }

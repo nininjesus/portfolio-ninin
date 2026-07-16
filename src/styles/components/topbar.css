@@ -23,6 +23,10 @@
   font-size: var(--font-size-body);
 }
 
+.os-title:hover {
+  color: var(--fg-primary);
+}
+
 .user-label {
   color: var(--fg-text-muted);
   font-family: var(--font-family);

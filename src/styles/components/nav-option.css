@@ -39,19 +39,19 @@
 /* Estado Active (Clic) */
 .nav-option:active {
   background-color: var(--fg-primary);
-  color: var(--bg-terminal);
+  color: var(--fg-text);
 }
 
 .nav-option:active .nav-option-index {
-  color: var(--bg-terminal);
+  color: var(--fg-tertiary);
 }
 
 /* Estado Is-Active (Sección actual) */
 .nav-option.is-active {
   background-color: var(--fg-primary);
-  color: var(--bg-terminal);
+  color: var(--fg-text);
 }
 
 .nav-option.is-active .nav-option-index {
-  color: var(--bg-terminal); 
+  color: var(--fg-tertiary); 
 }

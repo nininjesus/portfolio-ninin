@@ -5,8 +5,8 @@ export const projects = [
     description: 'Descripción detallada del primer proyecto.',
     year: 2024,
     category: 'Diseño Web',
-    urlView: '#',
-    urlPreview: '#'
+    urlView: '#proyectos',
+    urlPreview: '#proyectos'
   },
   {
     id: 'proyecto-02',
@@ -14,7 +14,7 @@ export const projects = [
     description: 'Descripción detallada del segundo proyecto.',
     year: 2023,
     category: 'Desarrollo Frontend',
-    urlView: '#',
-    urlPreview: '#'
+    urlView: '#proyectos',
+    urlPreview: '#proyectos'
   }
 ];

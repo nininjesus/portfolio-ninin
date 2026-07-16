@@ -3,7 +3,39 @@ import '../../styles/components/statusbar.css';
 import Output from './Output.astro';
 ---
 <footer class="statusbar" role="contentinfo">
-  <div class="statusbar-content">
-    <Output text="NININTRON READY | MEM:64% | TIME: 15:30:00" />
+  <div class="statusbar-content" aria-live="polite" aria-atomic="true">
+    <Output text="NININTRON READY | MEM:64% | TIME: --:--:--" contentId="statusbar-text" />
   </div>
 </footer>
+
+<script>
+  const el = document.getElementById('statusbar-text');
+  if (el) {
+    let mem = Math.floor(Math.random() * (72 - 58 + 1)) + 58;
+
+    function pad(n: number): string {
+      return String(n).padStart(2, '0');
+    }
+
+    function getRealTime(): string {
+      const now = new Date();
+      return `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    }
+
+    function update(): void {
+      el.textContent = `NININTRON READY  |  MEM: ${mem}%  |  TIME: ${getRealTime()}`;
+    }
+
+    // Reloj: actualiza cada segundo
+    setInterval(update, 1000);
+
+    // Memoria: fluctúa ±3% cada 4 segundos, dentro de [55, 75]
+    setInterval(() => {
+      const delta = Math.floor(Math.random() * 7) - 3;
+      mem = Math.min(75, Math.max(55, mem + delta));
+    }, 4000);
+
+    // Render inmediato para evitar el flash inicial
+    update();
+  }
+</script>
