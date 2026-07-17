@@ -1,40 +1,143 @@
-/* ========================================================
-   WindowDetail — Ventana estilo OS
-   ======================================================== */
+/* ============================================================
+   window-detail.css — Ventana OS flotante
+   ============================================================ */
+
+/* ── Base ─────────────────────────────────────────────────── */
 
 .window-detail {
+  position: absolute;
+  z-index: 50;
+
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-panel);
-  border: var(--stroke-width) solid var(--border-dim);
-  border-radius: var(--radius-component);
 
-  /* Se adapta al contenedor padre (generalmente PanelMain) */
-  width: 100%;
-  height: 100%;
-  max-height: 100%;
-
+  background-color: var(--bg-terminal);
+  border: none;
+  border-radius: 0;
   font-family: var(--font-family);
-  overflow: hidden; /* Para que el contenido respete los bordes redondeados */
+  overflow: hidden;
+
+  /* Tamaño por defecto */
+  width: 60%;
+  min-width: 320px;
+  max-width: 860px;
+  height: 65%;
+  min-height: 200px;
+
+  /* Centrada al abrirse por primera vez */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Sombra para sensación de profundidad */
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(139, 35, 35, 0.1);
+
+  /* Transiciones suaves para cambios de estado */
+  transition:
+    width 0.2s ease,
+    height 0.2s ease,
+    top 0.2s ease,
+    left 0.2s ease,
+    bottom 0.2s ease,
+    right 0.2s ease,
+    transform 0.2s ease,
+    border-radius 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-/* ── Header de la ventana ────────────────────────────── */
+/* ── Estados ─────────────────────────────────────────────── */
+
+/* HIDDEN — invisible, sin interacción */
+.window-detail[data-state="hidden"] {
+  display: none;
+}
+
+/* NORMAL — flotando, arrastrable */
+.window-detail[data-state="normal"] {
+  display: flex;
+}
+
+/* MINIMIZED — sólo el header visible */
+.window-detail[data-state="minimized"] {
+  display: flex;
+  width: 300px !important;
+  height: auto !important;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.window-detail[data-state="minimized"] .window-detail-content {
+  display: none;
+}
+
+.window-detail[data-state="minimized"] .window-detail-header {
+  cursor: pointer; /* Click en el header minimizado restaura la ventana */
+}
+
+/* MAXIMIZED — ocupa todo el panel principal */
+.window-detail[data-state="maximized"] {
+  display: flex;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  transform: none !important;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
 
 .window-detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* Mismos paddings que .panel-header para consistencia */
   padding: var(--space-1) var(--space-2);
-  border-bottom: var(--stroke-width) solid var(--border-dim);
-  background-color: var(--bg-panel);
+  border: var(--stroke-width) solid var(--border-dim); /* Todos los bordes del header son dim */
+  background-color: var(--bg-terminal); /* igual que el body — fiel al SVG */
   flex-shrink: 0;
   gap: var(--space-2);
+
+  /* Grabable en estado normal */
+  cursor: grab;
+  user-select: none;
+}
+
+.window-detail-header:active {
+  cursor: grabbing;
+}
+
+/* En maximized no tiene sentido el cursor de grab */
+.window-detail[data-state="maximized"] .window-detail-header {
+  cursor: default;
+}
+
+/* Grupo izquierdo: indicador + título */
+.window-detail-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Indicador ▒▒▒ — patrón de puntos en rojo, igual que en el SVG */
+.window-detail-indicator {
+  color: var(--fg-primary);
+  flex-shrink: 0;
+  font-size: var(--font-size-caption);
+  line-height: 1;
+  letter-spacing: -0.1em; /* aprieta los ▒ para formar un bloque compacto */
 }
 
 .window-detail-title {
   color: var(--fg-text);
-  font-size: var(--font-size-caption);
-  line-height: var(--line-height-caption);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
   font-weight: var(--font-weight-body);
   margin: 0;
   text-transform: uppercase;
@@ -44,7 +147,7 @@
   text-overflow: ellipsis;
 }
 
-/* ── Botones de control de ventana ───────────────────── */
+/* ── Botones de control ──────────────────────────────────── */
 
 .window-controls {
   display: flex;
@@ -58,11 +161,15 @@
   border: none;
   padding: 0;
   font-family: var(--font-family);
-  font-size: var(--font-size-caption);
+  font-size: var(--font-size-body); /* Un poco más grandes */
   line-height: 1;
-  cursor: default;
+  cursor: pointer;
   color: var(--fg-primary);
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.window-ctrl:hover {
+  opacity: 0.75;
 }
 
 .window-ctrl--minimize:hover {
@@ -77,19 +184,27 @@
   color: #cc3333;
 }
 
-/* ── Área de contenido ───────────────────────────────── */
+.window-ctrl:focus-visible {
+  outline: 1px solid var(--fg-primary);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+/* ── Área de contenido ───────────────────────────────────── */
 
 .window-detail-content {
   flex: 1;
   padding: var(--space-4);
   overflow-y: auto;
+  border-left: var(--stroke-width) solid var(--fg-primary);
+  border-right: var(--stroke-width) solid var(--fg-primary);
+  border-bottom: var(--stroke-width) solid var(--fg-primary);
   color: var(--fg-text);
   font-size: var(--font-size-body);
   line-height: var(--line-height-body);
 }
 
-/* ── Scrollbar personalizado estilo retro ────────────── */
-
+/* Scrollbar estilo retro */
 .window-detail-content::-webkit-scrollbar {
   width: 8px;
 }
@@ -108,9 +223,70 @@
   background-color: var(--fg-primary);
 }
 
-/* ── Responsividad ───────────────────────────────────── */
+/* ── Contenido dinámico del proyecto ────────────────────── */
+
+.project-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-detail-line {
+  margin: 0 0 var(--space-1) 0;
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+}
+
+.detail-key {
+  color: var(--fg-secondary);
+}
+
+.detail-val {
+  color: var(--fg-text);
+}
+
+.project-detail-separator {
+  border: none;
+  border-top: var(--stroke-width) solid var(--border-dim);
+  margin: var(--space-3) 0;
+}
+
+.project-detail-desc {
+  color: var(--fg-text-muted);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  margin: 0 0 var(--space-4) 0;
+}
+
+.project-detail-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* ── Responsividad (mobile) ──────────────────────────────── */
 
 @media (max-width: 768px) {
+  /* En mobile, el drag no tiene sentido: la ventana ocupa casi toda la pantalla */
+  .window-detail[data-state="normal"] {
+    width: 100% !important;
+    height: 80% !important;
+    top: auto !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    transform: none !important;
+    border-radius: var(--radius-component) var(--radius-component) 0 0;
+    max-width: none;
+  }
+
+  .window-detail[data-state="minimized"] {
+    width: 100% !important;
+    right: 0;
+  }
+
+  .window-detail-header {
+    cursor: default; /* Sin drag en mobile */
+  }
+
   .window-detail-content {
     padding: var(--space-3);
   }

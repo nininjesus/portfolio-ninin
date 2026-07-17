@@ -2,7 +2,6 @@
 import '../../styles/components/section-proyectos.css';
 import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
-import WindowDetail from '../ui/WindowDetail.astro';
 import PreviewCard from '../ui/PreviewCard.astro';
 import { projects } from '../../data/projects.js';
 import Prompt from '../primitives/Prompt.astro';
@@ -10,11 +9,11 @@ import Prompt from '../primitives/Prompt.astro';
 
 <Panel sectionId="proyectos" ariaLabel="Sección de proyectos" title="PROYECTOS.EXE">
   <PanelMain>
-    
+
     <div class="terminal-command-container">
       <Prompt command="ls proyectos" />
     </div>
-    
+
     <div class="terminal-cursor-container">
       <span class="cursor-symbol">&gt;</span>
       <span class="cursor-blink">_</span>
@@ -23,11 +22,11 @@ import Prompt from '../primitives/Prompt.astro';
     <div class="proyectos-list">
       {projects.map((project, index) => (
         <>
-          <PreviewCard 
+          <PreviewCard
+            projectId={project.id}
             title={project.title}
             category={project.category}
             year={project.year}
-            link={project.urlView}
             repo={project.urlPreview}
           />
           {index < projects.length - 1 && (

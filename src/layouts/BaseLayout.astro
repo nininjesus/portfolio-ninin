@@ -7,6 +7,8 @@ import Topbar from '../components/ui/Topbar.astro';
 import PanelNav from '../components/ui/PanelNav.astro';
 import Statusbar from '../components/primitives/Statusbar.astro';
 import SectionTransition from '../components/sections/SectionTransition.astro';
+import WindowDetail from '../components/ui/WindowDetail.astro';
+import { projects } from '../data/projects.js';
 
 interface Props {
   title: string;
@@ -48,11 +50,31 @@ const { title } = Astro.props;
         <div class="main-content-scroll" id="sections-container">
           <slot />
         </div>
+
+        <!-- Una ventana OS por proyecto, posicionadas absolutamente dentro de .layout-main -->
+        {projects.map((project) => (
+          <WindowDetail
+            id={`project-window-${project.id}`}
+            projectId={project.id}
+            title={project.title}
+            category={project.category}
+            year={project.year}
+            description={project.description}
+            urlView={project.urlView}
+            urlPreview={project.urlPreview}
+          />
+        ))}
       </main>
     </div>
 
     <Statusbar />
   </div>
+
+  <!-- Window Manager: controla todas las ventanas OS -->
+  <script>
+    import { initWindowManager } from '../scripts/window-detail.js';
+    initWindowManager();
+  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {

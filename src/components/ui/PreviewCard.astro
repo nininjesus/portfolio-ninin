@@ -3,31 +3,52 @@ import '../../styles/components/preview-card.css';
 import Btn from '../primitives/Btn.astro';
 
 interface Props {
+  projectId: string;
   title: string;
   category: string;
-  year: string;
-  link?: string;
+  year: string | number;
   repo?: string;
 }
 
-const { title, category, year, link = "#", repo = "#" } = Astro.props;
+const { projectId, title, category, year, repo = '#' } = Astro.props;
+
+// ID de la ventana que este botón debe abrir
+const windowId = `project-window-${projectId}`;
 ---
 
 <article class="preview-card">
-  <div class="card-thumb"></div>
-  
+  <div class="card-thumb" aria-hidden="true"></div>
+
   <div class="card-info">
     <h3 class="card-title">{title}</h3>
     <p class="card-meta">{category} | {year}</p>
-    
+
     <div class="card-actions mobile-only-actions">
-      <Btn label="Ver" href={link} />
+      <button
+        type="button"
+        class="cmd-btn variant-default"
+        data-target-window={windowId}
+        aria-label={`Ver detalles de ${title}`}
+      >
+        <span aria-hidden="true">[ </span
+        ><span class="cmd-btn-label">Ver</span
+        ><span aria-hidden="true"> ]</span>
+      </button>
       <Btn label="Preview" href={repo} variant="secondary" />
     </div>
   </div>
 
   <div class="card-actions desktop-only-actions">
-    <Btn label="Ver" href={link} />
+    <button
+      type="button"
+      class="cmd-btn variant-default"
+      data-target-window={windowId}
+      aria-label={`Ver detalles de ${title}`}
+    >
+      <span aria-hidden="true">[ </span
+      ><span class="cmd-btn-label">Ver</span
+      ><span aria-hidden="true"> ]</span>
+    </button>
     <Btn label="Preview" href={repo} variant="secondary" />
   </div>
 </article>

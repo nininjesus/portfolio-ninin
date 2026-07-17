@@ -50,6 +50,8 @@ body {
   flex-direction: column;
   min-width: 0; /* Previene overflow en flexbox */
   background-color: var(--bg-terminal);
+  position: relative; /* Contexto de posicionamiento para WindowDetail */
+  overflow: hidden;   /* La ventana no puede salir del OS window */
 }
 
 /* Cabeceras comunes de los paneles (NAV.EXE y MAIN.EXE) */

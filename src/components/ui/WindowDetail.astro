@@ -1,50 +1,120 @@
 ---
 import '../../styles/components/window-detail.css';
+import '../../styles/components/btn.css';
 
 interface Props {
   id: string;
+  projectId: string;
   title: string;
+  category: string;
+  year: string | number;
+  description: string;
+  urlView?: string;
+  urlPreview?: string;
 }
 
-const { id, title } = Astro.props;
-const titleId = `window-title-${id}`;
+const {
+  id,
+  projectId,
+  title,
+  category,
+  year,
+  description,
+  urlView,
+  urlPreview,
+} = Astro.props;
+
+// Título estilo OS
+const osTitle = projectId.toUpperCase() + '.EXE';
+
+// Comprobar si las URLs son "reales" o placeholders internos
+const hasView    = urlView    && urlView    !== '#' && !urlView.startsWith('#');
+const hasPreview = urlPreview && urlPreview !== '#' && !urlPreview.startsWith('#');
 ---
 
-<article 
-  id={id} 
-  class="window-detail" 
-  role="region" 
-  aria-labelledby={titleId}
+<article
+  id={id}
+  class="window-detail"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={`${id}-title`}
+  data-state="hidden"
 >
   <header class="window-detail-header">
-    <h2 id={titleId} class="window-detail-title">{title}</h2>
+    <div class="window-detail-title-group">
+      <span class="window-detail-indicator" aria-hidden="true">▒▒▒</span>
+      <h2 id={`${id}-title`} class="window-detail-title">{osTitle}</h2>
+    </div>
 
-    <div class="window-controls" aria-label="Controles de ventana" role="group">
+    <div class="window-controls" role="group" aria-label="Controles de ventana">
       <button
         class="window-ctrl window-ctrl--minimize"
         type="button"
         aria-label="Minimizar ventana"
-        tabindex="-1"
-        aria-hidden="true"
+        data-action="minimize"
       >[_]</button>
       <button
         class="window-ctrl window-ctrl--maximize"
         type="button"
         aria-label="Maximizar ventana"
-        tabindex="-1"
-        aria-hidden="true"
+        data-action="maximize"
       >[□]</button>
       <button
         class="window-ctrl window-ctrl--close"
         type="button"
         aria-label="Cerrar ventana"
-        tabindex="-1"
-        aria-hidden="true"
+        data-action="close"
       >[X]</button>
     </div>
   </header>
-  
+
   <div class="window-detail-content">
-    <slot />
+    <div class="project-detail">
+      <p class="project-detail-line">
+        <span class="detail-key">&gt; NOMBRE:</span>
+        <span class="detail-val"> {title}</span>
+      </p>
+      <p class="project-detail-line">
+        <span class="detail-key">&gt; CATEGORIA:</span>
+        <span class="detail-val"> {category}</span>
+      </p>
+      <p class="project-detail-line">
+        <span class="detail-key">&gt; AÑO:</span>
+        <span class="detail-val"> {year}</span>
+      </p>
+
+      <hr class="project-detail-separator" aria-hidden="true" />
+
+      <p class="project-detail-desc">{description}</p>
+
+      {(hasView || hasPreview) && (
+        <div class="project-detail-actions">
+          {hasView && (
+            <a
+              href={urlView}
+              class="cmd-btn variant-default"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span aria-hidden="true">[ </span
+              ><span class="cmd-btn-label">Ver Proyecto</span
+              ><span aria-hidden="true"> ]</span>
+            </a>
+          )}
+          {hasPreview && (
+            <a
+              href={urlPreview}
+              class="cmd-btn variant-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span aria-hidden="true">[ </span
+              ><span class="cmd-btn-label">Preview</span
+              ><span aria-hidden="true"> ]</span>
+            </a>
+          )}
+        </div>
+      )}
+    </div>
   </div>
 </article>
