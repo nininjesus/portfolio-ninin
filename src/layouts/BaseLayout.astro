@@ -136,6 +136,16 @@ const { title } = Astro.props;
             }
           });
         });
+
+        // Close sidebar when clicking outside (mobile)
+        document.addEventListener('click', (event) => {
+          if (window.innerWidth <= 768 && sidebar.classList.contains('is-open')) {
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+              sidebar.classList.remove('is-open');
+              menuBtn.setAttribute('aria-expanded', 'false');
+            }
+          }
+        });
       }
 
       // Smooth Scroll con JS porque deshabilitamos el nativo
@@ -145,10 +155,17 @@ const { title } = Astro.props;
           const targetId = link.getAttribute('href').substring(1);
           const targetSection = document.getElementById(targetId);
           if (targetSection && scrollContainer) {
-            scrollContainer.scrollTo({
-              left: targetSection.offsetLeft,
-              behavior: 'instant'
-            });
+            if (window.innerWidth <= 768) {
+              scrollContainer.scrollTo({
+                top: targetSection.offsetTop,
+                behavior: 'instant'
+              });
+            } else {
+              scrollContainer.scrollTo({
+                left: targetSection.offsetLeft,
+                behavior: 'instant'
+              });
+            }
           }
         });
       });

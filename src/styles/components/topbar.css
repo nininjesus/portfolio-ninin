@@ -38,7 +38,7 @@
   border: none;
   color: var(--fg-text);
   font-family: var(--font-family);
-  font-size: 1rem;
+  font-size: var(--font-size-body);
   cursor: pointer;
   display: none; /* Oculto en Desktop */
 }
@@ -80,10 +80,14 @@
   .topbar-actions {
     display: flex;
   }
-  
-  .topbar-name {
-    /* Ajuste de tipografía en móvil para ahorrar espacio */
-    font-size: var(--font-size-body-lg);
+
+
+  .menu-toggle {
+    display: block; /* Mostrar botón de menú en tablet/phone */
+  }
+
+  .user-label {
+    display: none; /* Ocultar en mobile para dar espacio al botón MENU */
   }
 }
 

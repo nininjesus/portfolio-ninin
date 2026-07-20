@@ -114,13 +114,18 @@
 /* Responsividad Tablet/Móvil */
 @media (max-width: 768px) {
   .ninin-content {
-    flex-direction: column-reverse; /* Foto arriba, texto abajo */
+    grid-template-columns: 1fr;
     gap: var(--space-4);
   }
 
   .ninin-photo-col {
+    order: -1; /* Foto primero en mobile */
     justify-content: flex-start;
     width: 100%;
+  }
+
+  .ascii-photo {
+    max-width: 100%;
   }
 
   .ninin-quote {

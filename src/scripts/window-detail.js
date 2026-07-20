@@ -49,15 +49,7 @@ export function initWindowManager() {
   const container = document.querySelector('#proyectos.panel');
   if (container) {
     new ResizeObserver(() => {
-      const cH = container.offsetHeight;
-      document.querySelectorAll('.window-detail[data-state="minimized"]').forEach((win) => {
-        const wH = win.offsetHeight;
-        win.style.top = `${cH - wH}px`;
-        const cW  = container.offsetWidth;
-        const wW  = win.offsetWidth;
-        const cur = parseInt(win.style.left || '0', 10);
-        win.style.left = `${Math.max(0, Math.min(cur, cW - wW))}px`;
-      });
+      recalculateMinimizedPositions(container);
     }).observe(container);
   }
 }
@@ -152,6 +144,10 @@ function openWindow(win) {
 function closeWindow(win) {
   win.dataset.state = 'hidden';
   win.style.removeProperty('z-index');
+  const container = win.closest('.panel');
+  if (container && window.innerWidth <= 768) {
+    recalculateMinimizedPositions(container);
+  }
 }
 
 // ── Minimizar ─────────────────────────────────────────────
@@ -181,11 +177,14 @@ function minimizeWindow(win) {
   // el valor sea correcto independientemente del estado anterior.
   const container = win.closest('.panel');
   if (container) {
-    // Forzar reflow para obtener las dimensiones reales del estado minimizado
-    const cH = container.offsetHeight;
-    const wH = win.offsetHeight;
-    win.style.top  = `${cH - wH}px`;
-    win.style.left = `${getFirstFreeMinimizedLeft(win)}px`;
+    if (window.innerWidth <= 768) {
+      recalculateMinimizedPositions(container);
+    } else {
+      const cH = container.offsetHeight;
+      const wH = win.offsetHeight;
+      win.style.top  = `${cH - wH}px`;
+      win.style.left = `${getFirstFreeMinimizedLeft(win)}px`;
+    }
   } else {
     win.style.left = `${getFirstFreeMinimizedLeft(win)}px`;
   }
@@ -229,12 +228,43 @@ function restoreWindow(win) {
 
   bringToFront(win);
   updateMaximizeButton(win);
+
+  const container = win.closest('.panel');
+  if (container && window.innerWidth <= 768) {
+    recalculateMinimizedPositions(container);
+  }
 }
 
 // ── Capturar posición actual ──────────────────────────────
 
 function capturePosition(win) {
   return { top: win.style.top || '', left: win.style.left || '' };
+}
+
+// ── Recalcular posiciones minimizadas (Stack vertical en mobile) ──
+function recalculateMinimizedPositions(container) {
+  if (!container) return;
+  const minimizedWins = Array.from(container.querySelectorAll('.window-detail[data-state="minimized"]'));
+  const cH = container.offsetHeight;
+  
+  if (window.innerWidth <= 768) {
+    let currentTop = cH;
+    minimizedWins.forEach(win => {
+      const wH = win.offsetHeight;
+      currentTop -= wH;
+      win.style.top = `${currentTop}px`;
+      win.style.left = '0px';
+    });
+  } else {
+    const cW = container.offsetWidth;
+    minimizedWins.forEach(win => {
+      const wH = win.offsetHeight;
+      win.style.top = `${cH - wH}px`;
+      const wW  = win.offsetWidth;
+      const cur = parseInt(win.style.left || '0', 10);
+      win.style.left = `${Math.max(0, Math.min(cur, cW - wW))}px`;
+    });
+  }
 }
 
 // ── Actualizar icono del botón maximizar ──────────────────
