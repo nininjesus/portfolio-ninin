@@ -11,6 +11,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  /* Contenedor relativo para poder limitar elementos absolutos (como ventanas) */
+  position: relative;
+  overflow: hidden;
 }
 
 /* 

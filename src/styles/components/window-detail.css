@@ -2,6 +2,24 @@
    window-detail.css — Ventana OS flotante
    ============================================================ */
 
+/* ── Windows Layer (contenedor de todas las ventanas OS) ───── */
+
+#windows-layer {
+  /* Contenedor de las ventanas dentro de la sección de Proyectos.
+     Al estar dentro del Panel, sus límites y visibilidad están
+     atados naturalmente a la sección. */
+  width: 100%;
+  height: 100%;
+  position: absolute; /* Para cubrir todo el Panel */
+  top: 0;
+  left: 0;
+  pointer-events: none; /* Las ventanas individuales tienen pointer-events: auto */
+}
+
+#windows-layer .window-detail {
+  pointer-events: auto;
+}
+
 /* ── Base ─────────────────────────────────────────────────── */
 
 .window-detail {
@@ -12,7 +30,10 @@
   flex-direction: column;
 
   background-color: var(--bg-terminal);
-  border: none;
+  border-top: var(--stroke-width) solid var(--border-dim);
+  border-left: var(--stroke-width) solid var(--fg-primary);
+  border-right: var(--stroke-width) solid var(--fg-primary);
+  border-bottom: var(--stroke-width) solid var(--fg-primary);
   border-radius: 0;
   font-family: var(--font-family);
   overflow: hidden;
@@ -24,10 +45,8 @@
   height: 65%;
   min-height: 200px;
 
-  /* Centrada al abrirse por primera vez */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* Se omite el centering por CSS porque JS (openWindow) 
+     calcula y asigna left/top explícitamente en píxeles. */
 
   /* Sombra para sensación de profundidad */
   box-shadow:
@@ -64,7 +83,10 @@
   display: flex;
   width: 300px !important;
   height: auto !important;
+  min-height: 0 !important;
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.5);
+  border-top-color: var(--fg-primary);
+  transform: none !important;
 }
 
 .window-detail[data-state="minimized"] .window-detail-content {
@@ -72,7 +94,7 @@
 }
 
 .window-detail[data-state="minimized"] .window-detail-header {
-  cursor: pointer; /* Click en el header minimizado restaura la ventana */
+  border-bottom: none;
 }
 
 /* MAXIMIZED — ocupa todo el panel principal */
@@ -87,6 +109,7 @@
   transform: none !important;
   border-radius: 0;
   box-shadow: none;
+  border: none;
 }
 
 /* ── Header ────────────────────────────────────────────────── */
@@ -97,7 +120,7 @@
   align-items: center;
   /* Mismos paddings que .panel-header para consistencia */
   padding: var(--space-1) var(--space-2);
-  border: var(--stroke-width) solid var(--border-dim); /* Todos los bordes del header son dim */
+  border-bottom: var(--stroke-width) solid var(--border-dim); /* Solo borde inferior como separador */
   background-color: var(--bg-terminal); /* igual que el body — fiel al SVG */
   flex-shrink: 0;
   gap: var(--space-2);
@@ -196,9 +219,6 @@
   flex: 1;
   padding: var(--space-4);
   overflow-y: auto;
-  border-left: var(--stroke-width) solid var(--fg-primary);
-  border-right: var(--stroke-width) solid var(--fg-primary);
-  border-bottom: var(--stroke-width) solid var(--fg-primary);
   color: var(--fg-text);
   font-size: var(--font-size-body);
   line-height: var(--line-height-body);

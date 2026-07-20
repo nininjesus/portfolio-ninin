@@ -44,6 +44,22 @@ export function initWindowManager() {
     const win = document.getElementById(trigger.dataset.targetWindow);
     if (win) openWindow(win);
   });
+  // ResizeObserver en el contenedor: recalcula el top de ventanas minimizadas
+  // cuando cambia el tamaño del layout (más preciso que window 'resize').
+  const container = document.querySelector('#proyectos.panel');
+  if (container) {
+    new ResizeObserver(() => {
+      const cH = container.offsetHeight;
+      document.querySelectorAll('.window-detail[data-state="minimized"]').forEach((win) => {
+        const wH = win.offsetHeight;
+        win.style.top = `${cH - wH}px`;
+        const cW  = container.offsetWidth;
+        const wW  = win.offsetWidth;
+        const cur = parseInt(win.style.left || '0', 10);
+        win.style.left = `${Math.max(0, Math.min(cur, cW - wW))}px`;
+      });
+    }).observe(container);
+  }
 }
 
 // ── Inicializar una ventana individual ───────────────────
@@ -62,6 +78,7 @@ function initSingleWindow(win) {
   // Click en header minimizado → restaurar
   win.querySelector('.window-detail-header')
     ?.addEventListener('click', (e) => {
+      if (win._hasDragged) return; // No restaurar si acaba de terminar un drag
       if (
         win.dataset.state === 'minimized' &&
         !e.target.closest('.window-controls')
@@ -104,7 +121,7 @@ function openWindow(win) {
   }
 
   // Calcular posición centrada + cascada
-  const container = win.parentElement;
+  const container = win.closest('.panel');
   if (container) {
     const cW = container.offsetWidth;
     const cH = container.offsetHeight;
@@ -143,8 +160,40 @@ function minimizeWindow(win) {
   if (win.dataset.state === 'normal') {
     windowState.set(win.id, capturePosition(win));
   }
+
+  // Apagar transiciones temporalmente para evitar el glitch visual
+  // al animar top/width mientras height: auto hace snap.
+  win.style.transition = 'none';
+  void win.offsetWidth; // Forzar reflow
+
+  // Cambiar estado primero para que el CSS aplique width:300px / height:auto
   win.dataset.state = 'minimized';
   updateMaximizeButton(win);
+
+  // Limpiar todos los inline styles de posición que puedan venir
+  // del estado maximizado o de un drag previo
+  win.style.removeProperty('transform');
+  win.style.removeProperty('width');
+  win.style.removeProperty('height');
+
+  // Calcular posición explícita: pegar al fondo del contenedor
+  // Usamos top en px en lugar de CSS bottom:0 para garantizar que
+  // el valor sea correcto independientemente del estado anterior.
+  const container = win.closest('.panel');
+  if (container) {
+    // Forzar reflow para obtener las dimensiones reales del estado minimizado
+    const cH = container.offsetHeight;
+    const wH = win.offsetHeight;
+    win.style.top  = `${cH - wH}px`;
+    win.style.left = `${getFirstFreeMinimizedLeft(win)}px`;
+  } else {
+    win.style.left = `${getFirstFreeMinimizedLeft(win)}px`;
+  }
+
+  // Restaurar transiciones en el siguiente frame
+  requestAnimationFrame(() => {
+    win.style.transition = '';
+  });
 }
 
 // ── Maximizar / Restaurar ─────────────────────────────────
@@ -200,6 +249,78 @@ function updateMaximizeButton(win) {
 
 // ── Drag ──────────────────────────────────────────────────
 
+/**
+ * Encuentra el primer slot horizontal libre (de izquierda a derecha)
+ * donde una nueva ventana minimizada no solape ninguna existente.
+ */
+function getFirstFreeMinimizedLeft(win) {
+  const container = win.closest('.panel');
+  if (!container) return 0;
+
+  const winWidth  = win.offsetWidth || 300; // ancho estimado si aún no está en DOM
+  const maxLeft   = container.offsetWidth - winWidth;
+
+  const occupied = Array.from(
+    document.querySelectorAll('.window-detail[data-state="minimized"]')
+  )
+    .filter((w) => w !== win)
+    .map((w) => {
+      const r = w.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+      const l = r.left - containerRect.left;
+      return { left: l, right: l + w.offsetWidth };
+    })
+    .sort((a, b) => a.left - b.left);
+
+  let candidate = 0;
+  for (const range of occupied) {
+    if (candidate + winWidth <= range.left) break; // slot libre encontrado
+    candidate = range.right;                        // saltar al siguiente hueco
+  }
+
+  return Math.max(0, Math.min(candidate, maxLeft));
+}
+
+/**
+ * Calcula la posición left más cercana a `desiredLeft` sin que la ventana
+ * minimizada se solape con ninguna otra ventana minimizada.
+ * Funciona como paredes de choque: al tocar otra ventana, rebota al borde más cercano.
+ */
+function getClampedMinimizedLeft(win, desiredLeft, containerRect) {
+  const winWidth = win.offsetWidth;
+  const maxLeft  = containerRect.width - winWidth;
+
+  // Rangos ocupados por otras ventanas minimizadas
+  const blockedRanges = Array.from(
+    document.querySelectorAll('.window-detail[data-state="minimized"]')
+  )
+    .filter((w) => w !== win)
+    .map((w) => {
+      const r = w.getBoundingClientRect();
+      const l = r.left - containerRect.left;
+      return { left: l, right: l + w.offsetWidth };
+    })
+    .sort((a, b) => a.left - b.left);
+
+  let left = Math.max(0, Math.min(desiredLeft, maxLeft));
+
+  for (const range of blockedRanges) {
+    const overlaps = left < range.right && (left + winWidth) > range.left;
+    if (overlaps) {
+      // Dos candidatos: pegar a la izquierda o a la derecha del bloque
+      const snapLeft  = Math.max(0, range.left - winWidth); // a la izquierda del bloqueador
+      const snapRight = Math.min(maxLeft, range.right);      // a la derecha del bloqueador
+
+      // Elegir el borde más cercano al destino deseado
+      left = Math.abs(desiredLeft - snapLeft) <= Math.abs(desiredLeft - snapRight)
+        ? snapLeft
+        : snapRight;
+    }
+  }
+
+  return left;
+}
+
 function initDrag(win) {
   const header = win.querySelector('.window-detail-header');
   if (!header) return;
@@ -211,22 +332,26 @@ function initDrag(win) {
   let startWinTop  = 0;
 
   header.addEventListener('mousedown', (e) => {
-    if (win.dataset.state !== 'normal') return;
+    if (win.dataset.state !== 'normal' && win.dataset.state !== 'minimized') return;
     if (e.target.closest('.window-controls')) return;
 
     isDragging = true;
     bringToFront(win);
 
-    const containerRect = win.parentElement.getBoundingClientRect();
+    const containerRect = win.closest('.panel').getBoundingClientRect();
     const winRect       = win.getBoundingClientRect();
 
     startWinLeft = winRect.left - containerRect.left;
-    startWinTop  = winRect.top  - containerRect.top;
     startMouseX  = e.clientX;
-    startMouseY  = e.clientY;
+
+    // Para estado normal también capturamos top
+    if (win.dataset.state === 'normal') {
+      startWinTop = winRect.top - containerRect.top;
+      startMouseY = e.clientY;
+      win.style.top = `${startWinTop}px`;
+    }
 
     win.style.left      = `${startWinLeft}px`;
-    win.style.top       = `${startWinTop}px`;
     win.style.transform = 'none';
     win.style.transition = 'none';
     document.body.style.userSelect = 'none';
@@ -236,20 +361,29 @@ function initDrag(win) {
 
   document.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
+    win._hasDragged = true;
 
-    const containerRect = win.parentElement.getBoundingClientRect();
+    const containerRect = win.closest('.panel').getBoundingClientRect();
 
     let newLeft = startWinLeft + (e.clientX - startMouseX);
-    let newTop  = startWinTop  + (e.clientY - startMouseY);
+    const maxLeft = containerRect.width - win.offsetWidth;
 
-    const maxLeft = containerRect.width  - win.offsetWidth;
-    const maxTop  = containerRect.height - win.offsetHeight;
-
-    newLeft = Math.max(0, Math.min(newLeft, maxLeft));
-    newTop  = Math.max(0, Math.min(newTop,  maxTop));
-
+    // En minimizado aplicamos detección de colisión con otras ventanas minimizadas
+    if (win.dataset.state === 'minimized') {
+      newLeft = getClampedMinimizedLeft(win, newLeft, containerRect);
+    } else {
+      newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+    }
     win.style.left = `${newLeft}px`;
-    win.style.top  = `${newTop}px`;
+
+    // El eje vertical solo se mueve si la ventana está en estado normal.
+    // En minimizado, CSS bottom: 0 mantiene la ventana al fondo automáticamente.
+    if (win.dataset.state === 'normal') {
+      let newTop = startWinTop + (e.clientY - startMouseY);
+      const maxTop = containerRect.height - win.offsetHeight;
+      newTop = Math.max(0, Math.min(newTop, maxTop));
+      win.style.top = `${newTop}px`;
+    }
   });
 
   document.addEventListener('mouseup', () => {
@@ -257,5 +391,7 @@ function initDrag(win) {
     isDragging = false;
     win.style.transition = '';
     document.body.style.userSelect = '';
+    // Restablecer el flag en el siguiente tick para que el evento click lo pueda leer
+    setTimeout(() => { win._hasDragged = false; }, 0);
   });
 }
