@@ -31,6 +31,7 @@ body {
   flex-direction: row;
   flex: 1; /* Ocupa todo el espacio entre topbar y statusbar */
   overflow: hidden; /* Evita que el contenedor crezca */
+  min-height: 0;
 }
 
 /* Columna Izquierda: Sidebar */
@@ -49,6 +50,7 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 0; /* Previene overflow en flexbox */
+  min-height: 0;
   background-color: var(--bg-terminal);
   position: relative; /* Contexto de posicionamiento para WindowDetail */
   overflow: hidden;   /* La ventana no puede salir del OS window */
@@ -86,6 +88,7 @@ body {
 /* Contenedor escrolleable horizontal para las secciones */
 .main-content-scroll {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: row;
   overflow-x: hidden; /* Ocultamos el scroll horizontal nativo, se navega por JS */

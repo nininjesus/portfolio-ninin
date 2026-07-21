@@ -64,7 +64,6 @@ body {
   background-color: var(--bg-terminal);
   color: var(--fg-text);
   font-family: var(--font-family);
-  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
