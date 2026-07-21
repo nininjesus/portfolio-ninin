@@ -7,6 +7,8 @@ import Prompt from '../primitives/Prompt.astro';
 
 // Usamos el icono de GitHub y LinkedIn de la librería lucidide si estuviera, 
 // o un simple texto/SVG para igualar el arte rojo. En el diseño son iconos rojos enormes.
+
+import { nininQuotes } from '../../data/nininQuotes.js';
 ---
 
 <Panel sectionId="ninin" ariaLabel="Sección Ninin" title="NININ.EXE">
@@ -23,8 +25,8 @@ import Prompt from '../primitives/Prompt.astro';
 
     <div class="ninin-content">
       <div class="ninin-text-col">
-        <p class="ninin-quote">
-          "Necesito algo mas potente que el cafe. Por favor".
+        <p class="ninin-quote" id="dynamic-quote">
+          {nininQuotes[0]}
         </p>
         <p class="ninin-name">Jesus Ninin</p>
         
@@ -51,3 +53,11 @@ import Prompt from '../primitives/Prompt.astro';
     
   </PanelMain>
 </Panel>
+
+<script>
+  import { nininQuotes } from '../../data/nininQuotes.js';
+  import { rotateText } from '../../scripts/textRotator.js';
+
+  // Iniciar la rotación de texto con las frases, cambiando cada 5 segundos
+  rotateText('dynamic-quote', nininQuotes, 5000);
+</script>
