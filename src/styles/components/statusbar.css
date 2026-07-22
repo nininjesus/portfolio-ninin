@@ -1,0 +1,16 @@
+.statusbar {
+  background-color: var(--bg-desktop);
+  border-top: var(--stroke-width) solid var(--border-dim);
+  height: 32px;
+  width: 100%;
+  position: relative;
+  z-index: 120;
+}
+
+.statusbar-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-transform: uppercase;
+}

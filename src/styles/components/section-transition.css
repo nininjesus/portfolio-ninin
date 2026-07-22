@@ -1,0 +1,56 @@
+.section-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-terminal);
+  z-index: 9999; /* Máxima prioridad: debe superponerse a TODO el portafolio (topbar, sidebar) */
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Oculto por defecto mediante opacidad para permitir transiciones suaves por JS */
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.section-transition.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.transition-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-family: var(--font-family);
+  max-width: 80vw;
+}
+
+.transition-text {
+  color: var(--fg-text);
+  font-size: var(--font-size-prompt);
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.transition-subtext {
+  color: var(--fg-dim);
+  font-size: var(--font-size-caption);
+  margin: 0;
+  min-height: 1.5em; /* Reserva el espacio vertical incluso si JS no inyecta texto inmediatamente */
+}
+
+/* Para evitar animaciones molestas en usuarios con preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .section-transition {
+    transition: none; /* Corte directo sin fade-in/fade-out */
+  }
+}

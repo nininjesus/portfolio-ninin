@@ -1,0 +1,22 @@
+.cmd-output {
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  
+  /* Tipografía */
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-body);
+}
+
+.cmd-output-symbol {
+  color: var(--fg-tertiary);
+  user-select: none;
+  margin-right: 1ch;
+}
+
+.cmd-output-content {
+  color: var(--fg-text);
+  word-break: break-word;
+}

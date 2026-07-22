@@ -1,0 +1,72 @@
+.cmd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-2);
+  border-radius: 0;
+  
+  /* Tipografía */
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-body);
+  
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  outline: none;
+  white-space: pre; /* Respeta los espacios de los corchetes [ y ] */
+}
+
+.cmd-btn-label {
+  color: inherit;
+}
+
+/* Variante Default */
+.cmd-btn.variant-default {
+  background-color: transparent;
+  color: var(--fg-primary);
+  border: var(--stroke-width) solid transparent;
+}
+
+.cmd-btn.variant-default:hover,
+.cmd-btn.variant-default:focus-visible {
+  background-color: var(--bg-hover);
+  outline: none;
+}
+
+.cmd-btn.variant-default:active {
+  background-color: var(--fg-primary);
+  color: var(--bg-terminal);
+}
+
+/* Variante Active */
+.cmd-btn.variant-active {
+  background-color: var(--fg-primary);
+  color: var(--bg-terminal);
+  border: var(--stroke-width) solid transparent;
+}
+
+/* Variante Secondary */
+.cmd-btn.variant-secondary {
+  background-color: transparent;
+  color: var(--fg-text-muted);
+  border: var(--stroke-width) solid transparent;
+}
+
+.cmd-btn.variant-secondary:hover,
+.cmd-btn.variant-secondary:focus-visible {
+  background-color: var(--bg-hover);
+  color: var(--fg-text);
+  outline: none;
+}
+
+.cmd-btn.variant-secondary:active {
+  background-color: var(--fg-text-muted);
+  color: var(--bg-terminal);
+}
+
+/* Quitar el outline por defecto en todos los botones para mantener la estética */
+.cmd-btn:focus-visible {
+  outline: none;
+}

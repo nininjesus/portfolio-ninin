@@ -1,0 +1,18 @@
+---
+import '../../styles/components/section-transition.css';
+import ProgressBar from '../primitives/ProgressBar.astro';
+
+// Este componente es un singleton global para la aplicación
+---
+
+<div id="section-transition" class="section-transition" aria-hidden="true" role="alert" aria-live="assertive">
+  <div class="transition-content">
+    <p class="transition-text">LOADING MODULE...</p>
+    
+    <!-- Barra de progreso en modo animado puro CSS, sin número de porcentaje -->
+    <ProgressBar value={0} animated={true} totalBlocks={20} showPercent={false} />
+    
+    <!-- Espacio reservado para que el JS inyecte el nombre de la sección destino si lo desea -->
+    <p class="transition-subtext" id="transition-target-name"></p>
+  </div>
+</div>

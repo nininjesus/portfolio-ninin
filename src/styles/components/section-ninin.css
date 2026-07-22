@@ -1,0 +1,134 @@
+/* Estilos para Ninin */
+.terminal-command-container {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.terminal-cursor-container {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+}
+
+.cursor-symbol {
+  color: var(--fg-tertiary);
+  font-family: var(--font-family);
+}
+
+.cursor-blink {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em;
+  background-color: var(--fg-primary);
+  color: transparent; /* Oculta el texto '_' si existe */
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.ninin-header {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ninin-title {
+  color: var(--fg-primary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-h1);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.ninin-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.ninin-text-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ninin-quote {
+  color: var(--fg-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-h3);
+  line-height: 1.5;
+  margin-bottom: var(--space-4);
+}
+
+.ninin-name {
+  color: var(--fg-tertiary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-h3);
+  font-weight: bold;
+  margin-bottom: var(--space-4);
+}
+
+.ninin-social-links {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.social-icon {
+  color: var(--fg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.social-icon:hover {
+  opacity: 0.8;
+}
+
+.social-icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+.ninin-photo-col {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ascii-photo {
+  max-width: 400px; /* Constrict size */
+  width: 100%;
+  height: auto;
+}
+
+/* Responsividad Tablet/Móvil */
+@media (max-width: 768px) {
+  .ninin-content {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .ninin-photo-col {
+    order: -1; /* Foto primero en mobile */
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .ascii-photo {
+    max-width: 100%;
+  }
+
+  .ninin-quote {
+    font-size: var(--font-size-body);
+  }
+}

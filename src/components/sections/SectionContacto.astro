@@ -1,0 +1,150 @@
+---
+import '../../styles/components/section-contacto.css';
+import Panel from '../ui/Panel.astro';
+import PanelMain from '../ui/PanelMain.astro';
+import Btn from '../primitives/Btn.astro';
+import Prompt from '../primitives/Prompt.astro';
+import Output from '../primitives/Output.astro';
+import InputLine from '../primitives/InputLine.astro';
+---
+
+<Panel sectionId="contacto" ariaLabel="Sección de contacto" title="CONTACTO.SH">
+  <PanelMain>
+    <div class="contacto-wrapper">
+      <Prompt command='mail -s "CONTACTO" nj13072004@gmail.com' />
+      
+      <div class="contacto-spacing">
+        <Output text="[Escriba su mensaje]" />
+      </div>
+
+      <form 
+        class="contacto-form" 
+        id="form" 
+        action="https://api.web3forms.com/submit" 
+        method="POST" 
+        data-astro-reload
+        novalidate>
+        
+        <!-- Add your Web3Forms Access Key -->
+        <input type="hidden" name="access_key" value="bc99c4a9-e2af-477e-86d1-4e5b997ef6ac" />
+        <input type="checkbox" name="botcheck" style="display: none;" />
+
+        <InputLine label="NOMBRE:" name="name" required={true} />
+        <InputLine label="EMAIL:" name="email" type="email" required={true} />
+        <InputLine label="ASUNTO:" name="subject" required={true} />
+
+        <div class="contacto-spacing">
+          <Output text="Mensaje:" />
+        </div>
+
+        <div class="form-group textarea-group">
+          <span class="bracket">[</span>
+          <textarea class="form-textarea" id="mensaje" name="message" rows="3" aria-label="Mensaje" autocomplete="off" required></textarea>
+          <span class="bracket">]</span>
+        </div>
+
+        <div class="form-actions">
+          <Btn label="ENVIAR" type="submit" />
+        </div>
+
+        <div id="result-wrapper" class="form-result-wrapper">
+          <Output contentId="result" text="" />
+        </div>
+      </form>
+    </div>
+  </PanelMain>
+</Panel>
+
+<style>
+  .form-result-wrapper {
+    margin-top: var(--space-4);
+    display: none;
+  }
+  .form-result-wrapper.success {
+    display: block;
+  }
+  .form-result-wrapper.success :global(.cmd-output-content) {
+    color: var(--fg-secondary);
+  }
+  .form-result-wrapper.error {
+    display: block;
+  }
+  .form-result-wrapper.error :global(.cmd-output-content) {
+    color: var(--fg-primary);
+  }
+  .form-result-wrapper.loading {
+    display: block;
+  }
+  .form-result-wrapper.loading :global(.cmd-output-content) {
+    color: var(--fg-text);
+  }
+  .contacto-form.was-validated :invalid {
+    border-color: var(--fg-primary);
+    color: var(--fg-primary);
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("form");
+    const resultWrapper = document.getElementById("result-wrapper");
+    const result = document.getElementById("result");
+
+    if (form && resultWrapper && result) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        form.classList.add("was-validated");
+        
+        if (!form.checkValidity()) {
+          const invalidElements = form.querySelectorAll(":invalid");
+          if (invalidElements.length > 0) {
+            invalidElements[0].focus();
+          }
+          return;
+        }
+
+        const formData = new FormData(form);
+        const object = Object.fromEntries(formData);
+        const json = JSON.stringify(object);
+
+        resultWrapper.classList.remove("success", "error");
+        resultWrapper.classList.add("loading");
+        result.innerHTML = "Enviando...";
+
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: json,
+        })
+          .then(async (response) => {
+            let json = await response.json();
+            resultWrapper.classList.remove("loading");
+            if (response.status == 200) {
+              resultWrapper.classList.add("success");
+              result.innerHTML = json.message;
+            } else {
+              console.log(response);
+              resultWrapper.classList.add("error");
+              result.innerHTML = json.message;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            resultWrapper.classList.remove("loading");
+            resultWrapper.classList.add("error");
+            result.innerHTML = "Algo salió mal. Intente de nuevo.";
+          })
+          .then(function () {
+            form.reset();
+            form.classList.remove("was-validated");
+            setTimeout(() => {
+              resultWrapper.classList.remove("success", "error", "loading");
+            }, 5000);
+          });
+      });
+    }
+  }, { once: true });
+</script>

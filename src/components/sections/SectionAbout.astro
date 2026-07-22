@@ -1,0 +1,31 @@
+---
+import '../../styles/components/section-about.css';
+import Panel from '../ui/Panel.astro';
+import PanelMain from '../ui/PanelMain.astro';
+import Prompt from '../primitives/Prompt.astro';
+import Output from '../primitives/Output.astro';
+---
+
+<Panel sectionId="sobre-mi" ariaLabel="Sección sobre mí" title="SOBRE_MI.TXT">
+  <PanelMain>
+    
+    <div class="terminal-command-container">
+      <Prompt command="cat /sobre_mi.txt" />
+    </div>
+    
+    <div class="about-content">
+      <hr class="about-separator" />
+
+      <Output text="NOMBRE: JESUS NININ" />
+      <Output text="ROL: DESARROLLADOR FULL STACK" />
+      <Output text="UBICACION: GUACARA" />
+
+      <hr class="about-separator" />
+
+      <Output text="SKILLS: FRONTEND (REACT, NEXT.JS, ANGULAR, BLAZOR)" />
+      <Output text="SKILLS: BACKEND (.NET, C#, NODE.JS, EXPRESS.JS)" />
+      <Output text="SKILLS: DATABASES (MYSQL, POSTGRESQL, MONGODB)" />
+    </div>
+    
+  </PanelMain>
+</Panel>

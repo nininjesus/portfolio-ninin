@@ -1,0 +1,57 @@
+---
+import '../../styles/components/section-proyectos.css';
+import Panel from '../ui/Panel.astro';
+import PanelMain from '../ui/PanelMain.astro';
+import PreviewCard from '../ui/PreviewCard.astro';
+import WindowDetail from '../ui/WindowDetail.astro';
+import { projects } from '../../data/projects.js';
+import Prompt from '../primitives/Prompt.astro';
+---
+
+<Panel sectionId="proyectos" ariaLabel="Sección de proyectos" title="PROYECTOS.EXE">
+  <PanelMain>
+
+    <div class="terminal-command-container">
+      <Prompt command="ls proyectos" />
+    </div>
+
+    <div class="terminal-cursor-container">
+      <span class="cursor-symbol">&gt;</span>
+      <span class="cursor-blink">_</span>
+    </div>
+
+    <div class="proyectos-list">
+      {projects.map((project, index) => (
+        <>
+          <PreviewCard
+            projectId={project.id}
+            title={project.title}
+            category={project.category}
+            year={project.year}
+            repo={project.urlPreview}
+          />
+          {index < projects.length - 1 && (
+            <hr class="project-separator" />
+          )}
+        </>
+      ))}
+    </div>
+
+  </PanelMain>
+
+  <!-- Capa de ventanas OS, ahora contenida localmente dentro de Proyectos -->
+  <div id="windows-layer">
+    {projects.map((project) => (
+      <WindowDetail
+        id={`project-window-${project.id}`}
+        projectId={project.id}
+        title={project.title}
+        category={project.category}
+        year={project.year}
+        description={project.description}
+        urlView={project.urlView}
+        urlPreview={project.urlPreview}
+      />
+    ))}
+  </div>
+</Panel>

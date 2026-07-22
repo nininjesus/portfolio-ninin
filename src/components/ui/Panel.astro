@@ -1,0 +1,15 @@
+---
+import '../../styles/components/panel.css';
+
+interface Props {
+  sectionId: string;
+  ariaLabel?: string;
+  title: string;
+}
+
+const { sectionId, ariaLabel, title } = Astro.props;
+---
+
+<section id={sectionId} aria-label={ariaLabel} class="panel" data-title={title}>
+  <slot />
+</section>

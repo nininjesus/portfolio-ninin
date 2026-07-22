@@ -1,0 +1,57 @@
+:root {
+  /* === GRUPO bg === */
+  --bg-terminal: #0a0a0a;
+  --bg-panel: #111;
+  --bg-hover: #1a1a1a;
+
+  /* === GRUPO fg === */
+  --fg-primary: #8b2323;
+  --fg-secondary: #6b7a5a;
+  --fg-tertiary: #5a6b7a;
+  --fg-text: #c4c4c4;
+  --fg-text-muted: #6b6b6b;
+  --fg-dim: #3a3a3a;
+
+  /* === GRUPO border === */
+  --border-default: #8b2323;
+  --border-dim: #3d3d3d;
+
+  /* Familia */
+  --font-family: 'IBM Plex Mono', monospace;
+
+  /* Tokens tipográficos (Fluidos y adaptativos) */
+  --font-size-h1: clamp(28px, 5vw + 10px, 48px); --line-height-h1: 1.2; --font-weight-h1: 700;
+  --font-size-h2: clamp(24px, 4vw + 8px, 32px); --line-height-h2: 1.3; --font-weight-h2: 700;
+  --font-size-h3: clamp(18px, 3vw + 6px, 24px); --line-height-h3: 1.3; --font-weight-h3: 600;
+  --font-size-body-lg: clamp(14px, 2vw + 4px, 18px); --line-height-body-lg: 1.6; --font-weight-body-lg: 400;
+  --font-size-body: clamp(11px, 2vw + 2px, 16px); --line-height-body: 1.6; --font-weight-body: 400;
+  --font-size-prompt: clamp(11px, 2vw + 2px, 16px); --line-height-prompt: 1.6; --font-weight-prompt: 400;
+  --font-size-caption: clamp(10px, 1.5vw + 2px, 14px); --line-height-caption: 1.4; --font-weight-caption: 400;
+  --font-size-code: clamp(10px, 1.5vw + 2px, 14px); --line-height-code: 1.4; --font-weight-code: 400;
+
+  /* Espaciados */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 80px;
+  --layout-gap: 40px;
+
+  /* Tamaños / Grid */
+  --bp-desktop: 1440px;
+  --bp-tablet: 768px;
+  --bp-phone: 402px;
+
+  --layout-sidebar-desktop: 400px;
+  --layout-sidebar-tablet: 342px;
+
+  /* Radios */
+  --radius-component: 4.5px;
+  --radius-swatch: 5px;
+
+  /* Stroke / Border */
+  --stroke-divider: #3d3d3d;
+  --stroke-accent: #8b2323;
+  --stroke-width: 0.64px;
+}

@@ -1,0 +1,175 @@
+---
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/600.css';
+import '@fontsource/ibm-plex-mono/700.css';
+import '../styles/global.css';
+import Topbar from '../components/ui/Topbar.astro';
+import PanelNav from '../components/ui/PanelNav.astro';
+import Statusbar from '../components/primitives/Statusbar.astro';
+import SectionTransition from '../components/sections/SectionTransition.astro';
+import WindowDetail from '../components/ui/WindowDetail.astro';
+import { projects } from '../data/projects.js';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+</head>
+<body>
+  <div class="os-window">
+    <Topbar />
+    <SectionTransition />
+    
+    <div class="app-layout">
+      <!-- Left Column: Sidebar -->
+      <aside class="layout-sidebar">
+        <header class="panel-header">
+          <span class="panel-indicator" aria-hidden="true">▓</span>
+          <h2 class="panel-title">NAV.EXE</h2>
+        </header>
+        <div class="sidebar-content">
+          <PanelNav />
+        </div>
+      </aside>
+
+      <!-- Right Column: Main Content -->
+      <main class="layout-main">
+        <header class="panel-header">
+          <span class="panel-indicator" aria-hidden="true">▓</span>
+          <h2 class="panel-title" id="active-section-title">MAIN.EXE</h2>
+        </header>
+        <div class="main-content-scroll" id="sections-container">
+          <slot />
+        </div>
+
+
+      </main>
+    </div>
+
+    <Statusbar />
+  </div>
+
+  <!-- Window Manager: controla todas las ventanas OS -->
+  <script>
+    import { initWindowManager } from '../scripts/window-detail.js';
+    initWindowManager();
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section.panel');
+      const titleElement = document.getElementById('active-section-title');
+      const navLinks = document.querySelectorAll('.nav-option');
+      const scrollContainer = document.getElementById('sections-container');
+
+      if (!scrollContainer) return;
+
+      const observerOptions = {
+        root: scrollContainer,
+        rootMargin: '0px',
+        threshold: 0.5
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Manejar foco de teclado con inert
+            sections.forEach(sec => sec.setAttribute('inert', ''));
+            entry.target.removeAttribute('inert');
+
+            // Actualizar Título
+            const newTitle = entry.target.getAttribute('data-title');
+            if (newTitle && titleElement) {
+              titleElement.textContent = newTitle;
+            }
+
+            // Actualizar Nav Activo
+            const activeId = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              link.classList.remove('is-active');
+              link.setAttribute('aria-current', 'false');
+              if (link.getAttribute('href') === `#${activeId}`) {
+                link.classList.add('is-active');
+                link.setAttribute('aria-current', 'page');
+              }
+            });
+
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+      
+      // Mobile Menu Toggle
+      const menuBtn = document.getElementById('menu-btn');
+      const sidebar = document.querySelector('.layout-sidebar');
+      
+      if (menuBtn && sidebar) {
+        menuBtn.addEventListener('click', () => {
+          const isOpen = sidebar.classList.contains('is-open');
+          if (isOpen) {
+            sidebar.classList.remove('is-open');
+            menuBtn.setAttribute('aria-expanded', 'false');
+          } else {
+            sidebar.classList.add('is-open');
+            menuBtn.setAttribute('aria-expanded', 'true');
+          }
+        });
+
+        // Close sidebar when clicking a nav link (mobile)
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+              sidebar.classList.remove('is-open');
+              menuBtn.setAttribute('aria-expanded', 'false');
+            }
+          });
+        });
+
+        // Close sidebar when clicking outside (mobile)
+        document.addEventListener('click', (event) => {
+          if (window.innerWidth <= 768 && sidebar.classList.contains('is-open')) {
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+              sidebar.classList.remove('is-open');
+              menuBtn.setAttribute('aria-expanded', 'false');
+            }
+          }
+        });
+      }
+
+      // Smooth Scroll con JS porque deshabilitamos el nativo
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+          if (targetSection && scrollContainer) {
+            if (window.innerWidth <= 768) {
+              scrollContainer.scrollTo({
+                top: targetSection.offsetTop,
+                behavior: 'instant'
+              });
+            } else {
+              scrollContainer.scrollTo({
+                left: targetSection.offsetLeft,
+                behavior: 'instant'
+              });
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

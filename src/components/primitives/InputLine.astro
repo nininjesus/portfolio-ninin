@@ -1,0 +1,51 @@
+---
+import '../../styles/components/input-line.css';
+
+interface Props {
+  label: string;
+  name: string;
+  type?: 'text' | 'email' | 'textarea';
+  placeholder?: string;
+  required?: boolean;
+}
+
+const { 
+  label, 
+  name, 
+  type = 'text', 
+  placeholder, 
+  required = false 
+} = Astro.props;
+
+// ID dinámico para ligar correctamente el label por accesibilidad
+const id = `input-${name}`;
+---
+
+<div class="cmd-input-line">
+  <label class="cmd-input-label" for={id}>
+    {label}
+  </label>
+  <div class="cmd-input-wrapper">
+    <span class="cmd-input-bracket" aria-hidden="true">[</span>
+    {type === 'textarea' ? (
+      <textarea 
+        id={id} 
+        name={name} 
+        class="cmd-input-field type-textarea" 
+        placeholder={placeholder}
+        required={required}
+        rows="3"
+      ></textarea>
+    ) : (
+      <input 
+        id={id} 
+        name={name} 
+        type={type} 
+        class="cmd-input-field" 
+        placeholder={placeholder}
+        required={required}
+      />
+    )}
+    <span class="cmd-input-bracket" aria-hidden="true">]</span>
+  </div>
+</div>

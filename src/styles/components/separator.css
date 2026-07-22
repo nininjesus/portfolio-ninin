@@ -1,0 +1,15 @@
+.cmd-separator {
+  margin: 0;
+  border: none;
+  border-top-style: solid;
+  border-top-width: var(--stroke-width);
+  width: 100%;
+}
+
+.cmd-separator.variant-default {
+  border-top-color: var(--border-dim);
+}
+
+.cmd-separator.variant-active {
+  border-top-color: var(--fg-primary);
+}

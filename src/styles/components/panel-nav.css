@@ -1,0 +1,12 @@
+/* panel-nav.css solo maneja la lista interior, el contenedor lo maneja layout-sidebar en layout.css */
+
+
+.panel-nav-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: var(--space-1) 0;
+  gap: var(--space-1);
+}
+
+

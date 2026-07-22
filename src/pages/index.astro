@@ -1,17 +1,19 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 
+import SectionBienvenida from '../components/sections/SectionBienvenida.astro';
+import SectionNinin from '../components/sections/SectionNinin.astro';
+import SectionProyectos from '../components/sections/SectionProyectos.astro';
+import SectionAbout from '../components/sections/SectionAbout.astro';
+import SectionContacto from '../components/sections/SectionContacto.astro';
+import SectionHelp from '../components/sections/SectionHelp.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Jesús Ninin- UI/UX & Web Developer">
+  <SectionBienvenida />
+  <SectionNinin />
+  <SectionProyectos />
+  <SectionAbout />
+  <SectionContacto />
+  <SectionHelp />
+</BaseLayout>

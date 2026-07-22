@@ -1,0 +1,70 @@
+---
+import '../../styles/components/progress-bar.css';
+
+interface Props {
+  value: number;
+  label?: string;
+  showPercent?: boolean;
+  animated?: boolean;
+  totalBlocks?: number;
+}
+
+const { 
+  value, 
+  label, 
+  showPercent = true, 
+  animated = false, 
+  totalBlocks = 20 
+} = Astro.props;
+
+// Limitar valor entre 0 y 100
+const clampedValue = Math.max(0, Math.min(100, value));
+const id = `progress-${Math.random().toString(36).substr(2, 9)}`;
+
+// Cálculo para barras estáticas
+const filledCount = Math.round((clampedValue / 100) * totalBlocks);
+const emptyCount = totalBlocks - filledCount;
+
+const filledStr = '█'.repeat(filledCount);
+const emptyStr = '░'.repeat(emptyCount);
+
+// Strings completos para la variante animada por CSS
+const fullFilledStr = '█'.repeat(totalBlocks);
+const fullEmptyStr = '░'.repeat(totalBlocks);
+---
+
+<div 
+  class={`cmd-progress-bar ${animated ? 'is-animated' : ''}`}
+  role="progressbar"
+  aria-valuenow={animated ? undefined : clampedValue}
+  aria-valuemin="0"
+  aria-valuemax="100"
+  aria-labelledby={label ? `${id}-label` : undefined}
+>
+  {label && <span id={`${id}-label`} class="cmd-progress-label">{label}</span>}
+  
+  <div class="cmd-progress-track">
+    <span aria-hidden="true">[</span>
+    
+    {animated ? (
+      <div class="cmd-progress-layers" style={`--steps: ${totalBlocks};`}>
+        <span class="cmd-progress-empty-layer" aria-hidden="true">{fullEmptyStr}</span>
+        <span class="cmd-progress-fill-layer" aria-hidden="true">{fullFilledStr}</span>
+      </div>
+    ) : (
+      <span class="cmd-progress-static" aria-hidden="true">
+        <span class="cmd-progress-fill">{filledStr}</span>
+        <span class="cmd-progress-empty">{emptyStr}</span>
+      </span>
+    )}
+    
+    <span aria-hidden="true">]</span>
+  </div>
+  
+  {showPercent && (
+    <span class="cmd-progress-percent">
+      {!animated && `${clampedValue}%`}
+      {/* Si es animado, el texto del porcentaje puede manejarse via JS externo */}
+    </span>
+  )}
+</div>

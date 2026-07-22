@@ -1,0 +1,96 @@
+@import './tokens.css';
+@import './layout.css';
+@import './animations.css';
+
+/* Primitive components */
+@import './components/btn.css';
+@import './components/progress-bar.css';
+@import './components/prompt.css';
+@import './components/output.css';
+@import './components/separator.css';
+@import './components/input-line.css';
+@import './components/statusbar.css';
+@import './components/cursor.css';
+
+/* UI components */
+@import './components/nav-option.css';
+@import './components/panel-nav.css';
+@import './components/preview-card.css';
+@import './components/window-detail.css';
+@import './components/panel-main.css';
+@import './components/topbar.css';
+@import './components/panel.css';
+
+/* Section components */
+@import './components/section-bienvenida.css';
+@import './components/section-ninin.css';
+@import './components/section-proyectos.css';
+@import './components/section-about.css';
+@import './components/section-contacto.css';
+@import './components/section-help.css';
+@import './components/section-transition.css';
+
+/* Typography base rules */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+  margin: 0;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, input, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+body {
+  background-color: var(--bg-terminal);
+  color: var(--fg-text);
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styles for Firefox only */
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-dim) var(--bg-terminal);
+  }
+}
+
+/* Scrollbar styles for Webkit (Chrome, Edge, Safari) */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--bg-terminal);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--border-dim);
+  border-radius: 0;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--fg-primary);
+}

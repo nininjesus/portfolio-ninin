@@ -1,0 +1,50 @@
+.terminal-command-container {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.terminal-cursor-container {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+}
+
+.cursor-symbol {
+  color: var(--fg-tertiary);
+  font-family: var(--font-family);
+}
+
+.cursor-blink {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em;
+  background-color: var(--fg-primary);
+  color: transparent; /* Oculta el texto '_' si existe */
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.proyectos-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-separator {
+  border: none;
+  border-top: var(--stroke-width) solid var(--border-dim);
+  margin: var(--space-4) 0;
+  width: 50%;
+}
+
+@media (max-width: 768px) {
+  .project-separator {
+    width: 100%;
+  }
+}

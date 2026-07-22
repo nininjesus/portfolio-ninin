@@ -1,0 +1,30 @@
+.panel-main {
+  /* Se expande para llenar el espacio del scroll */
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-main-content {
+  flex: 1;
+  padding: var(--space-5);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .panel-main-content {
+    padding: var(--space-4); /* 32px en tablet */
+  }
+}
+
+@media (max-width: 402px) {
+  .panel-main-content {
+    padding: var(--space-3); /* 24px en phone */
+  }
+}

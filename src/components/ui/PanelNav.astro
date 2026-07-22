@@ -1,0 +1,25 @@
+---
+import '../../styles/components/panel-nav.css';
+import NavOption from './NavOption.astro';
+import { navItems } from '../../data/navigation.js';
+
+interface Props {
+  activeSectionId?: string;
+}
+
+// Por defecto inicia en "bienvenida" (que no está en el menú, así que ningún link estará activo)
+const { activeSectionId = 'bienvenida' } = Astro.props;
+---
+
+<nav id="panel-nav" aria-label="Navegación principal" aria-hidden="false">
+  <ul class="panel-nav-list">
+    {navItems.map((item) => (
+      <NavOption 
+        index={item.index} 
+        label={item.label} 
+        sectionId={item.sectionId} 
+        isActive={activeSectionId === item.sectionId} 
+      />
+    ))}
+  </ul>
+</nav>

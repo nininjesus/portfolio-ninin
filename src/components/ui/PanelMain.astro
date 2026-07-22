@@ -1,0 +1,15 @@
+---
+import '../../styles/components/panel-main.css';
+
+interface Props {
+  as?: any;
+}
+
+const { as: Tag = 'div' } = Astro.props;
+---
+
+<Tag class="panel-main">
+  <div class="panel-main-content">
+    <slot />
+  </div>
+</Tag>

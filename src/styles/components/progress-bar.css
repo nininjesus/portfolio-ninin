@@ -1,0 +1,71 @@
+.cmd-progress-bar {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-family);
+  font-size: var(--font-size-code);
+  line-height: var(--line-height-code);
+  font-weight: var(--font-weight-code);
+  color: var(--fg-text);
+  gap: var(--space-2);
+}
+
+.cmd-progress-label {
+  color: var(--fg-text);
+}
+
+.cmd-progress-track {
+  display: inline-flex;
+  align-items: center;
+  user-select: none; /* Mejor UX, para no seleccionar los bloques */
+}
+
+.cmd-progress-static {
+  display: inline-flex;
+}
+
+.cmd-progress-fill {
+  color: var(--fg-primary);
+}
+
+.cmd-progress-empty {
+  color: var(--fg-dim);
+}
+
+.cmd-progress-percent {
+  color: var(--fg-text-muted);
+}
+
+/* Modo Animado con CSS Layers */
+.cmd-progress-layers {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+}
+
+.cmd-progress-empty-layer {
+  color: var(--fg-dim);
+}
+
+.cmd-progress-fill-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  color: var(--fg-primary);
+  overflow: hidden;
+  white-space: nowrap;
+  
+  /* steps() usa una variable para calcular los "saltos" si el usuario cambia el total de bloques */
+  animation: progress-fill 0.8s steps(var(--steps, 20), end) forwards;
+}
+
+@keyframes progress-fill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmd-progress-fill-layer {
+    animation-duration: 0.01s; /* Completa casi instantáneamente */
+  }
+}
