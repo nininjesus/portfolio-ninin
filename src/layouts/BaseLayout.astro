@@ -12,9 +12,33 @@ import { projects } from '../data/projects.js';
 
 interface Props {
   title: string;
+  description?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
 }
 
-const { title } = Astro.props;
+const { 
+  title,
+  description = "Jesús Ninin - UI/UX & Web Developer Portfolio",
+  canonicalUrl = Astro.url,
+  ogImage = "/images/og-image.png"
+} = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.toString() : 'https://ninin.online';
+const finalCanonicalUrl = new URL(canonicalUrl, siteUrl).toString().replace(/\/$/, '');
+const finalOgImage = new URL(ogImage, siteUrl).toString();
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jesús Ninin",
+  "url": "https://ninin.online",
+  "jobTitle": "UI/UX & Web Developer",
+  "sameAs": [
+    "https://github.com/nininjesus",
+    "https://www.linkedin.com/in/ninin-dev"
+  ]
+};
 ---
 
 <!DOCTYPE html>
@@ -23,6 +47,30 @@ const { title } = Astro.props;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Jesús Ninin" />
+  <link rel="canonical" href={finalCanonicalUrl} />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={finalCanonicalUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={finalOgImage} />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content={finalCanonicalUrl} />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={finalOgImage} />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
 </head>
 <body>
   <div class="os-window">
