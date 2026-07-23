@@ -42,16 +42,59 @@ export function initWindowManager() {
     const trigger = e.target.closest('[data-target-window]');
     if (!trigger) return;
     const win = document.getElementById(trigger.dataset.targetWindow);
-    if (win) openWindow(win);
+    if (win) openWindow(win, trigger);
   });
-  // ResizeObserver en el contenedor: recalcula el top de ventanas minimizadas
-  // cuando cambia el tamaño del layout (más preciso que window 'resize').
-  const container = document.querySelector('#proyectos.panel');
-  if (container) {
+  // ResizeObserver en el contenedor layout-main para recalcular 
+  // ventanas cuando cambia el tamaño del OS window
+  const mainContainer = document.querySelector('.layout-main');
+  if (mainContainer) {
     new ResizeObserver(() => {
-      recalculateMinimizedPositions(container);
-    }).observe(container);
+      recalculateAllWindowPositions();
+    }).observe(mainContainer);
+  } else {
+    const container = document.querySelector('#proyectos.panel');
+    if (container) {
+      new ResizeObserver(() => {
+        recalculateMinimizedPositions(container);
+      }).observe(container);
+    }
   }
+}
+
+function recalculateAllWindowPositions() {
+  document.querySelectorAll('.window-detail').forEach(win => {
+    const state = win.dataset.state;
+    const container = win.closest('.panel');
+    if (!container) return;
+
+    if (state === 'minimized') {
+      recalculateMinimizedPositions(container);
+    } else if (state === 'normal') {
+      clampWindowInsideContainer(win, container);
+    }
+  });
+}
+
+function clampWindowInsideContainer(win, container) {
+  const cW = container.offsetWidth;
+  const cH = container.offsetHeight;
+  const wW = win.offsetWidth;
+  const wH = win.offsetHeight;
+
+  let currentLeft = parseFloat(win.style.left) || 0;
+  if (win.style.left.includes('%')) {
+    currentLeft = (currentLeft / 100) * cW;
+  }
+  let currentTop = parseFloat(win.style.top) || 0;
+  if (win.style.top.includes('%')) {
+    currentTop = (currentTop / 100) * cH;
+  }
+
+  const clampedLeft = Math.max(0, Math.min(currentLeft, cW - wW));
+  const clampedTop  = Math.max(0, Math.min(currentTop,  cH - wH));
+
+  win.style.left = `${(clampedLeft / cW) * 100}%`;
+  win.style.top  = `${(clampedTop / cH) * 100}%`;
 }
 
 // ── Inicializar una ventana individual ───────────────────
@@ -84,6 +127,9 @@ function initSingleWindow(win) {
 
   // Drag
   initDrag(win);
+
+  // Focus Trap
+  trapFocus(win);
 }
 
 // ── Escape: cierra la ventana visible con mayor z-index ───
@@ -102,8 +148,12 @@ document.addEventListener('keydown', (e) => {
 
 // ── Abrir ─────────────────────────────────────────────────
 
-function openWindow(win) {
+function openWindow(win, trigger = null) {
   const state = win.dataset.state;
+
+  if (trigger) {
+    win._triggerBtn = trigger;
+  }
 
   if (state !== 'hidden') {
     // Ya visible: traer al frente. Si está minimizada, restaurarla.
@@ -126,8 +176,11 @@ function openWindow(win) {
     const baseLeft = Math.round((cW - wW) / 2);
     const baseTop  = Math.round((cH - wH) / 2);
 
-    win.style.left      = `${Math.max(0, baseLeft + offset)}px`;
-    win.style.top       = `${Math.max(0, baseTop  + offset)}px`;
+    const finalLeft = Math.max(0, baseLeft + offset);
+    const finalTop  = Math.max(0, baseTop  + offset);
+
+    win.style.left      = `${(finalLeft / cW) * 100}%`;
+    win.style.top       = `${(finalTop / cH) * 100}%`;
     win.style.transform = 'none';
   }
 
@@ -147,6 +200,11 @@ function closeWindow(win) {
   const container = win.closest('.panel');
   if (container && window.innerWidth <= 768) {
     recalculateMinimizedPositions(container);
+  }
+
+  if (win._triggerBtn) {
+    win._triggerBtn.focus();
+    win._triggerBtn = null;
   }
 }
 
@@ -277,6 +335,41 @@ function updateMaximizeButton(win) {
   btn.setAttribute('aria-label', isMax ? 'Restaurar ventana' : 'Maximizar ventana');
 }
 
+// ── Focus Trap ────────────────────────────────────────────
+
+function trapFocus(win) {
+  win.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    // Solo atrapar foco si la ventana está activa (normal o maximizada)
+    if (win.dataset.state !== 'normal' && win.dataset.state !== 'maximized') return;
+
+    const focusableEls = win.querySelectorAll('a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (focusableEls.length === 0) return;
+
+    // Filtrar elementos visibles (simplificado: asume que si tienen width/height o son el activo, son interactuables)
+    const visibleEls = Array.from(focusableEls).filter(el => {
+      return el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement;
+    });
+
+    if (visibleEls.length === 0) return;
+
+    const firstEl = visibleEls[0];
+    const lastEl = visibleEls[visibleEls.length - 1];
+
+    if (e.shiftKey) { // Shift + Tab
+      if (document.activeElement === firstEl) {
+        lastEl.focus();
+        e.preventDefault();
+      }
+    } else { // Tab
+      if (document.activeElement === lastEl) {
+        firstEl.focus();
+        e.preventDefault();
+      }
+    }
+  });
+}
+
 // ── Drag ──────────────────────────────────────────────────
 
 /**
@@ -351,77 +444,86 @@ function getClampedMinimizedLeft(win, desiredLeft, containerRect) {
   return left;
 }
 
+let activeDragWin = null;
+const dragState = {
+  startMouseX: 0,
+  startMouseY: 0,
+  startWinLeft: 0,
+  startWinTop: 0
+};
+
+document.addEventListener('mousemove', (e) => {
+  if (!activeDragWin) return;
+  const win = activeDragWin;
+  win._hasDragged = true;
+
+  const containerRect = win.closest('.panel').getBoundingClientRect();
+
+  let newLeft = dragState.startWinLeft + (e.clientX - dragState.startMouseX);
+  const maxLeft = containerRect.width - win.offsetWidth;
+
+  // En minimizado aplicamos detección de colisión con otras ventanas minimizadas
+  if (win.dataset.state === 'minimized') {
+    newLeft = getClampedMinimizedLeft(win, newLeft, containerRect);
+    win.style.left = `${newLeft}px`;
+  } else {
+    newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+    win.style.left = `${(newLeft / containerRect.width) * 100}%`;
+  }
+
+  // El eje vertical solo se mueve si la ventana está en estado normal.
+  if (win.dataset.state === 'normal') {
+    let newTop = dragState.startWinTop + (e.clientY - dragState.startMouseY);
+    const maxTop = containerRect.height - win.offsetHeight;
+    newTop = Math.max(0, Math.min(newTop, maxTop));
+    win.style.top = `${(newTop / containerRect.height) * 100}%`;
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  if (!activeDragWin) return;
+  const win = activeDragWin;
+  activeDragWin = null;
+  win.style.transition = '';
+  document.body.style.userSelect = '';
+  // Restablecer el flag en el siguiente tick para que el evento click lo pueda leer
+  setTimeout(() => { win._hasDragged = false; }, 0);
+});
+
 function initDrag(win) {
   const header = win.querySelector('.window-detail-header');
   if (!header) return;
-
-  let isDragging   = false;
-  let startMouseX  = 0;
-  let startMouseY  = 0;
-  let startWinLeft = 0;
-  let startWinTop  = 0;
 
   header.addEventListener('mousedown', (e) => {
     if (win.dataset.state !== 'normal' && win.dataset.state !== 'minimized') return;
     if (e.target.closest('.window-controls')) return;
 
-    isDragging = true;
+    activeDragWin = win;
     bringToFront(win);
 
     const containerRect = win.closest('.panel').getBoundingClientRect();
     const winRect       = win.getBoundingClientRect();
 
-    startWinLeft = winRect.left - containerRect.left;
-    startMouseX  = e.clientX;
+    dragState.startWinLeft = winRect.left - containerRect.left;
+    dragState.startMouseX  = e.clientX;
 
     // Para estado normal también capturamos top
     if (win.dataset.state === 'normal') {
-      startWinTop = winRect.top - containerRect.top;
-      startMouseY = e.clientY;
-      win.style.top = `${startWinTop}px`;
+      dragState.startWinTop = winRect.top - containerRect.top;
+      dragState.startMouseY = e.clientY;
+      win.style.top = `${(dragState.startWinTop / containerRect.height) * 100}%`;
     }
 
-    win.style.left      = `${startWinLeft}px`;
+    if (win.dataset.state === 'minimized') {
+      win.style.left = `${dragState.startWinLeft}px`;
+    } else {
+      win.style.left = `${(dragState.startWinLeft / containerRect.width) * 100}%`;
+    }
+    
     win.style.transform = 'none';
     win.style.transition = 'none';
     document.body.style.userSelect = 'none';
 
     e.preventDefault();
-  });
-
-  document.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    win._hasDragged = true;
-
-    const containerRect = win.closest('.panel').getBoundingClientRect();
-
-    let newLeft = startWinLeft + (e.clientX - startMouseX);
-    const maxLeft = containerRect.width - win.offsetWidth;
-
-    // En minimizado aplicamos detección de colisión con otras ventanas minimizadas
-    if (win.dataset.state === 'minimized') {
-      newLeft = getClampedMinimizedLeft(win, newLeft, containerRect);
-    } else {
-      newLeft = Math.max(0, Math.min(newLeft, maxLeft));
-    }
-    win.style.left = `${newLeft}px`;
-
-    // El eje vertical solo se mueve si la ventana está en estado normal.
-    // En minimizado, CSS bottom: 0 mantiene la ventana al fondo automáticamente.
-    if (win.dataset.state === 'normal') {
-      let newTop = startWinTop + (e.clientY - startMouseY);
-      const maxTop = containerRect.height - win.offsetHeight;
-      newTop = Math.max(0, Math.min(newTop, maxTop));
-      win.style.top = `${newTop}px`;
-    }
-  });
-
-  document.addEventListener('mouseup', () => {
-    if (!isDragging) return;
-    isDragging = false;
-    win.style.transition = '';
-    document.body.style.userSelect = '';
-    // Restablecer el flag en el siguiente tick para que el evento click lo pueda leer
-    setTimeout(() => { win._hasDragged = false; }, 0);
   });
 }

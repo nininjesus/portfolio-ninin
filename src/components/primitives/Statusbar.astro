@@ -26,16 +26,30 @@ import Output from './Output.astro';
       el.textContent = `NININTRON READY  |  MEM: ${mem}%  |  TIME: ${getRealTime()}`;
     }
 
-    // Reloj: actualiza cada segundo
-    setInterval(update, 1000);
+    let clockInterval: ReturnType<typeof setInterval>;
+    let memInterval: ReturnType<typeof setInterval>;
 
-    // Memoria: fluctúa ±3% cada 4 segundos, dentro de [55, 75]
-    setInterval(() => {
+    function updateMemory(): void {
       const delta = Math.floor(Math.random() * 7) - 3;
       mem = Math.min(75, Math.max(55, mem + delta));
-    }, 4000);
+    }
 
-    // Render inmediato para evitar el flash inicial
+    function startIntervals() {
+      clockInterval = setInterval(update, 1000);
+      memInterval = setInterval(updateMemory, 4000);
+    }
+
+    function stopIntervals() {
+      clearInterval(clockInterval);
+      clearInterval(memInterval);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      document.hidden ? stopIntervals() : startIntervals();
+    });
+
+    // Render inmediato y arrancar
     update();
+    startIntervals();
   }
 </script>

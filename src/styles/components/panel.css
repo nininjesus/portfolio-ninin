@@ -15,6 +15,10 @@
   /* Contenedor relativo para poder limitar elementos absolutos (como ventanas) */
   position: relative;
   overflow: hidden;
+  
+  /* Scroll Snap behavior */
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 /* 
