@@ -5,7 +5,7 @@
 }
 
 /* Alineación vertical de los corchetes forzando un ancho fijo en los labels */
-.contacto-wrapper :global(.cmd-input-label) {
+.contacto-wrapper .cmd-input-label {
   width: 72px; /* Ancho suficiente para 'NOMBRE:', 'EMAIL:', 'ASUNTO:' */
 }
 

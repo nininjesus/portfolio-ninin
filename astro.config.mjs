@@ -6,4 +6,8 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://ninin.online',
   integrations: [sitemap()],
+  compressHTML: true,
+  build: {
+    inlineStylesheets: 'auto',
+  },
 });

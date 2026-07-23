@@ -8,7 +8,7 @@ import PanelMain from '../ui/PanelMain.astro';
 <Panel sectionId="bienvenida" ariaLabel="Sección de bienvenida" title="MAIN.EXE">
   <PanelMain>
     <div class="bienvenida-content">
-      <Image src="/images/ninin-logo.svg" alt="NININTRON Logo ASCII" class="ascii-art-logo" aria-hidden="true" width={341} height={301} loading="eager" />
+      <Image src="/images/ninin-logo.svg" alt="NININTRON Logo ASCII" class="ascii-art-logo" aria-hidden="true" width={341} height={301} loading="eager" fetchpriority="high" />
       <div class="bienvenida-text">
         <h1 class="os-name">NININTRON_OS</h1>
         <h2 class="os-version">V1.0</h2>

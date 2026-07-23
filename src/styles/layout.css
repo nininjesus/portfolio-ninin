@@ -91,9 +91,18 @@ body {
   min-height: 0;
   display: flex;
   flex-direction: row;
-  overflow-x: hidden; /* Ocultamos el scroll horizontal nativo, se navega por JS */
+  overflow-x: auto; /* Habilitamos scroll para snap nativo */
   overflow-y: hidden;
   position: relative;
+  scroll-snap-type: x mandatory; /* Snap nativo en desktop */
+  
+  /* Ocultar scrollbar pero mantener funcionalidad */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.main-content-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 /* Responsividad Tablet/Móvil */
@@ -115,9 +124,10 @@ body {
   }
   
   .main-content-scroll {
-    /* En móvil, las secciones pueden caer verticalmente o seguir horizontales */
+    /* En móvil, las secciones caen verticalmente */
     flex-direction: column;
     overflow-x: hidden;
-    overflow-y: hidden; /* Se activará scroll si la sección es larga */
+    overflow-y: auto; 
+    scroll-snap-type: y mandatory; /* Snap nativo en móvil */
   }
 }

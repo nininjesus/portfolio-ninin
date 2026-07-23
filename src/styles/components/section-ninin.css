@@ -106,7 +106,7 @@
 }
 
 .ascii-photo {
-  max-width: 400px; /* Constrict size */
+  max-width: min(400px, 100%); /* Constrict size but responsive */
   width: 100%;
   height: auto;
 }
