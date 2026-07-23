@@ -42,7 +42,7 @@ export function initWindowManager() {
     const trigger = e.target.closest('[data-target-window]');
     if (!trigger) return;
     const win = document.getElementById(trigger.dataset.targetWindow);
-    if (win) openWindow(win);
+    if (win) openWindow(win, trigger);
   });
   // ResizeObserver en el contenedor layout-main para recalcular 
   // ventanas cuando cambia el tamaño del OS window
@@ -127,6 +127,9 @@ function initSingleWindow(win) {
 
   // Drag
   initDrag(win);
+
+  // Focus Trap
+  trapFocus(win);
 }
 
 // ── Escape: cierra la ventana visible con mayor z-index ───
@@ -145,8 +148,12 @@ document.addEventListener('keydown', (e) => {
 
 // ── Abrir ─────────────────────────────────────────────────
 
-function openWindow(win) {
+function openWindow(win, trigger = null) {
   const state = win.dataset.state;
+
+  if (trigger) {
+    win._triggerBtn = trigger;
+  }
 
   if (state !== 'hidden') {
     // Ya visible: traer al frente. Si está minimizada, restaurarla.
@@ -193,6 +200,11 @@ function closeWindow(win) {
   const container = win.closest('.panel');
   if (container && window.innerWidth <= 768) {
     recalculateMinimizedPositions(container);
+  }
+
+  if (win._triggerBtn) {
+    win._triggerBtn.focus();
+    win._triggerBtn = null;
   }
 }
 
@@ -321,6 +333,41 @@ function updateMaximizeButton(win) {
   const isMax = win.dataset.state === 'maximized';
   btn.textContent = isMax ? '[▣]' : '[□]';
   btn.setAttribute('aria-label', isMax ? 'Restaurar ventana' : 'Maximizar ventana');
+}
+
+// ── Focus Trap ────────────────────────────────────────────
+
+function trapFocus(win) {
+  win.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    // Solo atrapar foco si la ventana está activa (normal o maximizada)
+    if (win.dataset.state !== 'normal' && win.dataset.state !== 'maximized') return;
+
+    const focusableEls = win.querySelectorAll('a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (focusableEls.length === 0) return;
+
+    // Filtrar elementos visibles (simplificado: asume que si tienen width/height o son el activo, son interactuables)
+    const visibleEls = Array.from(focusableEls).filter(el => {
+      return el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement;
+    });
+
+    if (visibleEls.length === 0) return;
+
+    const firstEl = visibleEls[0];
+    const lastEl = visibleEls[visibleEls.length - 1];
+
+    if (e.shiftKey) { // Shift + Tab
+      if (document.activeElement === firstEl) {
+        lastEl.focus();
+        e.preventDefault();
+      }
+    } else { // Tab
+      if (document.activeElement === lastEl) {
+        firstEl.focus();
+        e.preventDefault();
+      }
+    }
+  });
 }
 
 // ── Drag ──────────────────────────────────────────────────
