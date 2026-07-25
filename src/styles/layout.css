@@ -127,7 +127,7 @@ body {
     /* En móvil, las secciones caen verticalmente */
     flex-direction: column;
     overflow-x: hidden;
-    overflow-y: auto; 
-    scroll-snap-type: y mandatory; /* Snap nativo en móvil */
+    overflow-y: hidden;   /* bloquear scroll táctil nativo */
+    scroll-snap-type: none;
   }
 }
