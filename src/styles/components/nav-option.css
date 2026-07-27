@@ -17,7 +17,6 @@
   font-weight: var(--font-weight-body);
   transition: background-color 0.2s ease, color 0.2s ease;
   cursor: pointer;
-  outline: none;
 }
 
 /* El número y los corchetes van con el color de acento por defecto */
@@ -30,10 +29,14 @@
 }
 
 /* Estado Hover y Foco por teclado */
-.nav-option:hover,
+.nav-option:hover {
+  background-color: var(--bg-hover);
+}
+
 .nav-option:focus-visible {
   background-color: var(--bg-hover);
-  outline: none;
+  outline: 1px solid var(--fg-primary);
+  outline-offset: -1px;
 }
 
 /* Estado Active (Clic) */

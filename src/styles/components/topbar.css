@@ -47,27 +47,6 @@
   color: var(--fg-primary);
 }
 
-.topbar-menu-btn {
-  background: transparent;
-  border: var(--stroke-width) dashed var(--border-dim);
-  color: var(--fg-text);
-  font-family: var(--font-family);
-  font-size: var(--font-size-body);
-  cursor: pointer;
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-component);
-  transition: background-color 0.2s ease, color 0.2s ease;
-  white-space: pre; /* Mantiene los espacios de los corchetes idéntico a Btn.astro */
-}
-
-.topbar-menu-btn:hover {
-  background-color: var(--bg-hover);
-}
-
-.topbar-menu-btn:focus-visible {
-  outline: 2px dashed var(--fg-primary);
-  outline-offset: 2px;
-}
 
 /* Responsividad Tablet y Phone */
 @media (max-width: 768px) {

@@ -51,7 +51,5 @@
   --radius-swatch: 5px;
 
   /* Stroke / Border */
-  --stroke-divider: #3d3d3d;
-  --stroke-accent: #8b2323;
   --stroke-width: 0.64px;
 }

@@ -19,7 +19,7 @@ interface Props {
 
 const { 
   title,
-  description = "Jesús Ninin - UI/UX & Web Developer Portfolio",
+  description = "Jesús Ninin - UI/UX &amp; Web Developer Portfolio",
   canonicalUrl = Astro.url,
   ogImage = "/images/og-image.png"
 } = Astro.props;
@@ -34,6 +34,13 @@ const schemaData = {
   "name": "Jesús Ninin",
   "url": "https://ninin.online",
   "jobTitle": "UI/UX & Web Developer",
+  "description": description,
+  "knowsAbout": [
+    "Frontend Development",
+    "Backend Development",
+    "UI/UX Design",
+    "Web Development"
+  ],
   "sameAs": [
     "https://github.com/nininjesus",
     "https://www.linkedin.com/in/ninin-dev"

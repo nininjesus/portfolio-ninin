@@ -32,7 +32,6 @@
 .cmd-btn.variant-default:hover,
 .cmd-btn.variant-default:focus-visible {
   background-color: var(--bg-hover);
-  outline: none;
 }
 
 .cmd-btn.variant-default:active {
@@ -58,7 +57,6 @@
 .cmd-btn.variant-secondary:focus-visible {
   background-color: var(--bg-hover);
   color: var(--fg-text);
-  outline: none;
 }
 
 .cmd-btn.variant-secondary:active {
@@ -66,7 +64,8 @@
   color: var(--bg-terminal);
 }
 
-/* Quitar el outline por defecto en todos los botones para mantener la estética */
+/* Añadir un outline visible para accesibilidad en foco de teclado */
 .cmd-btn:focus-visible {
-  outline: none;
+  outline: 1px solid var(--fg-primary);
+  outline-offset: 2px;
 }

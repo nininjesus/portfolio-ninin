@@ -24,16 +24,16 @@
 .os-name {
   color: var(--fg-text);
   font-family: var(--font-family);
-  font-size: 3rem;
+  font-size: var(--font-size-h1);
   font-weight: 700;
   margin: 0;
-  line-height: 1.2;
+  line-height: var(--line-height-h1);
 }
 
 .os-version {
   color: var(--fg-tertiary);
   font-family: var(--font-family);
-  font-size: 1.5rem;
+  font-size: var(--font-size-h3);
   font-weight: 400;
   margin: 0;
 }
@@ -54,7 +54,7 @@
   }
   
   .os-name {
-    font-size: 2rem;
+    font-size: var(--font-size-h2);
   }
 }
 
@@ -63,6 +63,6 @@
     gap: var(--space-4); /* Reducir gap en phone */
   }
   .os-name {
-    font-size: 1.5rem;
+    font-size: var(--font-size-h3);
   }
 }

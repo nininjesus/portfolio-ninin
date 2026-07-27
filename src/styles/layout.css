@@ -14,7 +14,7 @@ body {
 /* El contenedor principal de la aplicación que simula la ventana del OS */
 .os-window {
   width: 100vw;
-  max-width: var(--breakpoint-desktop);
+  max-width: var(--bp-desktop);
   height: 100vh;
   /* Si la pantalla es más alta que 1024px, lo limitamos para que parezca una ventana */
   max-height: 1024px; 

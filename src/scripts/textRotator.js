@@ -9,12 +9,12 @@ export function rotateText(elementId, textArray, interval = 5000) {
   const element = document.getElementById(elementId);
   
   if (!element || !textArray || textArray.length === 0) {
-    return;
+    return null;
   }
   
   let currentIndex = 0;
   
-  setInterval(() => {
+  return setInterval(() => {
     currentIndex = (currentIndex + 1) % textArray.length;
     element.textContent = textArray[currentIndex];
   }, interval);

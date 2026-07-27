@@ -72,3 +72,30 @@
   display: flex;
   justify-content: flex-start;
 }
+
+.form-result-wrapper {
+  margin-top: var(--space-4);
+  display: none;
+}
+.form-result-wrapper.success {
+  display: block;
+}
+.form-result-wrapper.success .cmd-output-content {
+  color: var(--fg-secondary);
+}
+.form-result-wrapper.error {
+  display: block;
+}
+.form-result-wrapper.error .cmd-output-content {
+  color: var(--fg-primary);
+}
+.form-result-wrapper.loading {
+  display: block;
+}
+.form-result-wrapper.loading .cmd-output-content {
+  color: var(--fg-text);
+}
+.contacto-form.was-validated :invalid {
+  border-color: var(--fg-primary);
+  color: var(--fg-primary);
+}
