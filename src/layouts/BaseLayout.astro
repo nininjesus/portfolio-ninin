@@ -87,8 +87,111 @@ const schemaData = {
 
   <!-- JSON-LD -->
   <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  <!-- CRT Init: lee localStorage antes del primer paint para evitar flash -->
+  <script>
+    (function () {
+      var osWindow = null;
+      var btn = null;
+      var CRT_KEY = 'crt-enabled';
+
+      var noiseFrame = 0;
+      var noiseSeed = 1;
+      var turbulence = null;
+      var rAF_id = null;
+
+      function animateNoise() {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
+        noiseFrame++;
+        if (noiseFrame % 3 === 0) { // ~20fps
+          noiseSeed = (noiseSeed % 999) + 1;
+          if (turbulence) turbulence.setAttribute('seed', noiseSeed);
+        }
+        if (!osWindow) osWindow = document.querySelector('.os-window');
+        if (osWindow && !osWindow.classList.contains('crt-off')) {
+          rAF_id = requestAnimationFrame(animateNoise);
+        }
+      }
+
+      /** Aplica/remueve el efecto y sincroniza el botón */
+      function applyCRT(enabled) {
+        if (!osWindow) osWindow = document.querySelector('.os-window');
+        if (!btn) btn = document.getElementById('crt-toggle-btn');
+        if (!turbulence) turbulence = document.getElementById('crt-turbulence');
+
+        if (enabled) {
+          osWindow.classList.remove('crt-off');
+          if (btn) {
+            btn.classList.add('is-active');
+            btn.setAttribute('aria-pressed', 'true');
+            btn.setAttribute('aria-label', 'Desactivar efecto de monitor CRT');
+          }
+          if (rAF_id) cancelAnimationFrame(rAF_id);
+          rAF_id = requestAnimationFrame(animateNoise);
+        } else {
+          osWindow.classList.add('crt-off');
+          if (btn) {
+            btn.classList.remove('is-active');
+            btn.setAttribute('aria-pressed', 'false');
+            btn.setAttribute('aria-label', 'Activar efecto de monitor CRT');
+          }
+          if (rAF_id) {
+            cancelAnimationFrame(rAF_id);
+            rAF_id = null;
+          }
+        }
+      }
+
+      /** Toggle público: botón lo llama directamente */
+      window.toggleCRT = function () {
+        var current = localStorage.getItem(CRT_KEY) === 'true';
+        var next = !current;
+        localStorage.setItem(CRT_KEY, String(next));
+        applyCRT(next);
+      };
+
+      /** Inicialización: default = OFF, a menos que localStorage diga lo contrario */
+      document.addEventListener('DOMContentLoaded', function () {
+        var saved = localStorage.getItem(CRT_KEY);
+        var enabled = saved === 'true'; /* Arranca desactivado si no hay valor guardado */
+        applyCRT(enabled);
+
+        var toggleBtn = document.getElementById('crt-toggle-btn');
+        if (toggleBtn) {
+          toggleBtn.addEventListener('click', window.toggleCRT);
+        }
+      });
+    })();
+  </script>
 </head>
 <body>
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0">
+    <filter id="crt-chromatic" x="-5%" y="-5%" width="110%" height="110%">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red-channel"/>
+      <feOffset in="red-channel" dx="2" dy="1" result="red-shifted"/>
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="blue-channel"/>
+      <feOffset in="blue-channel" dx="-2" dy="-1" result="blue-shifted"/>
+      <feBlend in="SourceGraphic" in2="red-shifted" mode="screen" result="with-red"/>
+      <feBlend in="with-red" in2="blue-shifted" mode="screen" result="full-aberration"/>
+      <feRadialGradient id="aberration-mask" cx="50%" cy="50%" r="50%">
+        <stop offset="50%" stop-color="white" stop-opacity="0"/>
+        <stop offset="100%" stop-color="white" stop-opacity="1"/>
+      </feRadialGradient>
+      <feMask id="border-mask">
+        <rect width="100%" height="100%" fill="url(#aberration-mask)"/>
+      </feMask>
+      <feComposite in="full-aberration" in2="SourceGraphic" operator="arithmetic" k1="0" k2="0.4" k3="0.6" k4="0"/>
+    </filter>
+    <filter id="crt-noise" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence id="crt-turbulence" type="fractalNoise" baseFrequency="0.80 0.80" numOctaves="4" seed="2" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix in="noise" type="saturate" values="0" result="gray-noise"/>
+      <feComponentTransfer in="gray-noise" result="subtle-noise">
+        <feFuncA type="linear" slope="0.04"/>
+      </feComponentTransfer>
+      <feComposite in="subtle-noise" in2="SourceGraphic" operator="over"/>
+    </filter>
+  </svg>
   <div class="os-window">
     <Topbar />
     <SectionTransition />

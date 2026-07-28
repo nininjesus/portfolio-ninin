@@ -13,6 +13,7 @@
 @import './components/cursor.css';
 @import './components/terminal-block.css';
 /* UI components */
+@import './components/crt.css';
 @import './components/nav-option.css';
 @import './components/panel-nav.css';
 @import './components/preview-card.css';

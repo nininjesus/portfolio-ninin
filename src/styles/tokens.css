@@ -52,4 +52,11 @@
 
   /* Stroke / Border */
   --stroke-width: 0.64px;
+
+  /* === GRUPO crt-cga === */
+  --crt-phosphor:        rgba(108, 180, 255, 0.06); /* Glow difuso P22 CGA     */
+  --crt-phosphor-core:   rgba(108, 180, 255, 0.03); /* Núcleo emisión CGA       */
+  --crt-scanline-alpha:  0.25;                       /* Opacidad scanlines CGA   */
+  --crt-curvature:       8px / 6px;                 /* Border-radius curvatura  */
+  --crt-vignette-corner: rgba(0, 0, 0, 0.65);       /* Oscuridad esquinas       */
 }
