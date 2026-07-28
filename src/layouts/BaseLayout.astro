@@ -230,8 +230,24 @@ const schemaData = {
                 behavior: 'instant'
               });
             }
+            // Actualizar URL sin causar scroll nativo del browser
+            history.pushState({ sectionId: targetId }, '', `#${targetId}`);
           }
         });
+      });
+
+      // Soporte para el botón Atrás / Adelante del browser
+      window.addEventListener('popstate', (event) => {
+        const sectionId = event.state?.sectionId ?? location.hash.replace('#', '');
+        if (!sectionId) return;
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection && scrollContainer) {
+          if (window.innerWidth <= 768) {
+            scrollContainer.scrollTo({ top: targetSection.offsetTop, behavior: 'instant' });
+          } else {
+            scrollContainer.scrollTo({ left: targetSection.offsetLeft, behavior: 'instant' });
+          }
+        }
       });
 
       // Re-centrar la sección activa al cambiar entre Desktop (eje X) y Mobile (eje Y)
@@ -261,8 +277,19 @@ const schemaData = {
         }, 100);
       });
 
-      // Posicionar correctamente en la primera sección al cargar
-      if (window.innerWidth <= 768 && sections.length > 0) {
+      // Deep linking: si la URL ya tiene un hash al cargar, ir a esa sección
+      const initialHash = location.hash.replace('#', '');
+      const initialSection = initialHash ? document.getElementById(initialHash) : null;
+
+      if (initialSection) {
+        // Registrar el estado inicial en el historial
+        history.replaceState({ sectionId: initialHash }, '', `#${initialHash}`);
+        if (window.innerWidth <= 768) {
+          scrollContainer.scrollTo({ top: initialSection.offsetTop, behavior: 'instant' });
+        } else {
+          scrollContainer.scrollTo({ left: initialSection.offsetLeft, behavior: 'instant' });
+        }
+      } else if (window.innerWidth <= 768 && sections.length > 0) {
         scrollContainer.scrollTo({ top: 0, behavior: 'instant' });
       }
     });
