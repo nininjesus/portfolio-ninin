@@ -201,7 +201,7 @@ const schemaData = {
       <aside class="layout-sidebar">
         <header class="panel-header">
           <span class="panel-indicator" aria-hidden="true">▓</span>
-          <h2 class="panel-title">NAV.EXE</h2>
+          <p class="panel-title" role="heading" aria-level="2">NAV.EXE</p>
         </header>
         <div class="sidebar-content">
           <PanelNav />
@@ -212,7 +212,7 @@ const schemaData = {
       <main class="layout-main">
         <header class="panel-header">
           <span class="panel-indicator" aria-hidden="true">▓</span>
-          <h2 class="panel-title" id="active-section-title">MAIN.EXE</h2>
+          <p class="panel-title" id="active-section-title" role="heading" aria-level="2">MAIN.EXE</p>
         </header>
         <div class="main-content-scroll" id="sections-container">
           <slot />
@@ -263,7 +263,7 @@ const schemaData = {
             const activeId = entry.target.getAttribute('id');
             navLinks.forEach(link => {
               link.classList.remove('is-active');
-              link.setAttribute('aria-current', 'false');
+              link.removeAttribute('aria-current');
               if (link.getAttribute('href') === `#${activeId}`) {
                 link.classList.add('is-active');
                 link.setAttribute('aria-current', 'page');

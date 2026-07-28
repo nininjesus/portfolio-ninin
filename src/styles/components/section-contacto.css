@@ -4,9 +4,11 @@
   gap: var(--space-3);
 }
 
-/* Alineación vertical de los corchetes forzando un ancho fijo en los labels */
+/* Valor fijo (72px) para alinear verticalmente los inputs basados en la longitud 
+   máxima de las etiquetas (NOMBRE:, EMAIL:, ASUNTO:) para igualar el layout terminal. 
+   No usa un token global porque es específico al contenido de este formulario. */
 .contacto-wrapper .cmd-input-label {
-  width: 72px; /* Ancho suficiente para 'NOMBRE:', 'EMAIL:', 'ASUNTO:' */
+  width: 72px;
 }
 
 .contacto-spacing {

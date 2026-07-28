@@ -1,19 +1,4 @@
 
-.ninin-header {
-  margin-top: var(--space-4);
-  margin-bottom: var(--space-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.ninin-title {
-  color: var(--fg-primary);
-  font-family: var(--font-family);
-  font-size: var(--font-size-h1);
-  font-weight: bold;
-  text-transform: uppercase;
-}
 
 .ninin-content {
   display: grid;
@@ -22,7 +7,6 @@
 }
 
 .ninin-text-col {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -67,7 +51,6 @@
 }
 
 .ninin-photo-col {
-  flex: 1;
   display: flex;
   justify-content: flex-end;
 }

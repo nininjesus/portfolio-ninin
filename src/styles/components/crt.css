@@ -120,6 +120,9 @@
 
 /* --- Accesibilidad -------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+  .os-window.crt-on {
+    filter: none;
+  }
   .os-window::after {
     animation: none; /* Detiene flicker y roll */
   }

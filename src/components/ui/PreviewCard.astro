@@ -25,16 +25,11 @@ const windowId = `project-window-${projectId}`;
   </div>
 
   <div class="card-actions">
-    <button
-      type="button"
-      class="cmd-btn variant-default"
+    <Btn
+      label="Ver"
       data-target-window={windowId}
-      aria-label={`Ver detalles de ${title}`}
-    >
-      <span aria-hidden="true">[ </span
-      ><span class="cmd-btn-label">Ver</span
-      ><span aria-hidden="true"> ]</span>
-    </button>
+      ariaLabel={`Ver detalles de ${title}`}
+    />
     <Btn label="Preview" href={repo} variant="secondary" />
   </div>
 </article>

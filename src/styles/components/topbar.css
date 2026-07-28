@@ -83,10 +83,6 @@
     top: 0;
   }
   
-  .topbar-actions {
-    display: flex;
-  }
-
 
   .menu-toggle {
     display: block; /* Mostrar botón de menú en tablet/phone */

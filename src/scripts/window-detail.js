@@ -72,6 +72,44 @@ export function initWindowManager() {
     });
     if (topWin) closeWindow(topWin);
   });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!activeDragWin) return;
+    const win = activeDragWin;
+    win._hasDragged = true;
+
+    const containerRect = win.closest('.panel').getBoundingClientRect();
+
+    let newLeft = dragState.startWinLeft + (e.clientX - dragState.startMouseX);
+    const maxLeft = containerRect.width - win.offsetWidth;
+
+    // En minimizado aplicamos detección de colisión con otras ventanas minimizadas
+    if (win.dataset.state === 'minimized') {
+      newLeft = getClampedMinimizedLeft(win, newLeft, containerRect);
+      win.style.left = `${newLeft}px`;
+    } else {
+      newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+      win.style.left = `${(newLeft / containerRect.width) * 100}%`;
+    }
+
+    // El eje vertical solo se mueve si la ventana está en estado normal.
+    if (win.dataset.state === 'normal') {
+      let newTop = dragState.startWinTop + (e.clientY - dragState.startMouseY);
+      const maxTop = containerRect.height - win.offsetHeight;
+      newTop = Math.max(0, Math.min(newTop, maxTop));
+      win.style.top = `${(newTop / containerRect.height) * 100}%`;
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!activeDragWin) return;
+    const win = activeDragWin;
+    activeDragWin = null;
+    win.style.transition = '';
+    document.body.style.userSelect = '';
+    // Restablecer el flag en el siguiente tick para que el evento click lo pueda leer
+    setTimeout(() => { win._hasDragged = false; }, 0);
+  });
 }
 
 function recalculateAllWindowPositions() {
@@ -187,8 +225,8 @@ function openWindow(win, trigger = null) {
   bringToFront(win);
   updateMaximizeButton(win);
 
-  // Foco accesible
-  win.querySelector('button, [href], [tabindex="0"]')?.focus();
+  // Foco accesible: Mover foco al botón de cierre
+  win.querySelector('[data-action="close"]')?.focus();
 }
 
 // ── Cerrar ────────────────────────────────────────────────
@@ -449,43 +487,7 @@ const dragState = {
   startWinTop: 0
 };
 
-document.addEventListener('mousemove', (e) => {
-  if (!activeDragWin) return;
-  const win = activeDragWin;
-  win._hasDragged = true;
 
-  const containerRect = win.closest('.panel').getBoundingClientRect();
-
-  let newLeft = dragState.startWinLeft + (e.clientX - dragState.startMouseX);
-  const maxLeft = containerRect.width - win.offsetWidth;
-
-  // En minimizado aplicamos detección de colisión con otras ventanas minimizadas
-  if (win.dataset.state === 'minimized') {
-    newLeft = getClampedMinimizedLeft(win, newLeft, containerRect);
-    win.style.left = `${newLeft}px`;
-  } else {
-    newLeft = Math.max(0, Math.min(newLeft, maxLeft));
-    win.style.left = `${(newLeft / containerRect.width) * 100}%`;
-  }
-
-  // El eje vertical solo se mueve si la ventana está en estado normal.
-  if (win.dataset.state === 'normal') {
-    let newTop = dragState.startWinTop + (e.clientY - dragState.startMouseY);
-    const maxTop = containerRect.height - win.offsetHeight;
-    newTop = Math.max(0, Math.min(newTop, maxTop));
-    win.style.top = `${(newTop / containerRect.height) * 100}%`;
-  }
-});
-
-document.addEventListener('mouseup', () => {
-  if (!activeDragWin) return;
-  const win = activeDragWin;
-  activeDragWin = null;
-  win.style.transition = '';
-  document.body.style.userSelect = '';
-  // Restablecer el flag en el siguiente tick para que el evento click lo pueda leer
-  setTimeout(() => { win._hasDragged = false; }, 0);
-});
 
 function initDrag(win) {
   const header = win.querySelector('.window-detail-header');

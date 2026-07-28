@@ -4,6 +4,7 @@ import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
 import Prompt from '../primitives/Prompt.astro';
 import Output from '../primitives/Output.astro';
+import { helpData } from '../../data/help.js';
 ---
 
 <Panel sectionId="ayuda" ariaLabel="Sección de ayuda" title="AYUDA.TXT">
@@ -16,26 +17,15 @@ import Output from '../primitives/Output.astro';
     <div class="help-content">
       <hr class="terminal-separator" />
 
-      <Output text="MANUAL DE USUARIO (NININTRON_OS v1.0)" />
-      
-      <!-- Usamos un div wrapper para añadir margen inferior según el diseño original, o aplicamos clase -->
-      <div class="margin-bottom">
-        <Output text="COMANDOS DISPONIBLES:" />
-      </div>
-
-      <Output text="[1] ninin - Presentacion personal y enlaces" />
-      <Output text="[2] proyectos - Directorio de proyectos web destacados" />
-      <Output text="[3] sobre_mi - Ficha técnica, rol y habilidades" />
-      <Output text="[4] contacto - Formulario para enviar un correo" />
-      
-      <div class="margin-bottom">
-        <Output text="[5] ayuda - Manual de usuario e instrucciones" />
-      </div>
-
-      <hr class="terminal-separator" />
-
-      <Output text="NOTA: Puedes ejecutar cualquiera de estos comandos haciendo" />
-      <Output text="clic directamente en el panel de navegación izquierdo (NAV.EXE)" />
+      {helpData.map((line, index) => {
+        if (line === "---") return <hr class="terminal-separator" />;
+        
+        // Add margin-bottom to specific lines to match the original design without extra divs
+        const needsMargin = line.startsWith("COMANDOS DISPONIBLES:") || line.startsWith("[5] ayuda");
+        const className = needsMargin ? "margin-bottom" : "";
+        
+        return <Output text={line} class={className} />;
+      })}
     </div>
     
   </PanelMain>

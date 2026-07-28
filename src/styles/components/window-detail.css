@@ -204,7 +204,7 @@
 }
 
 .window-ctrl--close:hover {
-  color: #cc3333;
+  color: var(--fg-primary);
 }
 
 .window-ctrl:focus-visible {

@@ -61,13 +61,7 @@ button, input, textarea {
   color: inherit;
 }
 
-body {
-  background-color: var(--bg-terminal);
-  color: var(--fg-text);
-  font-family: var(--font-family);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+
 
 /* Scrollbar styles for Firefox only */
 @supports (-moz-appearance: none) {
