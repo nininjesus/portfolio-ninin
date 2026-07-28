@@ -6,12 +6,13 @@ interface Props {
   text?: string;
   showCursor?: boolean;
   contentId?: string;
+  class?: string;
 }
 
-const { text, showCursor = false, contentId } = Astro.props;
+const { text, showCursor = false, contentId, class: className } = Astro.props;
 ---
 
-<div class="cmd-output">
+<div class={`cmd-output ${className || ''}`.trim()}>
   <span class="cmd-output-symbol" aria-hidden="true">&gt;</span>
   <span class="cmd-output-content" id={contentId}>
     {text ? text : <slot />}

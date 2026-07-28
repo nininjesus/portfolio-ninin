@@ -1,0 +1,17 @@
+---
+import Prompt from './Prompt.astro';
+
+interface Props {
+  command: string;
+}
+
+const { command } = Astro.props;
+---
+
+<div class="terminal-command-container">
+  <Prompt command={command} />
+</div>
+<div class="terminal-cursor-container">
+  <span class="cursor-symbol">&gt;</span>
+  <span class="cursor-blink">_</span>
+</div>

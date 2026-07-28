@@ -1,7 +1,7 @@
 ---
 import '../../styles/components/btn.css';
 
-interface Props {
+interface Props extends astroHTML.JSX.HTMLAttributes {
   label: string;
   href?: string;
   variant?: 'default' | 'active' | 'secondary';
@@ -14,7 +14,8 @@ const {
   href, 
   variant = 'default', 
   type = 'button',
-  ariaLabel
+  ariaLabel,
+  ...rest
 } = Astro.props;
 
 const Tag = href ? 'a' : 'button';
@@ -25,6 +26,7 @@ const Tag = href ? 'a' : 'button';
   href={href} 
   type={href ? undefined : type}
   aria-label={ariaLabel}
+  {...rest}
 >
   <span aria-hidden="true">[ </span>
   <span class="cmd-btn-label">{label}</span>

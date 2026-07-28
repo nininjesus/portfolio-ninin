@@ -5,20 +5,13 @@ import PanelMain from '../ui/PanelMain.astro';
 import PreviewCard from '../ui/PreviewCard.astro';
 import WindowDetail from '../ui/WindowDetail.astro';
 import { projects } from '../../data/projects.js';
-import Prompt from '../primitives/Prompt.astro';
+import TerminalHeader from '../primitives/TerminalHeader.astro';
 ---
 
 <Panel sectionId="proyectos" ariaLabel="Sección de proyectos" title="PROYECTOS.EXE">
   <PanelMain>
 
-    <div class="terminal-command-container">
-      <Prompt command="ls proyectos" />
-    </div>
-
-    <div class="terminal-cursor-container">
-      <span class="cursor-symbol">&gt;</span>
-      <span class="cursor-blink">_</span>
-    </div>
+    <TerminalHeader command="ls proyectos" />
 
     <div class="proyectos-list">
       {projects.map((project, index) => (
