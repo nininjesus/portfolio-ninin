@@ -1,36 +1,3 @@
-/* Estilos para Ninin */
-.terminal-command-container {
-  display: flex;
-  gap: var(--space-1);
-  margin-top: var(--space-3);
-  margin-bottom: var(--space-4);
-}
-
-.terminal-cursor-container {
-  display: flex;
-  gap: var(--space-1);
-  margin-bottom: var(--space-5);
-}
-
-.cursor-symbol {
-  color: var(--fg-tertiary);
-  font-family: var(--font-family);
-}
-
-.cursor-blink {
-  display: inline-block;
-  width: 0.6em;
-  height: 1.2em;
-  background-color: var(--fg-primary);
-  color: transparent; /* Oculta el texto '_' si existe */
-  vertical-align: middle;
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
 
 .ninin-header {
   margin-top: var(--space-4);

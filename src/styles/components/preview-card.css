@@ -36,27 +36,11 @@
   margin: 0;
 }
 
-.desktop-only-actions {
+.card-actions {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
   align-items: flex-end;
-}
-
-.mobile-only-actions {
-  display: none;
-}
-
-.card-btn {
-  color: var(--fg-secondary);
-  font-family: var(--font-family);
-  text-decoration: none;
-  font-size: var(--font-size-small);
-  transition: color 0.2s ease;
-}
-
-.card-btn:hover {
-  color: var(--fg-primary);
 }
 
 /* Responsividad Tablet/Móvil */
@@ -72,14 +56,7 @@
     height: 120px;
   }
 
-  .desktop-only-actions {
-    display: none;
-  }
-
-  .mobile-only-actions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+  .card-actions {
     align-items: flex-start;
     margin-top: var(--space-4);
   }

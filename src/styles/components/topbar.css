@@ -47,25 +47,31 @@
   color: var(--fg-primary);
 }
 
-.topbar-menu-btn {
+/* CRT Monitor Effect Toggle */
+.crt-toggle {
   background: transparent;
-  border: var(--stroke-width) dashed var(--border-dim);
-  color: var(--fg-text);
+  border: var(--stroke-width) solid var(--border-dim);
+  color: var(--fg-text-muted);
   font-family: var(--font-family);
-  font-size: var(--font-size-body);
+  font-size: var(--font-size-caption);
   cursor: pointer;
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-component);
-  transition: background-color 0.2s ease, color 0.2s ease;
-  white-space: pre; /* Mantiene los espacios de los corchetes idéntico a Btn.astro */
+  padding: 2px 6px;
+  letter-spacing: 0.05em;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-.topbar-menu-btn:hover {
-  background-color: var(--bg-hover);
+.crt-toggle:hover {
+  color: var(--fg-text);
+  border-color: var(--fg-text-muted);
 }
 
-.topbar-menu-btn:focus-visible {
-  outline: 2px dashed var(--fg-primary);
+.crt-toggle.is-active {
+  color: var(--fg-primary);
+  border-color: var(--fg-primary);
+}
+
+.crt-toggle:focus-visible {
+  outline: 1px solid var(--fg-primary);
   outline-offset: 2px;
 }
 

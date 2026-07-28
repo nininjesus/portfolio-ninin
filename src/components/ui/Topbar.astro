@@ -4,11 +4,21 @@ import '../../styles/components/topbar.css';
 
 <header class="topbar" role="banner">
   <div class="topbar-left">
-    <a href="#bienvenida" class="os-title">NININTRON_OS</a>
+    <a href="#bienvenida" class="os-title" data-nav-link>NININTRON_OS</a>
   </div>
   
   <div class="topbar-right">
     <span class="user-label">[usr:ninin]</span>
+    <!-- CRT Monitor Effect Toggle -->
+    <button
+      type="button"
+      id="crt-toggle-btn"
+      class="crt-toggle"
+      aria-pressed="false"
+      aria-label="Activar efecto de monitor CRT"
+    >
+      <span aria-hidden="true">[CRT]</span>
+    </button>
     <!-- Renderizamos un botón nativo para inyectar directamente atributos aria vitales -->
     <button 
       type="button" 

@@ -30,6 +30,8 @@
   .panel {
     /* Ajustes menores si el layout gap cambia en mobile */
     padding: var(--space-4); /* 32px en mobile, por ejemplo */
+    flex-shrink: 0;
+    height: 100%;
   }
 }
 

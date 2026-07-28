@@ -26,7 +26,7 @@ import InputLine from '../primitives/InputLine.astro';
         novalidate>
         
         <!-- Add your Web3Forms Access Key -->
-        <input type="hidden" name="access_key" value="bc99c4a9-e2af-477e-86d1-4e5b997ef6ac" />
+        <input type="hidden" name="access_key" value={import.meta.env.PUBLIC_WEB3FORMS_KEY} />
         <input type="checkbox" name="botcheck" style="display: none;" />
 
         <InputLine label="NOMBRE:" name="name" required={true} />
@@ -54,35 +54,6 @@ import InputLine from '../primitives/InputLine.astro';
     </div>
   </PanelMain>
 </Panel>
-
-<style>
-  .form-result-wrapper {
-    margin-top: var(--space-4);
-    display: none;
-  }
-  .form-result-wrapper.success {
-    display: block;
-  }
-  .form-result-wrapper.success :global(.cmd-output-content) {
-    color: var(--fg-secondary);
-  }
-  .form-result-wrapper.error {
-    display: block;
-  }
-  .form-result-wrapper.error :global(.cmd-output-content) {
-    color: var(--fg-primary);
-  }
-  .form-result-wrapper.loading {
-    display: block;
-  }
-  .form-result-wrapper.loading :global(.cmd-output-content) {
-    color: var(--fg-text);
-  }
-  .contacto-form.was-validated :invalid {
-    border-color: var(--fg-primary);
-    color: var(--fg-primary);
-  }
-</style>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {

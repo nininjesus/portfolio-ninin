@@ -59,6 +59,19 @@ export function initWindowManager() {
       }).observe(container);
     }
   }
+
+  // ── Escape: cierra la ventana visible con mayor z-index ───
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    let topWin = null;
+    let topZ   = -Infinity;
+    document.querySelectorAll('.window-detail').forEach((w) => {
+      if (w.dataset.state === 'hidden') return;
+      const z = parseInt(w.style.zIndex || '0', 10);
+      if (z > topZ) { topZ = z; topWin = w; }
+    });
+    if (topWin) closeWindow(topWin);
+  });
 }
 
 function recalculateAllWindowPositions() {
@@ -131,20 +144,6 @@ function initSingleWindow(win) {
   // Focus Trap
   trapFocus(win);
 }
-
-// ── Escape: cierra la ventana visible con mayor z-index ───
-
-document.addEventListener('keydown', (e) => {
-  if (e.key !== 'Escape') return;
-  let topWin = null;
-  let topZ   = -Infinity;
-  document.querySelectorAll('.window-detail').forEach((w) => {
-    if (w.dataset.state === 'hidden') return;
-    const z = parseInt(w.style.zIndex || '0', 10);
-    if (z > topZ) { topZ = z; topWin = w; }
-  });
-  if (topWin) closeWindow(topWin);
-});
 
 // ── Abrir ─────────────────────────────────────────────────
 
@@ -373,6 +372,22 @@ function trapFocus(win) {
 // ── Drag ──────────────────────────────────────────────────
 
 /**
+ * Encuentra los rangos ocupados por ventanas minimizadas.
+ */
+function getOccupiedRanges(win, containerRect) {
+  return Array.from(
+    document.querySelectorAll('.window-detail[data-state="minimized"]')
+  )
+    .filter((w) => w !== win)
+    .map((w) => {
+      const r = w.getBoundingClientRect();
+      const l = r.left - containerRect.left;
+      return { left: l, right: l + w.offsetWidth };
+    })
+    .sort((a, b) => a.left - b.left);
+}
+
+/**
  * Encuentra el primer slot horizontal libre (de izquierda a derecha)
  * donde una nueva ventana minimizada no solape ninguna existente.
  */
@@ -383,17 +398,8 @@ function getFirstFreeMinimizedLeft(win) {
   const winWidth  = win.offsetWidth || 300; // ancho estimado si aún no está en DOM
   const maxLeft   = container.offsetWidth - winWidth;
 
-  const occupied = Array.from(
-    document.querySelectorAll('.window-detail[data-state="minimized"]')
-  )
-    .filter((w) => w !== win)
-    .map((w) => {
-      const r = w.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-      const l = r.left - containerRect.left;
-      return { left: l, right: l + w.offsetWidth };
-    })
-    .sort((a, b) => a.left - b.left);
+  const containerRect = container.getBoundingClientRect();
+  const occupied = getOccupiedRanges(win, containerRect);
 
   let candidate = 0;
   for (const range of occupied) {
@@ -414,16 +420,7 @@ function getClampedMinimizedLeft(win, desiredLeft, containerRect) {
   const maxLeft  = containerRect.width - winWidth;
 
   // Rangos ocupados por otras ventanas minimizadas
-  const blockedRanges = Array.from(
-    document.querySelectorAll('.window-detail[data-state="minimized"]')
-  )
-    .filter((w) => w !== win)
-    .map((w) => {
-      const r = w.getBoundingClientRect();
-      const l = r.left - containerRect.left;
-      return { left: l, right: l + w.offsetWidth };
-    })
-    .sort((a, b) => a.left - b.left);
+  const blockedRanges = getOccupiedRanges(win, containerRect);
 
   let left = Math.max(0, Math.min(desiredLeft, maxLeft));
 

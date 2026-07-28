@@ -14,7 +14,7 @@ body {
 /* El contenedor principal de la aplicación que simula la ventana del OS */
 .os-window {
   width: 100vw;
-  max-width: var(--breakpoint-desktop);
+  max-width: var(--bp-desktop);
   height: 100vh;
   /* Si la pantalla es más alta que 1024px, lo limitamos para que parezca una ventana */
   max-height: 1024px; 
@@ -127,7 +127,7 @@ body {
     /* En móvil, las secciones caen verticalmente */
     flex-direction: column;
     overflow-x: hidden;
-    overflow-y: auto; 
-    scroll-snap-type: y mandatory; /* Snap nativo en móvil */
+    overflow-y: hidden;   /* bloquear scroll táctil nativo */
+    scroll-snap-type: none;
   }
 }

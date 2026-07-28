@@ -15,5 +15,8 @@
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "astro": "^7.0.6"
+  },
+  "devDependencies": {
+    "svgo": "^4.0.2"
   }
 }

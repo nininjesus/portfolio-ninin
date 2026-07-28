@@ -16,6 +16,7 @@ const { index, label, sectionId, isActive = false } = Astro.props;
     href={`#${sectionId}`} 
     class:list={['nav-option', { 'is-active': isActive }]}
     aria-current={isActive ? 'page' : undefined}
+    data-nav-link
   >
     <span class="nav-option-index" aria-hidden="true">[{index}]</span>
     <span class="nav-option-label">{label}</span>
