@@ -109,7 +109,7 @@ const schemaData = {
           if (turbulence) turbulence.setAttribute('seed', noiseSeed);
         }
         if (!osWindow) osWindow = document.querySelector('.os-window');
-        if (osWindow && !osWindow.classList.contains('crt-off')) {
+        if (osWindow && osWindow.classList.contains('crt-on')) {
           rAF_id = requestAnimationFrame(animateNoise);
         }
       }
@@ -121,7 +121,7 @@ const schemaData = {
         if (!turbulence) turbulence = document.getElementById('crt-turbulence');
 
         if (enabled) {
-          osWindow.classList.remove('crt-off');
+          osWindow.classList.add('crt-on');
           if (btn) {
             btn.classList.add('is-active');
             btn.setAttribute('aria-pressed', 'true');
@@ -130,7 +130,7 @@ const schemaData = {
           if (rAF_id) cancelAnimationFrame(rAF_id);
           rAF_id = requestAnimationFrame(animateNoise);
         } else {
-          osWindow.classList.add('crt-off');
+          osWindow.classList.remove('crt-on');
           if (btn) {
             btn.classList.remove('is-active');
             btn.setAttribute('aria-pressed', 'false');
@@ -235,7 +235,7 @@ const schemaData = {
     document.addEventListener('DOMContentLoaded', () => {
       const sections = document.querySelectorAll('section.panel');
       const titleElement = document.getElementById('active-section-title');
-      const navLinks = document.querySelectorAll('.nav-option');
+      const navLinks = document.querySelectorAll('[data-nav-link]');
       const scrollContainer = document.getElementById('sections-container');
 
       if (!scrollContainer) return;
@@ -363,7 +363,7 @@ const schemaData = {
           const crossedBreakpoint = (lastWidth > 768 && currentWidth <= 768) || (lastWidth <= 768 && currentWidth > 768);
           
           if (crossedBreakpoint) {
-            const activeLink = document.querySelector('.nav-option.is-active');
+            const activeLink = document.querySelector('[data-nav-link].is-active');
             if (activeLink) {
               const targetId = activeLink.getAttribute('href').substring(1);
               const targetSection = document.getElementById(targetId);

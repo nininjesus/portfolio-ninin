@@ -37,7 +37,7 @@
 }
 
 /* Curvatura + Phosphor Glow + Filtros SVG */
-.os-window:not(.crt-off) {
+.os-window.crt-on {
   border-radius: var(--crt-curvature);
   overflow: hidden; /* Recorte para curvatura */
   
@@ -51,7 +51,7 @@
 
 /* --- Capa Inferior: Vignette + Reflexión de Cristal ------------- */
 
-.os-window::before {
+.os-window.crt-on::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -79,7 +79,7 @@
 
 /* --- Capa Superior: Scanlines + Shadow Mask ------------------- */
 
-.os-window::after {
+.os-window.crt-on::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -116,10 +116,7 @@
 }
 
 /* --- Estado OFF ----------------------------------------------- */
-.os-window.crt-off::before,
-.os-window.crt-off::after {
-  display: none;
-}
+/* Ya no es necesario, el estado por defecto es apagado */
 
 /* --- Accesibilidad -------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
