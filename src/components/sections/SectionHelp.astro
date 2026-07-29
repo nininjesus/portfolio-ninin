@@ -1,5 +1,4 @@
 ---
-import '../../styles/components/section-help.css';
 import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
 import Prompt from '../primitives/Prompt.astro';
@@ -14,7 +13,7 @@ import { helpData } from '../../data/help.js';
       <Prompt command="man ayuda" />
     </div>
 
-    <div class="help-content">
+    <div class="terminal-content-list">
       <hr class="terminal-separator" />
 
       {helpData.map((line, index) => {

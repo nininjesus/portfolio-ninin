@@ -1,5 +1,6 @@
 :root {
   /* === GRUPO bg === */
+  --bg-desktop: #050505; /* Fondo de escritorio (detrás de la ventana OS) */
   --bg-terminal: #0a0a0a;
   --bg-panel: #111;
   --bg-hover: #1a1a1a;

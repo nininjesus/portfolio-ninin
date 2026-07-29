@@ -1,5 +1,6 @@
 ---
 import '../../styles/components/window-detail.css';
+import Btn from '../primitives/Btn.astro';
 
 interface Props {
   id: string;
@@ -89,28 +90,23 @@ const hasPreview = urlPreview && urlPreview !== '#' && !urlPreview.startsWith('#
       {(hasView || hasPreview) && (
         <div class="project-detail-actions">
           {hasView && (
-            <a
+            <Btn
               href={urlView}
-              class="cmd-btn variant-default"
+              variant="default"
+              label="Ver Proyecto"
               target="_blank"
               rel="noopener noreferrer"
-            >
-              <span aria-hidden="true">[ </span
-              ><span class="cmd-btn-label">Ver Proyecto</span
-              ><span aria-hidden="true"> ]</span>
-            </a>
+            />
           )}
           {hasPreview && (
-            <a
+            <Btn
               href={urlPreview}
-              class="cmd-btn variant-secondary"
+              variant="secondary"
+              label="Preview"
+              ariaLabel={`Vista previa de ${title}`}
               target="_blank"
               rel="noopener noreferrer"
-            >
-              <span aria-hidden="true">[ </span
-              ><span class="cmd-btn-label">Preview</span
-              ><span aria-hidden="true"> ]</span>
-            </a>
+            />
           )}
         </div>
       )}

@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   /* Centered OS window on dark background */
-  background-color: #050505; /* Un fondo aún más oscuro que el terminal para contrastar la ventana */
+  background-color: var(--bg-desktop);
   color: var(--fg-text);
   display: flex;
   justify-content: center;

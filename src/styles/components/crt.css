@@ -115,15 +115,12 @@
   will-change: opacity, transform;
 }
 
-/* --- Estado OFF ----------------------------------------------- */
-/* Ya no es necesario, el estado por defecto es apagado */
-
 /* --- Accesibilidad -------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .os-window.crt-on {
     filter: none;
   }
-  .os-window::after {
+  .os-window.crt-on::after {
     animation: none; /* Detiene flicker y roll */
   }
 }
