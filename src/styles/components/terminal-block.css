@@ -39,3 +39,9 @@
     width: 100%;
   }
 }
+
+.terminal-content-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}

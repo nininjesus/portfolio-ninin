@@ -8,7 +8,6 @@ import PanelNav from '../components/ui/PanelNav.astro';
 import Statusbar from '../components/primitives/Statusbar.astro';
 import SectionTransition from '../components/sections/SectionTransition.astro';
 import WindowDetail from '../components/ui/WindowDetail.astro';
-import { projects } from '../data/projects.js';
 
 interface Props {
   title: string;
@@ -62,7 +61,6 @@ const schemaData = {
   <link rel="canonical" href={finalCanonicalUrl} />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="preconnect" href="https://api.web3forms.com" />
   <link rel="dns-prefetch" href="https://api.web3forms.com" />
 
   <!-- Open Graph -->
@@ -201,7 +199,7 @@ const schemaData = {
       <aside class="layout-sidebar">
         <header class="panel-header">
           <span class="panel-indicator" aria-hidden="true">▓</span>
-          <p class="panel-title" role="heading" aria-level="2">NAV.EXE</p>
+          <h2 class="panel-title">NAV.EXE</h2>
         </header>
         <div class="sidebar-content">
           <PanelNav />
@@ -212,7 +210,7 @@ const schemaData = {
       <main class="layout-main">
         <header class="panel-header">
           <span class="panel-indicator" aria-hidden="true">▓</span>
-          <p class="panel-title" id="active-section-title" role="heading" aria-level="2">MAIN.EXE</p>
+          <h2 class="panel-title" id="active-section-title">MAIN.EXE</h2>
         </header>
         <div class="main-content-scroll" id="sections-container">
           <slot />
@@ -233,6 +231,7 @@ const schemaData = {
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const MOBILE_BREAKPOINT = 768;
       const sections = document.querySelectorAll('section.panel');
       const titleElement = document.getElementById('active-section-title');
       const navLinks = document.querySelectorAll('[data-nav-link]');
@@ -297,7 +296,7 @@ const schemaData = {
         // Close sidebar when clicking a nav link (mobile)
         navLinks.forEach(link => {
           link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= MOBILE_BREAKPOINT) {
               sidebar.classList.remove('is-open');
               menuBtn.setAttribute('aria-expanded', 'false');
             }
@@ -306,7 +305,7 @@ const schemaData = {
 
         // Close sidebar when clicking outside (mobile)
         document.addEventListener('click', (event) => {
-          if (window.innerWidth <= 768 && sidebar.classList.contains('is-open')) {
+          if (window.innerWidth <= MOBILE_BREAKPOINT && sidebar.classList.contains('is-open')) {
             if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
               sidebar.classList.remove('is-open');
               menuBtn.setAttribute('aria-expanded', 'false');
@@ -322,7 +321,7 @@ const schemaData = {
           const targetId = link.getAttribute('href').substring(1);
           const targetSection = document.getElementById(targetId);
           if (targetSection && scrollContainer) {
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= MOBILE_BREAKPOINT) {
               scrollContainer.scrollTo({
                 top: targetSection.offsetTop,
                 behavior: 'instant'
@@ -345,7 +344,7 @@ const schemaData = {
         if (!sectionId) return;
         const targetSection = document.getElementById(sectionId);
         if (targetSection && scrollContainer) {
-          if (window.innerWidth <= 768) {
+          if (window.innerWidth <= MOBILE_BREAKPOINT) {
             scrollContainer.scrollTo({ top: targetSection.offsetTop, behavior: 'instant' });
           } else {
             scrollContainer.scrollTo({ left: targetSection.offsetLeft, behavior: 'instant' });
@@ -360,7 +359,7 @@ const schemaData = {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
           const currentWidth = window.innerWidth;
-          const crossedBreakpoint = (lastWidth > 768 && currentWidth <= 768) || (lastWidth <= 768 && currentWidth > 768);
+          const crossedBreakpoint = (lastWidth > MOBILE_BREAKPOINT && currentWidth <= MOBILE_BREAKPOINT) || (lastWidth <= MOBILE_BREAKPOINT && currentWidth > MOBILE_BREAKPOINT);
           
           if (crossedBreakpoint) {
             const activeLink = document.querySelector('[data-nav-link].is-active');
@@ -368,7 +367,7 @@ const schemaData = {
               const targetId = activeLink.getAttribute('href').substring(1);
               const targetSection = document.getElementById(targetId);
               if (targetSection && scrollContainer) {
-                if (currentWidth <= 768) {
+                if (currentWidth <= MOBILE_BREAKPOINT) {
                   scrollContainer.scrollTo({ top: targetSection.offsetTop, behavior: 'instant' });
                 } else {
                   scrollContainer.scrollTo({ left: targetSection.offsetLeft, behavior: 'instant' });
@@ -387,12 +386,12 @@ const schemaData = {
       if (initialSection) {
         // Registrar el estado inicial en el historial
         history.replaceState({ sectionId: initialHash }, '', `#${initialHash}`);
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= MOBILE_BREAKPOINT) {
           scrollContainer.scrollTo({ top: initialSection.offsetTop, behavior: 'instant' });
         } else {
           scrollContainer.scrollTo({ left: initialSection.offsetLeft, behavior: 'instant' });
         }
-      } else if (window.innerWidth <= 768 && sections.length > 0) {
+      } else if (window.innerWidth <= MOBILE_BREAKPOINT && sections.length > 0) {
         scrollContainer.scrollTo({ top: 0, behavior: 'instant' });
       }
     });

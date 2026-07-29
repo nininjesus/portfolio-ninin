@@ -12,6 +12,11 @@
 @import './components/statusbar.css';
 @import './components/cursor.css';
 @import './components/terminal-block.css';
+
+/* Nota de arquitectura: Astro se encarga del bundling de todos estos imports usando
+   la opción `inlineStylesheets: 'auto'`. Estos imports se mantienen separados aquí 
+   exclusivamente para mejorar la Developer Experience (DX) y la co-localización de estilos. */
+
 /* UI components */
 @import './components/crt.css';
 @import './components/nav-option.css';
@@ -26,9 +31,7 @@
 @import './components/section-bienvenida.css';
 @import './components/section-ninin.css';
 @import './components/section-proyectos.css';
-@import './components/section-about.css';
 @import './components/section-contacto.css';
-@import './components/section-help.css';
 @import './components/section-transition.css';
 
 /* Typography base rules */
