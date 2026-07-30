@@ -7,7 +7,6 @@ import Topbar from '../components/ui/Topbar.astro';
 import PanelNav from '../components/ui/PanelNav.astro';
 import Statusbar from '../components/primitives/Statusbar.astro';
 import SectionTransition from '../components/sections/SectionTransition.astro';
-import WindowDetail from '../components/ui/WindowDetail.astro';
 
 interface Props {
   title: string;
@@ -18,7 +17,7 @@ interface Props {
 
 const { 
   title,
-  description = "Jesús Ninin - UI/UX &amp; Web Developer Portfolio",
+  description = "Jesús Ninin - UI/UX & Web Developer Portfolio",
   canonicalUrl = Astro.url,
   ogImage = "/images/og-image.png"
 } = Astro.props;

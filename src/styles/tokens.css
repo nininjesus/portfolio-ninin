@@ -40,6 +40,7 @@
   --layout-gap: 40px;
 
   /* Tamaños / Grid */
+  --topbar-height: 48px;
   --bp-desktop: 1440px;
   --bp-tablet: 768px;
   --bp-phone: 402px;

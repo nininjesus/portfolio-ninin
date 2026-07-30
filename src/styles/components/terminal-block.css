@@ -45,3 +45,8 @@
   flex-direction: column;
   gap: var(--space-4);
 }
+
+/* Modificador de espaciado adicional para líneas de contenido especiales */
+.margin-bottom {
+  margin-bottom: var(--space-3);
+}

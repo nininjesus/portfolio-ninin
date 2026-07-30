@@ -11,7 +11,7 @@ interface Props {
 const { activeSectionId = 'bienvenida' } = Astro.props;
 ---
 
-<nav id="panel-nav" aria-label="Navegación principal" aria-hidden="false">
+<nav id="panel-nav" aria-label="Navegación principal">
   <ul class="panel-nav-list">
     {navItems.map((item) => (
       <NavOption 

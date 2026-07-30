@@ -36,11 +36,7 @@ import InputLine from '../primitives/InputLine.astro';
           <Output text="Mensaje:" />
         </div>
 
-        <div class="form-group textarea-group">
-          <span class="bracket">[</span>
-          <textarea class="form-textarea" id="mensaje" name="message" rows="3" aria-label="Mensaje" autocomplete="off" required></textarea>
-          <span class="bracket">]</span>
-        </div>
+        <InputLine name="message" type="textarea" required={true} autocomplete="off" ariaLabel="Mensaje" />
 
         <div class="form-actions">
           <Btn label="ENVIAR" type="submit" />
