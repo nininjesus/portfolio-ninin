@@ -4,6 +4,8 @@ import PanelMain from '../ui/PanelMain.astro';
 import Output from '../primitives/Output.astro';
 import TerminalHeader from '../primitives/TerminalHeader.astro';
 import { aboutData } from '../../data/about.js';
+
+const aboutGroups = Object.values(aboutData);
 ---
 
 <Panel sectionId="sobre-mi" ariaLabel="Sección sobre mí" title="SOBRE_MI.TXT">
@@ -13,8 +15,13 @@ import { aboutData } from '../../data/about.js';
     
     <div class="terminal-content-list">
       <hr class="terminal-separator" />
-      {aboutData.map((line) => (
-        line === "---" ? <hr class="terminal-separator" /> : <Output text={line} />
+      {aboutGroups.map((group, index) => (
+        <>
+          {group.map((item) => (
+            <Output text={`${item.label}: ${item.value}`} />
+          ))}
+          {index < aboutGroups.length - 1 && <hr class="terminal-separator" />}
+        </>
       ))}
     </div>
     
