@@ -16,7 +16,7 @@ const { projectId, title, category, year, repo = '#' } = Astro.props;
 const windowId = `project-window-${projectId}`;
 ---
 
-<article class="preview-card">
+<article class="preview-card" data-cli-line="reveal">
   <div class="card-thumb" aria-hidden="true"></div>
 
   <div class="card-info">

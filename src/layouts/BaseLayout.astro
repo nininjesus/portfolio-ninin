@@ -229,6 +229,8 @@ const schemaData = {
   </script>
 
   <script>
+    import { playCLIEntrance, resetCLIEntrance } from '../scripts/cli-entrance.js';
+
     document.addEventListener('DOMContentLoaded', () => {
       const MOBILE_BREAKPOINT = 768;
       const sections = document.querySelectorAll('section.panel');
@@ -268,6 +270,11 @@ const schemaData = {
               }
             });
 
+            // Animación CLI
+            resetCLIEntrance(entry.target);
+            playCLIEntrance(entry.target);
+          } else {
+            resetCLIEntrance(entry.target);
           }
         });
       }, observerOptions);
@@ -392,6 +399,11 @@ const schemaData = {
         }
       } else if (window.innerWidth <= MOBILE_BREAKPOINT && sections.length > 0) {
         scrollContainer.scrollTo({ top: 0, behavior: 'instant' });
+      }
+
+      const cliInitialSection = initialSection || sections[0];
+      if (cliInitialSection) {
+        requestAnimationFrame(() => playCLIEntrance(cliInitialSection));
       }
     });
   </script>

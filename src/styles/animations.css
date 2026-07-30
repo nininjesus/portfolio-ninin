@@ -3,4 +3,39 @@
   50% { opacity: 0; }
 }
 
-/* Transiciones globales si es necesario */
+/* Fade-in de línea completa (Output, Separator, blockquote, figura, form, nav) */
+@keyframes cli-fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Typewriter — texto se "escribe" de izquierda a derecha — SOLO Prompt */
+@keyframes cli-typewriter {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0);   }
+}
+
+/* Prevenir FOUC ocultando todos los elementos animables de base */
+[data-cli-line] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-cli-line] {
+    opacity: 1 !important;
+  }
+}
+
+/* Clase activadora para fade-in (todos los elementos excepto Prompt) */
+.cli-line.is-visible {
+  animation: cli-fadein var(--cli-duration, 0.25s) ease both;
+  animation-delay: var(--cli-delay, 0s);
+}
+
+/* Efecto typewriter — EXCLUSIVO para Prompt ($) */
+.cli-typewriter.is-visible {
+  animation:
+    cli-fadein 0.05s ease both var(--cli-delay, 0s),
+    cli-typewriter var(--cli-duration, 0.4s) steps(var(--cli-chars, 20), end) both;
+  animation-delay: var(--cli-delay, 0s), var(--cli-delay, 0s);
+}

@@ -12,7 +12,7 @@ interface Props {
 const { text, showCursor = false, contentId, class: className } = Astro.props;
 ---
 
-<div class={`cmd-output ${className || ''}`.trim()}>
+<div class={`cmd-output ${className || ''}`.trim()} data-cli-line="reveal">
   <span class="cmd-output-symbol" aria-hidden="true">&gt;</span>
   <span class="cmd-output-content" id={contentId}>
     {text ? text : <slot />}

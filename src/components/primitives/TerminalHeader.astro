@@ -12,7 +12,7 @@ const { command } = Astro.props;
 <div class="terminal-command-container">
   <Prompt command={command} />
 </div>
-<div class="terminal-cursor-container">
+<div class="terminal-cursor-container" data-cli-line="reveal">
   <span class="cursor-symbol">&gt;</span>
   <span class="cursor-blink">_</span>
 </div>

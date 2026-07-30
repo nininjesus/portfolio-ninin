@@ -14,10 +14,10 @@ import { helpData } from '../../data/help.js';
     </div>
 
     <div class="terminal-content-list">
-      <hr class="terminal-separator" />
+      <hr class="terminal-separator" data-cli-line="reveal" />
 
       {helpData.map((line, index) => {
-        if (line === "---") return <hr class="terminal-separator" />;
+        if (line === "---") return <hr class="terminal-separator" data-cli-line="reveal" />;
         
         // Add margin-bottom to specific lines to match the original design without extra divs
         const needsMargin = line.startsWith("COMANDOS DISPONIBLES:") || line.startsWith("[5] ayuda");

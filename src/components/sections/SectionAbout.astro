@@ -14,13 +14,13 @@ const aboutGroups = Object.values(aboutData);
     <TerminalHeader command="cat /sobre_mi.txt" />
     
     <div class="terminal-content-list">
-      <hr class="terminal-separator" />
+      <hr class="terminal-separator" data-cli-line="reveal" />
       {aboutGroups.map((group, index) => (
         <>
           {group.map((item) => (
             <Output text={`${item.label}: ${item.value}`} />
           ))}
-          {index < aboutGroups.length - 1 && <hr class="terminal-separator" />}
+          {index < aboutGroups.length - 1 && <hr class="terminal-separator" data-cli-line="reveal" />}
         </>
       ))}
     </div>
