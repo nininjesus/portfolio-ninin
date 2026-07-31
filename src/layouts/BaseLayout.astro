@@ -7,21 +7,24 @@ import Topbar from '../components/ui/Topbar.astro';
 import PanelNav from '../components/ui/PanelNav.astro';
 import Statusbar from '../components/primitives/Statusbar.astro';
 import SectionTransition from '../components/sections/SectionTransition.astro';
-import WindowDetail from '../components/ui/WindowDetail.astro';
+import { t, getAlternateUrls } from '../i18n/index';
 
 interface Props {
-  title: string;
-  description?: string;
+  lang: 'es' | 'en';
   canonicalUrl?: string;
   ogImage?: string;
 }
 
 const { 
-  title,
-  description = "Jesús Ninin - UI/UX &amp; Web Developer Portfolio",
+  lang,
   canonicalUrl = Astro.url,
   ogImage = "/images/og-image.png"
 } = Astro.props;
+
+const title = t(lang, 'meta.title');
+const description = t(lang, 'meta.description');
+const alternateUrls = getAlternateUrls(lang);
+const ogLocale = lang === 'en' ? 'en_US' : 'es_VE';
 
 const siteUrl = Astro.site ? Astro.site.toString() : 'https://ninin.online';
 const finalCanonicalUrl = new URL(canonicalUrl, siteUrl).toString().replace(/\/$/, '');
@@ -48,7 +51,7 @@ const schemaData = {
 ---
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang={lang}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -59,6 +62,9 @@ const schemaData = {
   <meta name="robots" content="index, follow" />
   <meta name="author" content="Jesús Ninin" />
   <link rel="canonical" href={finalCanonicalUrl} />
+  {alternateUrls.map((alt) => (
+    <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+  ))}
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="dns-prefetch" href="https://api.web3forms.com" />
@@ -73,7 +79,7 @@ const schemaData = {
   <meta property="og:image:height" content="600" />
   <meta property="og:image:alt" content="Jesús Ninin - UI/UX & Web Developer Portfolio" />
   <meta property="og:site_name" content="Jesús Ninin Portfolio" />
-  <meta property="og:locale" content="es_ES" />
+  <meta property="og:locale" content={ogLocale} />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -191,7 +197,7 @@ const schemaData = {
     </filter>
   </svg>
   <div class="os-window">
-    <Topbar />
+    <Topbar lang={lang} />
     <SectionTransition />
     
     <div class="app-layout">
@@ -202,7 +208,7 @@ const schemaData = {
           <h2 class="panel-title">NAV.EXE</h2>
         </header>
         <div class="sidebar-content">
-          <PanelNav />
+          <PanelNav lang={lang} />
         </div>
       </aside>
 
@@ -230,6 +236,8 @@ const schemaData = {
   </script>
 
   <script>
+    import { playCLIEntrance, resetCLIEntrance } from '../scripts/cli-entrance.js';
+
     document.addEventListener('DOMContentLoaded', () => {
       const MOBILE_BREAKPOINT = 768;
       const sections = document.querySelectorAll('section.panel');
@@ -245,7 +253,8 @@ const schemaData = {
         threshold: 0.5
       };
 
-      const observer = new IntersectionObserver((entries) => {
+      // Observador para la navegación, títulos y accesibilidad (Continuo)
+      const layoutObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             // Manejar foco de teclado con inert
@@ -268,13 +277,24 @@ const schemaData = {
                 link.setAttribute('aria-current', 'page');
               }
             });
+          }
+        });
+      }, observerOptions);
 
+      // Observador para la animación CLI (Una sola vez)
+      const cliObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            resetCLIEntrance(entry.target);
+            playCLIEntrance(entry.target);
+            cliObserver.unobserve(entry.target); // Dejar de observar la sección
           }
         });
       }, observerOptions);
 
       sections.forEach(section => {
-        observer.observe(section);
+        layoutObserver.observe(section);
+        cliObserver.observe(section);
       });
       
       // Mobile Menu Toggle
@@ -394,6 +414,7 @@ const schemaData = {
       } else if (window.innerWidth <= MOBILE_BREAKPOINT && sections.length > 0) {
         scrollContainer.scrollTo({ top: 0, behavior: 'instant' });
       }
+
     });
   </script>
 </body>

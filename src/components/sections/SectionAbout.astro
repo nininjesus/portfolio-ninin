@@ -3,18 +3,34 @@ import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
 import Output from '../primitives/Output.astro';
 import TerminalHeader from '../primitives/TerminalHeader.astro';
-import { aboutData } from '../../data/about.js';
+import { t } from '../../i18n/index';
+
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'es' } = Astro.props;
+const aboutData = t(lang, 'about');
+const aboutGroups = Object.values(aboutData).map((group: any) => group.items);
+const sectionTitle = t(lang, 'nav.sobre_mi.label').toUpperCase() + '.TXT';
+const commandTitle = 'cat /' + t(lang, 'nav.sobre_mi.label') + '.txt';
+const ariaLabel = t(lang, 'aria.sobre_mi');
 ---
 
-<Panel sectionId="sobre-mi" ariaLabel="Sección sobre mí" title="SOBRE_MI.TXT">
+<Panel sectionId="sobre-mi" ariaLabel={ariaLabel} title={sectionTitle}>
   <PanelMain>
     
-    <TerminalHeader command="cat /sobre_mi.txt" />
+    <TerminalHeader command={commandTitle} />
     
     <div class="terminal-content-list">
-      <hr class="terminal-separator" />
-      {aboutData.map((line) => (
-        line === "---" ? <hr class="terminal-separator" /> : <Output text={line} />
+      <hr class="terminal-separator" data-cli-line="reveal" />
+      {aboutGroups.map((group, index) => (
+        <>
+          {group.map((item) => (
+            <Output text={`${item.label}: ${item.value}`} />
+          ))}
+          {index < aboutGroups.length - 1 && <hr class="terminal-separator" data-cli-line="reveal" />}
+        </>
       ))}
     </div>
     

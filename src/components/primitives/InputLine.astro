@@ -2,11 +2,13 @@
 import '../../styles/components/input-line.css';
 
 interface Props {
-  label: string;
+  label?: string;
   name: string;
   type?: 'text' | 'email' | 'textarea';
   placeholder?: string;
   required?: boolean;
+  autocomplete?: string;
+  ariaLabel?: string;
 }
 
 const { 
@@ -14,7 +16,9 @@ const {
   name, 
   type = 'text', 
   placeholder, 
-  required = false 
+  required = false,
+  autocomplete,
+  ariaLabel
 } = Astro.props;
 
 // ID dinámico para ligar correctamente el label por accesibilidad
@@ -22,9 +26,11 @@ const id = `input-${name}`;
 ---
 
 <div class="cmd-input-line">
-  <label class="cmd-input-label" for={id}>
-    {label}
-  </label>
+  {label && (
+    <label class="cmd-input-label" for={id}>
+      {label}
+    </label>
+  )}
   <div class="cmd-input-wrapper">
     <span class="cmd-input-bracket" aria-hidden="true">[</span>
     {type === 'textarea' ? (
@@ -34,6 +40,8 @@ const id = `input-${name}`;
         class="cmd-input-field type-textarea" 
         placeholder={placeholder}
         required={required}
+        autocomplete={autocomplete}
+        aria-label={ariaLabel}
         rows="3"
       ></textarea>
     ) : (
@@ -44,6 +52,8 @@ const id = `input-${name}`;
         class="cmd-input-field" 
         placeholder={placeholder}
         required={required}
+        autocomplete={autocomplete}
+        aria-label={ariaLabel}
       />
     )}
     <span class="cmd-input-bracket" aria-hidden="true">]</span>

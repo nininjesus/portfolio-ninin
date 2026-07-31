@@ -6,15 +6,26 @@ import Btn from '../primitives/Btn.astro';
 import Prompt from '../primitives/Prompt.astro';
 import Output from '../primitives/Output.astro';
 import InputLine from '../primitives/InputLine.astro';
+import { t } from '../../i18n/index';
+
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'es' } = Astro.props;
+const contactData = t(lang, 'contact');
+const sectionTitle = t(lang, 'nav.contacto.label').toUpperCase() + '.SH';
+const ariaLabel = lang === 'en' ? 'Contact section' : 'Sección de contacto';
+const ariaMessage = lang === 'en' ? 'Message' : 'Mensaje';
 ---
 
-<Panel sectionId="contacto" ariaLabel="Sección de contacto" title="CONTACTO.SH">
+<Panel sectionId="contacto" ariaLabel={ariaLabel} title={sectionTitle}>
   <PanelMain>
     <div class="contacto-wrapper">
-      <Prompt command='mail -s "CONTACTO" nj13072004@gmail.com' />
+      <Prompt command={contactData.command} />
       
       <div class="contacto-spacing">
-        <Output text="[Escriba su mensaje]" />
+        <Output text={contactData.prompt} />
       </div>
 
       <form 
@@ -22,28 +33,27 @@ import InputLine from '../primitives/InputLine.astro';
         id="form" 
         action="https://api.web3forms.com/submit" 
         method="POST" 
+        data-cli-line="reveal"
+        data-msg-sending={contactData.status.sending}
+        data-msg-error={contactData.status.error}
         novalidate>
         
         <!-- Add your Web3Forms Access Key -->
         <input type="hidden" name="access_key" value={import.meta.env.PUBLIC_WEB3FORMS_KEY} />
         <input type="checkbox" name="botcheck" style="display: none;" />
 
-        <InputLine label="NOMBRE:" name="name" required={true} />
-        <InputLine label="EMAIL:" name="email" type="email" required={true} />
-        <InputLine label="ASUNTO:" name="subject" required={true} />
+        <InputLine label={contactData.name} name="name" required={true} />
+        <InputLine label={contactData.email} name="email" type="email" required={true} />
+        <InputLine label={contactData.subject} name="subject" required={true} />
 
         <div class="contacto-spacing">
-          <Output text="Mensaje:" />
+          <Output text={contactData.messageLabel} />
         </div>
 
-        <div class="form-group textarea-group">
-          <span class="bracket">[</span>
-          <textarea class="form-textarea" id="mensaje" name="message" rows="3" aria-label="Mensaje" autocomplete="off" required></textarea>
-          <span class="bracket">]</span>
-        </div>
+        <InputLine name="message" type="textarea" required={true} autocomplete="off" ariaLabel={ariaMessage} />
 
         <div class="form-actions">
-          <Btn label="ENVIAR" type="submit" />
+          <Btn label={contactData.submit} type="submit" />
         </div>
 
         <div id="result-wrapper" class="form-result-wrapper">
@@ -76,10 +86,13 @@ import InputLine from '../primitives/InputLine.astro';
         const formData = new FormData(form);
         const object = Object.fromEntries(formData);
         const json = JSON.stringify(object);
+        
+        const msgSending = form.dataset.msgSending || "Enviando...";
+        const msgError = form.dataset.msgError || "Algo salió mal. Intente de nuevo.";
 
         resultWrapper.classList.remove("success", "error");
         resultWrapper.classList.add("loading");
-        result.innerHTML = "Enviando...";
+        result.innerHTML = msgSending;
 
         fetch("https://api.web3forms.com/submit", {
           method: "POST",
@@ -105,7 +118,7 @@ import InputLine from '../primitives/InputLine.astro';
             console.log(error);
             resultWrapper.classList.remove("loading");
             resultWrapper.classList.add("error");
-            result.innerHTML = "Algo salió mal. Intente de nuevo.";
+            result.innerHTML = msgError;
           })
           .then(function () {
             form.reset();

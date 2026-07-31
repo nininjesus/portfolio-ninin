@@ -12,6 +12,9 @@ export function rotateText(elementId, textArray, interval = 5000) {
     return null;
   }
   
+  // Respetar preferencias de movimiento reducido del usuario
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
+  
   let currentIndex = 0;
   
   return setInterval(() => {

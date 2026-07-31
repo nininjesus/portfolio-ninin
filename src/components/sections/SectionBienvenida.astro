@@ -2,15 +2,25 @@
 import '../../styles/components/section-bienvenida.css';
 import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
+import { t } from '../../i18n/index';
+
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'es' } = Astro.props;
+const ariaLabel = t(lang, 'aria.bienvenida');
+const title = t(lang, 'hero.title');
+const version = t(lang, 'hero.version');
 ---
 
-<Panel sectionId="bienvenida" ariaLabel="Sección de bienvenida" title="MAIN.EXE">
+<Panel sectionId="bienvenida" ariaLabel={ariaLabel} title="MAIN.EXE">
   <PanelMain>
     <div class="bienvenida-content">
       <img src="/images/ninin-logo.svg" alt="" class="ascii-art-logo" aria-hidden="true" width="341" height="301" loading="eager" fetchpriority="high" />
       <div class="bienvenida-text">
-        <h1 class="os-name">NININTRON_OS</h1>
-        <h2 class="os-version">V1.0</h2>
+        <h1 class="os-name">{title}</h1>
+        <h2 class="os-version">{version}</h2>
       </div>
     </div>
   </PanelMain>

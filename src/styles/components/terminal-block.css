@@ -43,5 +43,10 @@
 .terminal-content-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
+}
+
+/* Modificador de espaciado adicional para líneas de contenido especiales */
+.margin-bottom {
+  margin-bottom: var(--space-3);
 }

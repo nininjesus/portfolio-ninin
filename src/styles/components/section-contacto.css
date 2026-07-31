@@ -21,53 +21,7 @@
   gap: var(--space-2);
 }
 
-/* Estilos específicos para el textarea manual que conservamos */
-.form-group {
-  display: flex;
-  align-items: center;
-  color: var(--fg-text);
-  font-family: var(--font-family);
-  font-size: var(--font-size-body);
-}
 
-.textarea-group {
-  align-items: flex-start;
-}
-
-.bracket {
-  color: var(--fg-text-muted);
-  padding-top: 2px;
-  transition: color 0.2s ease;
-}
-
-.form-textarea {
-  flex: 1;
-  background: transparent;
-  border: none;
-  border-bottom: var(--stroke-width) dashed var(--border-dim);
-  color: var(--fg-secondary);
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  outline: none;
-  min-width: 0;
-  resize: vertical;
-  padding: 2px var(--space-1) 0 var(--space-1);
-  transition: border-color 0.2s ease;
-}
-
-.form-textarea::placeholder {
-  color: var(--fg-dim);
-}
-
-/* Simular el focus-within del InputLine original */
-.form-group:focus-within .bracket {
-  color: var(--fg-primary);
-}
-
-.form-textarea:focus {
-  border-bottom-color: var(--border-default);
-}
 
 .form-actions {
   margin-top: var(--space-4);

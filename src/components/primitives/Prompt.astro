@@ -8,7 +8,7 @@ interface Props {
 const { command } = Astro.props;
 ---
 
-<p class="cmd-prompt">
+<p class="cmd-prompt" data-cli-line="typewriter">
   <span class="cmd-prompt-symbol" aria-hidden="true">$</span>
   <span class="cmd-prompt-text">{command}</span>
 </p>

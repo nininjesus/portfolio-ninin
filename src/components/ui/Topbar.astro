@@ -1,5 +1,13 @@
 ---
 import '../../styles/components/topbar.css';
+import { t } from '../../i18n/index';
+
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'es' } = Astro.props;
+const ariaLangToggle = t(lang, 'aria.langToggle');
 ---
 
 <header class="topbar" role="banner">
@@ -9,6 +17,13 @@ import '../../styles/components/topbar.css';
   
   <div class="topbar-right">
     <span class="user-label">[usr:ninin]</span>
+    
+    <!-- Language Switcher -->
+    <div class="lang-switcher" aria-label={ariaLangToggle}>
+      <a href="/es" class={`lang-btn ${lang === 'es' ? 'is-active' : ''}`} aria-current={lang === 'es' ? 'true' : undefined}>[ES]</a>
+      <a href="/en" class={`lang-btn ${lang === 'en' ? 'is-active' : ''}`} aria-current={lang === 'en' ? 'true' : undefined}>[EN]</a>
+    </div>
+
     <!-- CRT Monitor Effect Toggle -->
     <button
       type="button"

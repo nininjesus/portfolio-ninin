@@ -1,8 +1,10 @@
 ---
 import '../../styles/components/preview-card.css';
 import Btn from '../primitives/Btn.astro';
+import { t } from '../../i18n/index';
 
 interface Props {
+  lang?: 'es' | 'en';
   projectId: string;
   title: string;
   category: string;
@@ -10,13 +12,15 @@ interface Props {
   repo?: string;
 }
 
-const { projectId, title, category, year, repo = '#' } = Astro.props;
+const { lang = 'es', projectId, title, category, year, repo = '#' } = Astro.props;
 
 // ID de la ventana que este botón debe abrir
 const windowId = `project-window-${projectId}`;
+const viewLabel = t(lang, 'ui.view');
+const ariaViewLabel = t(lang, 'ui.viewDetails').replace('{0}', title);
 ---
 
-<article class="preview-card">
+<article class="preview-card" data-cli-line="reveal">
   <div class="card-thumb" aria-hidden="true"></div>
 
   <div class="card-info">
@@ -26,9 +30,9 @@ const windowId = `project-window-${projectId}`;
 
   <div class="card-actions">
     <Btn
-      label="Ver"
+      label={viewLabel}
       data-target-window={windowId}
-      ariaLabel={`Ver detalles de ${title}`}
+      ariaLabel={ariaViewLabel}
     />
     <Btn label="Preview" href={repo} variant="secondary" />
   </div>
