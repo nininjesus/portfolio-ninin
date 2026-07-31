@@ -6,20 +6,33 @@ import PreviewCard from '../ui/PreviewCard.astro';
 import WindowDetail from '../ui/WindowDetail.astro';
 import { projects } from '../../data/projects.js';
 import TerminalHeader from '../primitives/TerminalHeader.astro';
+import { t } from '../../i18n/index';
+
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'es' } = Astro.props;
+const sectionTitle = t(lang, 'nav.proyectos.label').toUpperCase() + '.EXE';
+const commandTitle = 'ls ' + t(lang, 'nav.proyectos.label');
+const ariaLabel = t(lang, 'aria.proyectos');
 ---
 
-<Panel sectionId="proyectos" ariaLabel="Sección de proyectos" title="PROYECTOS.EXE">
+<Panel sectionId="proyectos" ariaLabel={ariaLabel} title={sectionTitle}>
   <PanelMain>
 
-    <TerminalHeader command="ls proyectos" />
+    <TerminalHeader command={commandTitle} />
 
     <div class="proyectos-list">
-      {projects.map((project, index) => (
+      {projects.map((project, index) => {
+        const pTrans = t(lang, 'projects.' + project.id);
+        return (
         <>
           <PreviewCard
+            lang={lang}
             projectId={project.id}
-            title={project.title}
-            category={project.category}
+            title={pTrans.title}
+            category={pTrans.category}
             year={project.year}
             repo={project.urlPreview}
           />
@@ -27,24 +40,27 @@ import TerminalHeader from '../primitives/TerminalHeader.astro';
             <hr class="terminal-separator" data-cli-line="reveal" />
           )}
         </>
-      ))}
+      )})}
     </div>
 
   </PanelMain>
 
   <!-- Capa de ventanas OS, ahora contenida localmente dentro de Proyectos -->
   <div id="windows-layer">
-    {projects.map((project) => (
+    {projects.map((project) => {
+      const pTrans = t(lang, 'projects.' + project.id);
+      return (
       <WindowDetail
+        lang={lang}
         id={`project-window-${project.id}`}
         projectId={project.id}
-        title={project.title}
-        category={project.category}
+        title={pTrans.title}
+        category={pTrans.category}
         year={project.year}
-        description={project.description}
+        description={pTrans.description}
         urlView={project.urlView}
         urlPreview={project.urlPreview}
       />
-    ))}
+    )})}
   </div>
 </Panel>

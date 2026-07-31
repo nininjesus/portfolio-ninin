@@ -3,10 +3,14 @@ import '../../styles/components/section-ninin.css';
 import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
 import TerminalHeader from '../primitives/TerminalHeader.astro';
+import { t } from '../../i18n/index';
 
-// Iconos de GitHub y LinkedIn servidos como SVGs estáticos desde /icons/.
+interface Props {
+  lang?: 'es' | 'en';
+}
 
-import { nininQuotes } from '../../data/nininQuotes.js';
+const { lang = 'es' } = Astro.props;
+const quotes = t(lang, 'ninin.quotes');
 ---
 
 <Panel sectionId="ninin" ariaLabel="Sección Ninin" title="NININ.EXE">
@@ -16,8 +20,8 @@ import { nininQuotes } from '../../data/nininQuotes.js';
 
     <div class="ninin-content">
       <div class="ninin-text-col">
-        <p class="ninin-quote" id="dynamic-quote" data-cli-line="reveal">
-          {nininQuotes[0]}
+        <p class="ninin-quote" id="dynamic-quote" data-cli-line="reveal" data-quotes={JSON.stringify(quotes)}>
+          {quotes[0]}
         </p>
         <p class="ninin-name" data-cli-line="reveal">Jesus Ninin</p>
         
@@ -42,9 +46,15 @@ import { nininQuotes } from '../../data/nininQuotes.js';
 </Panel>
 
 <script>
-  import { nininQuotes } from '../../data/nininQuotes.js';
   import { rotateText } from '../../scripts/textRotator.js';
 
-  // Iniciar la rotación de texto con las frases, cambiando cada 5 segundos
-  rotateText('dynamic-quote', nininQuotes, 5000);
+  const quoteElement = document.getElementById('dynamic-quote');
+  if (quoteElement && quoteElement.dataset.quotes) {
+    try {
+      const quotes = JSON.parse(quoteElement.dataset.quotes);
+      rotateText('dynamic-quote', quotes, 5000);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 </script>

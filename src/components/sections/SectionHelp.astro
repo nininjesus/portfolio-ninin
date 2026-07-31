@@ -3,25 +3,36 @@ import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
 import Prompt from '../primitives/Prompt.astro';
 import Output from '../primitives/Output.astro';
-import { helpData } from '../../data/help.js';
+import { t } from '../../i18n/index';
+
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'es' } = Astro.props;
+const helpLines = t(lang, 'help.lines');
+const sectionTitle = t(lang, 'nav.ayuda.label').toUpperCase() + '.TXT';
+const commandTitle = 'man ' + t(lang, 'nav.ayuda.label');
+const ariaLabel = t(lang, 'aria.ayuda');
 ---
 
-<Panel sectionId="ayuda" ariaLabel="Sección de ayuda" title="AYUDA.TXT">
+<Panel sectionId="ayuda" ariaLabel={ariaLabel} title={sectionTitle}>
   <PanelMain>
     
     <div class="terminal-command-container">
-      <Prompt command="man ayuda" />
+      <Prompt command={commandTitle} />
     </div>
 
     <div class="terminal-content-list">
       <hr class="terminal-separator" data-cli-line="reveal" />
 
-      {helpData.map((line, index) => {
+      {helpLines.map((line: string) => {
         if (line === "---") return <hr class="terminal-separator" data-cli-line="reveal" />;
         
-        // Add margin-bottom to specific lines to match the original design without extra divs
-        const needsMargin = line.startsWith("COMANDOS DISPONIBLES:") || line.startsWith("[5] ayuda");
-        const className = needsMargin ? "margin-bottom" : "";
+        // Add margin-bottom to specific lines based on known structural markers
+        const isHeader = line.includes(":") && !line.startsWith("[");
+        const isLastCommand = line.startsWith("[5]");
+        const className = (isHeader || isLastCommand) ? "margin-bottom" : "";
         
         return <Output text={line} class={className} />;
       })}

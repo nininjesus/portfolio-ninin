@@ -1,8 +1,10 @@
 ---
 import '../../styles/components/window-detail.css';
 import Btn from '../primitives/Btn.astro';
+import { t } from '../../i18n/index';
 
 interface Props {
+  lang?: 'es' | 'en';
   id: string;
   projectId: string;
   title: string;
@@ -14,6 +16,7 @@ interface Props {
 }
 
 const {
+  lang = 'es',
   id,
   projectId,
   title,
@@ -26,6 +29,17 @@ const {
 
 // Título estilo OS
 const osTitle = projectId.toUpperCase() + '.EXE';
+
+const labelName = t(lang, 'ui.name');
+const labelCategory = t(lang, 'ui.category');
+const labelYear = t(lang, 'ui.year');
+const labelView = t(lang, 'ui.viewProject');
+const labelPreviewAria = t(lang, 'ui.previewOf').replace('{0}', title);
+const labelControls = t(lang, 'aria.windowControls');
+const labelMin = t(lang, 'aria.windowMin');
+const labelMax = t(lang, 'aria.windowMax');
+const labelClose = t(lang, 'aria.windowClose');
+
 
 // Comprobar si las URLs son "reales" o placeholders internos
 const hasView    = urlView    && urlView    !== '#' && !urlView.startsWith('#');
@@ -46,23 +60,23 @@ const hasPreview = urlPreview && urlPreview !== '#' && !urlPreview.startsWith('#
       <h2 id={`${id}-title`} class="window-detail-title">{osTitle}</h2>
     </div>
 
-    <div class="window-controls" role="group" aria-label="Controles de ventana">
+    <div class="window-controls" role="group" aria-label={labelControls}>
       <button
         class="window-ctrl window-ctrl--minimize"
         type="button"
-        aria-label="Minimizar ventana"
+        aria-label={labelMin}
         data-action="minimize"
       >[_]</button>
       <button
         class="window-ctrl window-ctrl--maximize"
         type="button"
-        aria-label="Maximizar ventana"
+        aria-label={labelMax}
         data-action="maximize"
       >[□]</button>
       <button
         class="window-ctrl window-ctrl--close"
         type="button"
-        aria-label="Cerrar ventana"
+        aria-label={labelClose}
         data-action="close"
       >[X]</button>
     </div>
@@ -71,15 +85,15 @@ const hasPreview = urlPreview && urlPreview !== '#' && !urlPreview.startsWith('#
   <div class="window-detail-content">
     <div class="project-detail">
       <p class="project-detail-line">
-        <span class="detail-key">&gt; NOMBRE:</span>
+        <span class="detail-key">{labelName}</span>
         <span class="detail-val"> {title}</span>
       </p>
       <p class="project-detail-line">
-        <span class="detail-key">&gt; CATEGORIA:</span>
+        <span class="detail-key">{labelCategory}</span>
         <span class="detail-val"> {category}</span>
       </p>
       <p class="project-detail-line">
-        <span class="detail-key">&gt; AÑO:</span>
+        <span class="detail-key">{labelYear}</span>
         <span class="detail-val"> {year}</span>
       </p>
 
@@ -93,7 +107,7 @@ const hasPreview = urlPreview && urlPreview !== '#' && !urlPreview.startsWith('#
             <Btn
               href={urlView}
               variant="default"
-              label="Ver Proyecto"
+              label={labelView}
               target="_blank"
               rel="noopener noreferrer"
             />
@@ -103,7 +117,7 @@ const hasPreview = urlPreview && urlPreview !== '#' && !urlPreview.startsWith('#
               href={urlPreview}
               variant="secondary"
               label="Preview"
-              ariaLabel={`Vista previa de ${title}`}
+              ariaLabel={labelPreviewAria}
               target="_blank"
               rel="noopener noreferrer"
             />
