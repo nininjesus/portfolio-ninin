@@ -7,12 +7,13 @@ interface Props {
   showCursor?: boolean;
   contentId?: string;
   class?: string;
+  isStatic?: boolean;
 }
 
-const { text, showCursor = false, contentId, class: className } = Astro.props;
+const { text, showCursor = false, contentId, class: className, isStatic = false } = Astro.props;
 ---
 
-<div class={`cmd-output ${className || ''}`.trim()} data-cli-line="reveal">
+<div class={`cmd-output ${className || ''}`.trim()} data-cli-line={isStatic ? undefined : "reveal"}>
   <span class="cmd-output-symbol" aria-hidden="true">&gt;</span>
   <span class="cmd-output-content" id={contentId}>
     {text ? text : <slot />}
