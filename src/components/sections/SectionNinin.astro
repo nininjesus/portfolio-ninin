@@ -13,7 +13,7 @@ const { lang = 'es' } = Astro.props;
 const quotes = t(lang, 'ninin.quotes');
 ---
 
-<Panel sectionId="ninin" ariaLabel="Sección Ninin" title="NININ.EXE">
+<Panel sectionId="ninin" ariaLabel={t(lang, 'aria.ninin')} title="NININ.EXE">
   <PanelMain>
     
     <TerminalHeader command="ninin" />

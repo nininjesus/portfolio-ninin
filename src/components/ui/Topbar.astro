@@ -19,10 +19,10 @@ const ariaLangToggle = t(lang, 'aria.langToggle');
     <span class="user-label">[usr:ninin]</span>
     
     <!-- Language Switcher -->
-    <div class="lang-switcher" aria-label={ariaLangToggle}>
+    <nav class="lang-switcher" aria-label={ariaLangToggle}>
       <a href="/es" class={`lang-btn ${lang === 'es' ? 'is-active' : ''}`} aria-current={lang === 'es' ? 'true' : undefined}>[ES]</a>
       <a href="/en" class={`lang-btn ${lang === 'en' ? 'is-active' : ''}`} aria-current={lang === 'en' ? 'true' : undefined}>[EN]</a>
-    </div>
+    </nav>
 
     <!-- CRT Monitor Effect Toggle -->
     <button

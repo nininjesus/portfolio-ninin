@@ -13,7 +13,6 @@
 
 .cursor-symbol {
   color: var(--fg-tertiary);
-  font-family: var(--font-family);
 }
 
 .cursor-blink {

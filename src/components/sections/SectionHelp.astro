@@ -1,7 +1,7 @@
 ---
 import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
-import Prompt from '../primitives/Prompt.astro';
+import TerminalHeader from '../primitives/TerminalHeader.astro';
 import Output from '../primitives/Output.astro';
 import { t } from '../../i18n/index';
 
@@ -19,9 +19,7 @@ const ariaLabel = t(lang, 'aria.ayuda');
 <Panel sectionId="ayuda" ariaLabel={ariaLabel} title={sectionTitle}>
   <PanelMain>
     
-    <div class="terminal-command-container">
-      <Prompt command={commandTitle} />
-    </div>
+    <TerminalHeader command={commandTitle} />
 
     <div class="terminal-content-list">
       <hr class="terminal-separator" data-cli-line="reveal" />

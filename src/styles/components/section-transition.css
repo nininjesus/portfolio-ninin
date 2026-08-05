@@ -35,7 +35,7 @@
 
 .transition-text {
   color: var(--fg-text);
-  font-size: var(--font-size-prompt);
+  font-size: var(--font-size-body);
   font-weight: 700;
   margin: 0;
   text-transform: uppercase;

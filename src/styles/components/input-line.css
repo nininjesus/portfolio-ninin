@@ -3,8 +3,8 @@
   align-items: flex-start;
   margin-bottom: var(--space-3);
   font-family: var(--font-family);
-  font-size: var(--font-size-prompt);
-  line-height: var(--line-height-prompt);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
 }
 
 .cmd-input-label {
@@ -44,7 +44,7 @@
 /* Evitar que el textarea rompa el ancho estricto arrastrándose */
 .cmd-input-field.type-textarea {
   resize: vertical; /* Solo permitir cambiar la altura */
-  min-height: calc(3 * var(--font-size-prompt) * var(--line-height-prompt));
+  min-height: calc(3 * var(--font-size-body) * var(--line-height-body));
 }
 
 .cmd-input-field::placeholder {

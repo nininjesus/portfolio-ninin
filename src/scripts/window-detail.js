@@ -3,6 +3,8 @@
 //  Soporta múltiples ventanas OS simultáneas e independientes
 // ============================================================
 
+export const MOBILE_BREAKPOINT = 768;
+
 // ── Z-Index Manager ───────────────────────────────────────
 let zIndexCounter = 50;
 
@@ -151,6 +153,12 @@ function clampWindowInsideContainer(win, container) {
 // ── Inicializar una ventana individual ───────────────────
 
 function initSingleWindow(win) {
+  if (win.dataset.state === 'hidden') {
+    win.setAttribute('inert', '');
+  } else {
+    win.removeAttribute('inert');
+  }
+
   // Controles
   win.querySelector('[data-action="close"]')
     ?.addEventListener('click', () => closeWindow(win));
@@ -222,6 +230,7 @@ function openWindow(win, trigger = null) {
   }
 
   win.dataset.state = 'normal';
+  win.removeAttribute('inert');
   bringToFront(win);
   updateMaximizeButton(win);
 
@@ -233,6 +242,7 @@ function openWindow(win, trigger = null) {
 
 function closeWindow(win) {
   win.dataset.state = 'hidden';
+  win.setAttribute('inert', '');
   win.style.removeProperty('z-index');
   const container = win.closest('.panel');
   if (container && window.innerWidth <= 768) {

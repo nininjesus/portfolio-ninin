@@ -4,6 +4,7 @@ export const es = {
     description: 'Portfolio personal de Jesus Ninin - Ingeniero en Información'
   },
   aria: {
+    ninin: 'Sección Ninin',
     bienvenida: 'Sección de bienvenida',
     contacto: 'Sección de contacto',
     sobre_mi: 'Sección sobre mí',

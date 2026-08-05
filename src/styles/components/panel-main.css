@@ -28,3 +28,8 @@
     padding: var(--space-3); /* 24px en phone */
   }
 }
+
+.proyectos-list {
+  display: flex;
+  flex-direction: column;
+}

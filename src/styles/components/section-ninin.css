@@ -12,7 +12,6 @@
 
 .ninin-quote {
   color: var(--fg-text);
-  font-family: var(--font-family);
   font-size: var(--font-size-h3);
   line-height: 1.5;
   margin-bottom: var(--space-4);
@@ -20,9 +19,8 @@
 
 .ninin-name {
   color: var(--fg-tertiary);
-  font-family: var(--font-family);
   font-size: var(--font-size-h3);
-  font-weight: bold;
+  font-weight: var(--font-weight-h3);
   margin-bottom: var(--space-4);
 }
 
@@ -41,11 +39,6 @@
 
 .social-icon:hover {
   opacity: 0.8;
-}
-
-.social-icon svg {
-  width: 48px;
-  height: 48px;
 }
 
 .ninin-photo-col {

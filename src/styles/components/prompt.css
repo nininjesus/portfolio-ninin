@@ -5,9 +5,9 @@
   
   /* Tipografía confirmada en tokens */
   font-family: var(--font-family);
-  font-size: var(--font-size-prompt);
-  line-height: var(--line-height-prompt);
-  font-weight: var(--font-weight-prompt);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-body);
 }
 
 .cmd-prompt-symbol {

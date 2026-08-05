@@ -124,8 +124,3 @@
   }
 }
 
-@media (max-width: 402px) {
-  .topbar {
-    padding: 0 var(--space-3);
-  }
-}
