@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./.github/assets/NININTRON_OS_PORTFOLIO_BANNER.svg" alt="NININTRON OS Portfolio Banner" width="50%" />
+  <img src="./.github/assets/NININTRON_OS_PORTFOLIO_BANNER.svg" alt="NININTRON OS Portfolio Banner" width="100%" />
 </div>
 
 ## **Descripción general**
