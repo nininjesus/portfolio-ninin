@@ -1,5 +1,4 @@
 ---
-import '../../styles/components/section-contacto.css';
 import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
 import Btn from '../primitives/Btn.astro';
@@ -15,8 +14,8 @@ interface Props {
 const { lang = 'es' } = Astro.props;
 const contactData = t(lang, 'contact');
 const sectionTitle = t(lang, 'nav.contacto.label').toUpperCase() + '.SH';
-const ariaLabel = lang === 'en' ? 'Contact section' : 'Sección de contacto';
-const ariaMessage = lang === 'en' ? 'Message' : 'Mensaje';
+const ariaLabel = t(lang, 'aria.contacto');
+const ariaMessage = t(lang, 'contact.messageAriaLabel');
 ---
 
 <Panel sectionId="contacto" ariaLabel={ariaLabel} title={sectionTitle}>

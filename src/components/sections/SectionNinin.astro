@@ -1,9 +1,9 @@
 ---
-import '../../styles/components/section-ninin.css';
 import Panel from '../ui/Panel.astro';
 import PanelMain from '../ui/PanelMain.astro';
 import TerminalHeader from '../primitives/TerminalHeader.astro';
 import { t } from '../../i18n/index';
+import { GITHUB_URL, LINKEDIN_URL, AUTHOR_NAME } from '../../data/site.js';
 
 interface Props {
   lang?: 'es' | 'en';
@@ -23,22 +23,22 @@ const quotes = t(lang, 'ninin.quotes');
         <p class="ninin-quote" id="dynamic-quote" data-cli-line="reveal" data-quotes={JSON.stringify(quotes)}>
           {quotes[0]}
         </p>
-        <p class="ninin-name" data-cli-line="reveal">Jesus Ninin</p>
+        <p class="ninin-name" data-cli-line="reveal">{AUTHOR_NAME}</p>
         
         <div class="ninin-social-links" data-cli-line="reveal">
           <!-- Icono GitHub -->
-          <a href="https://github.com/nininjesus" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Perfil de GitHub">
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Perfil de GitHub">
             <img src="/icons/github.svg" alt="" aria-hidden="true" width="24" height="24" />
           </a>
           <!-- Icono LinkedIn -->
-          <a href="https://www.linkedin.com/in/ninin-dev" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Perfil de LinkedIn">
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Perfil de LinkedIn">
             <img src="/icons/linkedin.svg" alt="" aria-hidden="true" width="24" height="24" />
           </a>
         </div>
       </div>
       
       <div class="ninin-photo-col">
-        <img src="/images/ninin-photo.svg" alt="" aria-hidden="true" class="ascii-photo" width="1192" height="1195" loading="eager" fetchpriority="high" data-cli-line="reveal" />
+        <img src="/images/ninin-photo.svg" alt="" aria-hidden="true" class="ascii-photo" width="1192" height="1195" loading="lazy" data-cli-line="reveal" />
       </div>
     </div>
     
@@ -55,6 +55,7 @@ const quotes = t(lang, 'ninin.quotes');
       rotateText('dynamic-quote', quotes, 5000);
     } catch (e) {
       console.error(e);
+      quoteElement.textContent = '"¿Como hago para ser millonario en menos de 2 minutos? Buscar Google".';
     }
   }
 </script>

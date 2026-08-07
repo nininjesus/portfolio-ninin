@@ -1,7 +1,8 @@
 export const es = {
   meta: {
     title: 'NININTRON_OS',
-    description: 'Portfolio personal de Jesus Ninin - Ingeniero en Información'
+    description: 'Portfolio personal de Jesus Ninin - Ingeniero en Información, Especialista en UI/UX, Frontend, React y Desarrollo Web',
+    jobTitle: 'Ingeniero en Información | UI/UX & Web Developer'
   },
   aria: {
     ninin: 'Sección Ninin',
@@ -16,7 +17,8 @@ export const es = {
     windowMin: 'Minimizar ventana',
     windowMax: 'Maximizar ventana',
     windowClose: 'Cerrar ventana',
-    windowControls: 'Controles de ventana'
+    windowControls: 'Controles de ventana',
+    navPrincipal: 'Navegación principal'
   },
   nav: {
     ninin: {
@@ -112,6 +114,7 @@ export const es = {
     email: 'EMAIL:',
     subject: 'ASUNTO:',
     messageLabel: 'Mensaje:',
+    messageAriaLabel: 'Escribe tu mensaje',
     submit: 'ENVIAR',
     status: {
       sending: 'Enviando...',

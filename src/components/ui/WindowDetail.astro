@@ -1,5 +1,4 @@
 ---
-import '../../styles/components/window-detail.css';
 import Btn from '../primitives/Btn.astro';
 import { t } from '../../i18n/index';
 
@@ -53,6 +52,7 @@ const hasPreview = urlPreview && urlPreview !== '#' && !urlPreview.startsWith('#
   aria-modal="true"
   aria-labelledby={`${id}-title`}
   data-state="hidden"
+  inert
 >
   <header class="window-detail-header">
     <div class="window-detail-title-group">

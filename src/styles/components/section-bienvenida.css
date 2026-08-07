@@ -23,7 +23,6 @@
 
 .os-name {
   color: var(--fg-text);
-  font-family: var(--font-family);
   font-size: var(--font-size-h1);
   font-weight: 700;
   margin: 0;
@@ -32,7 +31,6 @@
 
 .os-version {
   color: var(--fg-tertiary);
-  font-family: var(--font-family);
   font-size: var(--font-size-h3);
   font-weight: 400;
   margin: 0;

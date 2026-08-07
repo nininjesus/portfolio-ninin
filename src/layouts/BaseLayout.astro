@@ -8,6 +8,7 @@ import PanelNav from '../components/ui/PanelNav.astro';
 import Statusbar from '../components/primitives/Statusbar.astro';
 import SectionTransition from '../components/sections/SectionTransition.astro';
 import { t, getAlternateUrls } from '../i18n/index';
+import { SITE_URL, GITHUB_URL, LINKEDIN_URL, AUTHOR_NAME } from '../data/site.js';
 
 interface Props {
   lang: 'es' | 'en';
@@ -23,19 +24,19 @@ const {
 
 const title = t(lang, 'meta.title');
 const description = t(lang, 'meta.description');
-const alternateUrls = getAlternateUrls(lang);
+const alternateUrls = getAlternateUrls();
 const ogLocale = lang === 'en' ? 'en_US' : 'es_VE';
 
-const siteUrl = Astro.site ? Astro.site.toString() : 'https://ninin.online';
+const siteUrl = Astro.site ? Astro.site.toString() : SITE_URL;
 const finalCanonicalUrl = new URL(canonicalUrl, siteUrl).toString().replace(/\/$/, '');
 const finalOgImage = new URL(ogImage, siteUrl).toString();
 
 const schemaData = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "name": "Jesús Ninin",
-  "url": "https://ninin.online",
-  "jobTitle": "UI/UX & Web Developer",
+  "name": AUTHOR_NAME,
+  "url": SITE_URL,
+  "jobTitle": t(lang, 'meta.jobTitle'),
   "description": description,
   "knowsAbout": [
     "Frontend Development",
@@ -44,8 +45,8 @@ const schemaData = {
     "Web Development"
   ],
   "sameAs": [
-    "https://github.com/nininjesus",
-    "https://www.linkedin.com/in/ninin-dev"
+    GITHUB_URL,
+    LINKEDIN_URL
   ]
 };
 ---
@@ -60,7 +61,7 @@ const schemaData = {
   <meta name="theme-color" content="#0a0a0a" />
   <meta name="color-scheme" content="dark" />
   <meta name="robots" content="index, follow" />
-  <meta name="author" content="Jesús Ninin" />
+  <meta name="author" content={AUTHOR_NAME} />
   <link rel="canonical" href={finalCanonicalUrl} />
   {alternateUrls.map((alt) => (
     <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
@@ -92,84 +93,7 @@ const schemaData = {
   <!-- JSON-LD -->
   <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
   <!-- CRT Init: lee localStorage antes del primer paint para evitar flash -->
-  <script>
-    (function () {
-      var osWindow = null;
-      var btn = null;
-      var CRT_KEY = 'crt-enabled';
-
-      var noiseFrame = 0;
-      var noiseSeed = 1;
-      var turbulence = null;
-      var rAF_id = null;
-
-      function animateNoise() {
-        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            return;
-        }
-        noiseFrame++;
-        if (noiseFrame % 3 === 0) { // ~20fps
-          noiseSeed = (noiseSeed % 999) + 1;
-          if (turbulence) turbulence.setAttribute('seed', noiseSeed);
-        }
-        if (!osWindow) osWindow = document.querySelector('.os-window');
-        if (osWindow && osWindow.classList.contains('crt-on')) {
-          rAF_id = requestAnimationFrame(animateNoise);
-        }
-      }
-
-      /** Aplica/remueve el efecto y sincroniza el botón */
-      function applyCRT(enabled) {
-        if (!osWindow) osWindow = document.querySelector('.os-window');
-        if (!btn) btn = document.getElementById('crt-toggle-btn');
-        if (!turbulence) turbulence = document.getElementById('crt-turbulence');
-
-        if (enabled) {
-          osWindow.classList.add('crt-on');
-          osWindow.style.willChange = 'filter';
-          if (btn) {
-            btn.classList.add('is-active');
-            btn.setAttribute('aria-pressed', 'true');
-            btn.setAttribute('aria-label', 'Desactivar efecto de monitor CRT');
-          }
-          if (rAF_id) cancelAnimationFrame(rAF_id);
-          rAF_id = requestAnimationFrame(animateNoise);
-        } else {
-          osWindow.classList.remove('crt-on');
-          osWindow.style.willChange = 'auto';
-          if (btn) {
-            btn.classList.remove('is-active');
-            btn.setAttribute('aria-pressed', 'false');
-            btn.setAttribute('aria-label', 'Activar efecto de monitor CRT');
-          }
-          if (rAF_id) {
-            cancelAnimationFrame(rAF_id);
-            rAF_id = null;
-          }
-        }
-      }
-
-      /** Toggle público: botón lo llama directamente */
-      window.toggleCRT = function () {
-        var current = localStorage.getItem(CRT_KEY) === 'true';
-        var next = !current;
-        localStorage.setItem(CRT_KEY, String(next));
-        applyCRT(next);
-      };
-
-      /** Inicialización: default = OFF, a menos que localStorage diga lo contrario */
-      document.addEventListener('DOMContentLoaded', function () {
-        var saved = localStorage.getItem(CRT_KEY);
-        var enabled = saved === 'true'; /* Arranca desactivado si no hay valor guardado */
-        applyCRT(enabled);
-
-        var toggleBtn = document.getElementById('crt-toggle-btn');
-        if (toggleBtn) {
-          toggleBtn.addEventListener('click', window.toggleCRT);
-        }
-      });
-    })();
-  </script>
+  <script src="../scripts/crt.js"></script>
 </head>
 <body>
   <svg aria-hidden="true" style="position:absolute;width:0;height:0">

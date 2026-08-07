@@ -26,7 +26,7 @@ export function t(lang: 'es' | 'en', key: string): string | any {
   return result;
 }
 
-export function getAlternateUrls(currentLang: 'es' | 'en'): { href: string; hreflang: string }[] {
+export function getAlternateUrls(): { href: string; hreflang: string }[] {
   return [
     { href: 'https://ninin.online/es', hreflang: 'es' },
     { href: 'https://ninin.online/en', hreflang: 'en' },

@@ -13,7 +13,7 @@ interface Props {
 const { lang = 'es', activeSectionId = 'bienvenida' } = Astro.props;
 ---
 
-<nav id="panel-nav" aria-label="Navegación principal">
+<nav id="panel-nav" aria-label={t(lang, 'aria.navPrincipal')}>
   <ul class="panel-nav-list">
     {navItems.map((item) => (
       <NavOption 

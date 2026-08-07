@@ -42,13 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
             resultWrapper.classList.add("success");
             result.innerHTML = json.message;
           } else {
-            console.log(response);
+            console.error(response);
             resultWrapper.classList.add("error");
             result.innerHTML = json.message;
           }
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           resultWrapper.classList.remove("loading");
           resultWrapper.classList.add("error");
           result.innerHTML = msgError;
